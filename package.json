@@ -1,0 +1,10 @@
+{
+  "name": "flashcard-new-tab",
+  "version": "1.0.0",
+  "description": "Repeat your knowledge with flashcard on each new tab",
+  "main": "src/index.html",
+  "author": "Alexey Khrushch <alexeykhr@outlook.com>",
+  "devDependencies": {
+    "sass": "^1.26.5"
+  }
+}

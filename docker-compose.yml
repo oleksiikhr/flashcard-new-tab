@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  node:
+    build: .
+    user: node
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - 1234:1234

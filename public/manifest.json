@@ -1,0 +1,9 @@
+{
+  "name": "Flashcard New Tab",
+  "version": "1.0",
+  "description": "Repeat your knowledge with flashcard on each new tab",
+  "chrome_url_overrides" : {
+    "newtab": "index.html"
+  },
+  "manifest_version": 2
+}
