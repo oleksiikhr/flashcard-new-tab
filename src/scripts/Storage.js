@@ -1,8 +1,20 @@
 import { isObject } from './helpers'
 
 export default class Storage {
+  static get token() {
+    return Storage.getString('token')
+  }
+
+  static set token(value) {
+    Storage.setString(value)
+  }
+
   static get authForm() {
     return Storage.getBool('auth-form')
+  }
+
+  static set authForm(value) {
+    Storage.setBool('auth-form', value)
   }
 
   /**

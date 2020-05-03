@@ -1,10 +1,35 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   padding: 0;
   margin: 0;
-  background: black;
-  color: var(--primary);
-  font-family: JetBrainsMono, monospace;
+  background-color: var(--theme-layout);
+  color: var(--theme-color);
+  font-family: var(--font-family);
   font-size: 16px;
+  overflow-y: scroll;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  padding: 10px 16px;
+  background: #3d4146;
+  color: #fff;
+  font-weight: 500;
+  font-size: .9rem;
+  border-radius: 4px;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  border: none;
+  font-family: var(--font-family);
+  white-space: nowrap;
+}
+
+a {
+  text-decoration: none;
 }

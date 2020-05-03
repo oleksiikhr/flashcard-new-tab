@@ -1,3 +1,17 @@
 :root {
-  --primary: #fff;
+  --theme-color: #fff;
+  --theme-layout: #1e2023;
+  --font-family: JetBrainsMono, monospace;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  display: block;
+  background: var(--theme-layout);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--theme-color);
+  border-radius: 4px;
 }
