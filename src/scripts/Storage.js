@@ -1,21 +1,9 @@
+'use strict'
+
 import { isObject } from './helpers'
 
 export default class Storage {
-  static get token() {
-    return Storage.getString('token')
-  }
-
-  static set token(value) {
-    Storage.setString(value)
-  }
-
-  static get authForm() {
-    return Storage.getBool('auth-form')
-  }
-
-  static set authForm(value) {
-    Storage.setBool('auth-form', value)
-  }
+  // TODO Hot Keys, Colors, etc
 
   /**
    * @param {string} key
@@ -27,7 +15,7 @@ export default class Storage {
 
   /**
    * @param {string} key
-   * @param {*} value
+   * @param value
    */
   static setBool(key, value) {
     return !!localStorage.setItem(key, value)

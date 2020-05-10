@@ -8,28 +8,36 @@ body {
   background-color: var(--theme-layout);
   color: var(--theme-color);
   font-family: var(--font-family);
-  font-size: 16px;
+  font-size: 14px;
   overflow-y: scroll;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-button {
-  padding: 10px 16px;
-  background: #3d4146;
-  color: #fff;
-  font-weight: 500;
-  font-size: .9rem;
-  border-radius: 4px;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-  outline: none;
-  border: none;
-  font-family: var(--font-family);
-  white-space: nowrap;
-}
-
 a {
   text-decoration: none;
+  color: inherit;
+}
+
+[to] {
+  cursor: pointer;
+}
+
+button {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid var(--theme-layout);
+  padding: 8px 20px;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+  outline: 0;
+  cursor: pointer;
+  font-family: var(--font-family);
+  color: var(--theme-color);
+  background-color: #007bff; // TODO
 }

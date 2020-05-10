@@ -5,4 +5,4 @@ RUN yarn global add parcel-bundler
 
 EXPOSE 1234
 
-CMD ["parcel", "src/index.html", "--no-hmr", "--no-source-maps"]
+CMD ["yarn", "start"]

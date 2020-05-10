@@ -1,0 +1,75 @@
+.settings-page {
+  display: flex;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px;
+  main {
+    width: 100%;
+    padding: 20px;
+    background: rgba(0, 0, 0, .1);
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: 10px;
+  }
+}
+
+.settings-aside {
+  max-width: 250px;
+  width: 100%;
+  padding: 0 20px;
+  user-select: none;
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    &.bottom {
+      margin-top: 20px;
+    }
+  }
+}
+
+.top-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  span {
+    font-weight: 500;
+    margin-left: 20px;
+  }
+}
+
+.section {
+  position: sticky;
+  top: -1px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 25px 0 20px;
+  padding: 5px 0;
+  font-size: .8rem;
+  background-color: var(--theme-layout);
+  color: var(--theme-primary);
+  letter-spacing: 1px;
+}
+
+.section-action {
+  height: 28px;
+  padding: 6px;
+  svg {
+    height: 100%;
+    transition: transform .25s;
+  }
+}
+
+.deck {
+  margin: 5px 0;
+  padding: 5px;
+  white-space: nowrap;
+  transition: background .1s;
+  &:hover {
+    background: rgba(0, 0, 0, .2);
+  }
+  > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

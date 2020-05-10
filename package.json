@@ -3,8 +3,25 @@
   "version": "1.0.0",
   "description": "Repeat your knowledge with flashcard on each new tab",
   "main": "src/index.html",
+  "scripts": {
+    "start": "parcel src/index.html --no-hmr --no-source-maps",
+    "build": "parcel build src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alexeykhr/flashcard-new-tab.git"
+  },
   "author": "Alexey Khrushch <alexeykhr@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Alexeykhr/flashcard-new-tab/issues"
+  },
+  "homepage": "https://github.com/Alexeykhr/flashcard-new-tab#readme",
   "devDependencies": {
     "sass": "^1.26.5"
+  },
+  "dependencies": {
+    "dexie": "^3.0.1",
+    "src": "^1.1.2"
   }
 }
