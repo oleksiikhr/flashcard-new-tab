@@ -33,6 +33,10 @@
   padding: 5px 20px;
   margin-right: 25px;
   background-color: rgba(0, 0, 0, .1);
+  width: 200px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
   transition: background-color .2s;
   &:hover {
     background-color: rgba(0, 0, 0, .3);
@@ -53,7 +57,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   padding: 30px;
   transition: background-color .2s;
   cursor: pointer;

@@ -7,6 +7,7 @@ import { rnd } from './scripts/helpers'
 import Deck from './db/Deck'
 
 // Elements
+const actionCreate = document.querySelector('#h-action-create')
 const actionEdit = document.querySelector('#h-action-edit')
 const actionDelete = document.querySelector('#h-action-delete')
 const cardViews = document.querySelector('#h-card-views')
@@ -14,7 +15,6 @@ const cardClicks = document.querySelector('#h-card-clicks')
 const cardRating = document.querySelector('#h-card-rating')
 const question = document.querySelector('#h-question')
 const answer = document.querySelector('#h-answer')
-const actionCreate = document.querySelector('#h-action-create')
 const deckName = document.querySelector('#h-deck-name')
 const actionCard = document.querySelector('#h-action-card')
 
@@ -34,7 +34,7 @@ const generate = (card) => {
   // Statistics
   cardViews.innerText = card.views
   cardClicks.innerText = card.clicks
-  cardRating.innerText = (card.up / card.down) || 0
+  cardRating.innerText = (card.up / card.down) || '-'
 }
 
 getActiveDecks()
@@ -72,5 +72,4 @@ getActiveDecks()
   })
   .finally(() => {
     registerRouteLink()
-    document.body.style.opacity = null
   })
