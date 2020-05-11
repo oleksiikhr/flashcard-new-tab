@@ -18,11 +18,9 @@
   },
   "homepage": "https://github.com/Alexeykhr/flashcard-new-tab#readme",
   "devDependencies": {
-    "cssnano": "^4.1.10",
     "sass": "^1.26.5"
   },
   "dependencies": {
-    "dexie": "^3.0.1",
-    "src": "^1.1.2"
+    "dexie": "^3.0.1"
   }
 }

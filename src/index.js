@@ -54,6 +54,8 @@ const updateHtml = () => {
       .catch((e) => console.error(e))
   })
 
+  // TODO Create / Edit / Delete for Card
+
   // Center
   elQuestion.innerText = card.question
   elQuestion.style.fontSize = `${calcFS(elQuestion.textContent)}px`
@@ -97,13 +99,12 @@ getActiveDecks()
     updateHtml()
   })
   .catch((e) => {
-    console.error(e)
-
     switch (e) {
       case 'welcome':
       case 'no-cards':
         return routeRender(e, 'root')
       default:
+        console.error(e)
         return routeRender('error', 'root', { message: e.message })
     }
   })

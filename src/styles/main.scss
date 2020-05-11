@@ -87,6 +87,7 @@
   width: 100%;
   &.clicked {
     #h-question {
+      user-select: auto;
       cursor: auto;
     }
     #h-answer {
@@ -99,6 +100,7 @@
 #h-question {
   margin-bottom: 60px;
   color: var(--theme-primary);
+  user-select: none;
   cursor: pointer;
 }
 
