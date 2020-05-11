@@ -58,13 +58,12 @@ getActiveDecks()
 
     return deck
   })
-  .then((data) => {
-    if (!data) {
+  .then((card) => {
+    if (!card) {
       throw 'no-cards'
     }
 
-    // TODO Temporary
-    generate(data[0])
+    generate(card)
   })
   .catch((e) => {
     console.error(e)

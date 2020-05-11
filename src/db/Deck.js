@@ -1,4 +1,5 @@
 import Dexie from 'dexie'
+import { rnd } from '../scripts/helpers'
 
 export default class Deck {
   constructor(deck) {
@@ -10,6 +11,13 @@ export default class Deck {
     })
   }
 
+  paginate(page = 1, itemsPerPage = 50) {
+    return this.db.cards
+      .offset((page - 1) * itemsPerPage)
+      .limit(itemsPerPage)
+      .toArray()
+  }
+
   randomActiveCard() {
     if (!this.deck.cards_count) {
       return undefined
@@ -17,6 +25,8 @@ export default class Deck {
 
     return this.db.cards
       .where('is_active').equals(1)
-      .toArray()
+      .offset(rnd(0, this.deck.cards_count - 1))
+      .limit(1)
+      .first()
   }
 }
