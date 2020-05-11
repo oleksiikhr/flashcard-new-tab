@@ -1,25 +1,25 @@
 import Dexie from 'dexie'
 
-const db = new Dexie('__info')
+const info = new Dexie('__info')
 
-db.version(1).stores({
+info.version(1).stores({
   'decks': '++id,is_active'
 })
 
 export function getActiveDecks() {
-  return db.decks
+  return info.decks
     .where('is_active').equals(1)
     .toArray()
 }
 
 export function getDecks() {
-  return db.decks.toArray()
+  return info.decks.toArray()
 }
 
 export function getDeck(id) {
-  return db.decks
+  return info.decks
     .where('id').equals(id)
     .first()
 }
 
-export default db
+export default info

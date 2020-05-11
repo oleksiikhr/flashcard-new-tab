@@ -2,27 +2,28 @@
 
 import { htmlToElement } from '../../../../scripts/html'
 import { getDeck } from '../../../../db/info'
-import Deck from '../../../../db/Deck'
+import info from '../../../../db/info'
+import DB from '../../../../db/DB'
 
 export function render(to, view, attributes) {
   const id = +attributes.id
 
   return getDeck(id)
     .then((deck) => {
-      return new Deck(deck)
+      return new DB(deck)
     })
-    .then((obj) => {
-      generate(obj)
+    .then((db) => {
+      generate(db)
     })
 }
 
-function generate(obj) {
+function generate(db) {
   const question = document.querySelector('[name="question"]')
   const answer = document.querySelector('[name="answer"]')
   const button = document.querySelector('button')
   const table = document.querySelector('#d-table-cards')
 
-  obj.paginate(1)
+  db.paginate(1)
     .then((cards) => {
       const template = htmlToElement(`
         <tr class="d-table-row">
@@ -60,7 +61,7 @@ function generate(obj) {
     })
 
   button.addEventListener('click', () => {
-    obj.db.cards.put({
+    db.dexie.cards.put({
       question: question.value,
       answer: answer.value,
       clicks: 0,
@@ -74,10 +75,14 @@ function generate(obj) {
       .then(() => {
         // This is to make it easier to track the right
         // amount than +1
-        return obj.db.cards.count()
+        return db.cardsCount()
       })
       .then((count) => {
-        obj.db.decks.update(obj.deck.id, { cards_count: count })
+        info.decks.update(db.deck.id, { cards_count: count })
+      })
+      .catch((e) => {
+        console.log(e)
+        // TODO Notification
       })
   })
 }
