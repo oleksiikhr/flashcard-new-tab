@@ -31,10 +31,6 @@ const generate = (card) => {
     document.querySelector('#h-answer').style.opacity = '1'
   })
 
-  // Left buttons
-  actionEdit.style.display = null
-  actionDelete.style.display = null
-
   // Statistics
   cardViews.innerText = card.views
   cardClicks.innerText = card.clicks
@@ -51,8 +47,6 @@ getActiveDecks()
 
     deckName.innerText = deckObj.name
     deckName.setAttribute('to.id', deckObj.id)
-
-    actionCreate.style.display = null
 
     deck = new Deck(deckObj).randomActiveCard()
 
