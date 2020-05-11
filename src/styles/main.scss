@@ -81,19 +81,27 @@
   margin: 120px 50px 80px;
   line-height: 1.8;
   width: 100%;
+  &.clicked {
+    #h-question {
+      cursor: auto;
+    }
+    #h-answer {
+      opacity: 1;
+      user-select: auto;
+    }
+  }
 }
 
 #h-question {
   margin-bottom: 60px;
   color: var(--theme-primary);
   cursor: pointer;
-  &.clicked {
-    cursor: auto;
-  }
 }
 
 #h-answer {
   color: var(--theme-color-secondary);
   opacity: 0;
-  transition: .2s;
+  user-select: none;
+  margin-bottom: 60px;
+  transition: opacity .2s;
 }

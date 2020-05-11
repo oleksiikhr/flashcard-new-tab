@@ -16,6 +16,7 @@ const question = document.querySelector('#h-question')
 const answer = document.querySelector('#h-answer')
 const actionCreate = document.querySelector('#h-action-create')
 const deckName = document.querySelector('#h-deck-name')
+const actionCard = document.querySelector('#h-action-card')
 
 let deck
 
@@ -26,9 +27,8 @@ const generate = (card) => {
   question.style.fontSize = `${calcFontSize(question.textContent)}px`
   answer.style.fontSize = `${Math.round(calcFontSize(answer.textContent) / 1.4)}px`
 
-  question.addEventListener('click', function () {
-    this.classList.add('clicked')
-    document.querySelector('#h-answer').style.opacity = '1'
+  question.addEventListener('click', () => {
+    actionCard.classList.add('clicked')
   })
 
   // Statistics

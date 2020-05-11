@@ -1,10 +1,6 @@
 'use strict'
 
-import { isObject } from './helpers'
-
 export default class Storage {
-  // TODO Hot Keys, Colors, etc
-
   /**
    * @param {string} key
    * @return {boolean}
@@ -83,7 +79,7 @@ export default class Storage {
     try {
       const data = JSON.parse(localStorage.getItem(key))
 
-      return isObject(data) ? data : {}
+      return data && typeof data === 'object' ? data : {}
     } catch (e) {
       return {}
     }
