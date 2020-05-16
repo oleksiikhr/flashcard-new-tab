@@ -1,0 +1,29 @@
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  label {
+    min-width: 120px;
+    margin-right: 20px;
+  }
+  input,
+  textarea {
+    width: 100%;
+  }
+}
+
+.form-submit {
+  text-align: right;
+}
+
+@media only screen and (max-width: 768px) {
+  .form-group {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    label {
+      min-width: auto;
+      margin-bottom: 10px;
+    }
+  }
+}

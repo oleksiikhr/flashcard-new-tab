@@ -3,7 +3,7 @@ import { routeRender } from '../router'
 import './index.scss'
 
 export function render() {
-  document.querySelector('#create-card')
+  document.querySelector('#create-deck')
     .addEventListener('click', () => {
       createDeck()
         .then(() => location.reload())

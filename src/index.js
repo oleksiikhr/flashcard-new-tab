@@ -105,7 +105,7 @@ getActiveDecks()
     switch (e) {
       case 'welcome':
       case 'no-cards':
-        return routeRender(e, 'root')
+        return routeRender(e, 'root', { db })
       default:
         return routeRender('error', 'root', e)
     }

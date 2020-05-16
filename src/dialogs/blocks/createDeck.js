@@ -12,10 +12,10 @@ export default () => {
     })
     .then((template) => {
       return new Promise((resolve) => {
-        template.addEventListener('submit', (evt) => {
+        template.addEventListener('submit', function (evt) {
           evt.preventDefault()
 
-          const name = evt.target.querySelector('input').value
+          const name = this.querySelector('#deck-name-input').value.trim()
 
           if (!name) {
             return

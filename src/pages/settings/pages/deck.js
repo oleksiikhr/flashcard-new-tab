@@ -1,9 +1,7 @@
 'use strict'
 
-import notification from '../../../scripts/notification'
 import { htmlToElement } from '../../../scripts/html'
 import { getDeck } from '../../../db/info'
-import info from '../../../db/info'
 import DB from '../../../db/DB'
 
 export function render(to, view, attributes) {
@@ -19,9 +17,6 @@ export function render(to, view, attributes) {
 }
 
 function generate(db) {
-  const question = document.querySelector('[name="question"]')
-  const answer = document.querySelector('[name="answer"]')
-  const button = document.querySelector('button')
   const table = document.querySelector('#d-table-cards')
 
   db.paginate(1)
@@ -60,27 +55,4 @@ function generate(db) {
       toElement.innerHTML = ''
       toElement.append(...elements)
     })
-
-  button.addEventListener('click', () => {
-    db.dexie.cards.put({
-      question: question.value,
-      answer: answer.value,
-      clicks: 0,
-      views: 0,
-      up: 0,
-      down: 0,
-      is_active: 1,
-      updated_at: new Date(),
-      created_at: new Date()
-    })
-      .then(() => {
-        // This is to make it easier to track the right
-        // amount than +1
-        return db.cardsCount()
-      })
-      .then((count) => {
-        info.decks.update(db.deck.id, { cards_count: count })
-      })
-      .catch(notification)
-  })
 }

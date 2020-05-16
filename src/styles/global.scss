@@ -19,6 +19,10 @@ a {
   color: inherit;
 }
 
+:root {
+  --btn-color: #495069;
+}
+
 button {
   display: inline-block;
   font-weight: 400;
@@ -35,18 +39,23 @@ button {
   cursor: pointer;
   font-family: var(--font-family);
   color: var(--theme-color);
-  background-color: #007bff; // TODO
+  background-color: var(--btn-color);
 }
 
-input {
-  width: 200px;
-  padding: 7px 13px 7px 10px;
-  background: rgba(20, 20, 23, 1);
+input, textarea {
+  min-width: 200px;
+  padding: 10px;
+  background: var(--btn-color);
   color: rgba(var(--text), 1);
   outline: none;
-  border-radius: 12px;
-  transition: all .25s ease;
+  border-radius: 10px;
   border: 0;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+  max-height: 400px;
 }
 
 [to] {
