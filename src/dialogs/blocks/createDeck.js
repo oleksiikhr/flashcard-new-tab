@@ -1,13 +1,14 @@
 'use strict'
 
 import notification from '../../scripts/notification'
+import { htmlToElement } from '../../scripts/html'
 import render from '../render'
 import db from '../../db/info'
 
 export default () => {
   return import('./createDeck.html')
     .then((html) => {
-      return render('Create Deck', html)
+      return render('Create Deck', htmlToElement(html))
     })
     .then((template) => {
       return new Promise((resolve) => {

@@ -1,6 +1,7 @@
 'use strict'
 
 import { registerRouteLink, routeClickHandle, routeRender } from '../router'
+import createDeck from '../../dialogs/blocks/createDeck'
 import { htmlToElement } from '../../scripts/html'
 import { getDecks } from '../../db/info'
 import './index.scss'
@@ -38,6 +39,9 @@ export function updateAsideDecks() {
 export function render(to, view, attributes) {
   updateAsideDecks()
   registerRouteLink()
+
+  document.querySelector('#action-deck-create')
+    .addEventListener('click', () => createDeck())
 
   if (attributes.page === 'deck' && attributes.id) {
     return routeRender('deck', 'settings', { id: +attributes.id })

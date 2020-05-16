@@ -19,10 +19,6 @@ a {
   color: inherit;
 }
 
-[to] {
-  cursor: pointer;
-}
-
 button {
   display: inline-block;
   font-weight: 400;
@@ -40,4 +36,19 @@ button {
   font-family: var(--font-family);
   color: var(--theme-color);
   background-color: #007bff; // TODO
+}
+
+input {
+  width: 200px;
+  padding: 7px 13px 7px 10px;
+  background: rgba(20, 20, 23, 1);
+  color: rgba(var(--text), 1);
+  outline: none;
+  border-radius: 12px;
+  transition: all .25s ease;
+  border: 0;
+}
+
+[to] {
+  cursor: pointer;
 }

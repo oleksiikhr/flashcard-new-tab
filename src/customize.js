@@ -1,6 +1,6 @@
 import Storage from './scripts/Storage'
 
-console.time('[Customize] Render')
+console.time('[Customize] Execute')
 
 const style = document.createElement('style')
 style.innerHTML = ``
@@ -8,4 +8,4 @@ style.innerHTML = ``
 
 document.head.appendChild(style)
 
-console.timeEnd('[Customize] Render')
+console.timeEnd('[Customize] Execute')

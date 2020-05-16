@@ -3,9 +3,13 @@
 import { htmlToElement } from '../scripts/html'
 
 function render(template) {
+  const app = document.querySelector('#app')
+
+  app.style.filter = 'blur(2px)'
   document.body.appendChild(template)
 
   const exit = () => {
+    app.style.filter = null
     document.removeEventListener('keydown', handleWindow)
     document.body.removeChild(template)
   }

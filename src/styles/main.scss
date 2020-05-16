@@ -37,6 +37,7 @@
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
+  border-radius: 10px;
   transition: background-color .2s;
   &:hover {
     background-color: rgba(0, 0, 0, .3);

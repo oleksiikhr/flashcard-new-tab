@@ -8,7 +8,7 @@ import { getActiveDecks } from './db/info'
 import { rnd } from './scripts/helpers'
 import DB from './db/DB'
 
-console.time('[Application] Render')
+console.time('[App] Render')
 
 // Common Variables
 let db, card
@@ -16,6 +16,9 @@ let db, card
 // Functions
 const updateHtml = () => {
   // Elements
+  const elActionCreate = document.querySelector('#h-action-create')
+  const elActionEdit = document.querySelector('#h-action-edit')
+  const elActionDelete = document.querySelector('#h-action-delete')
   const elActionRatingUp = document.querySelector('#h-action-up')
   const elActionRatingDown = document.querySelector('#h-action-down')
   const elDeckName = document.querySelector('#h-deck-name')
@@ -34,6 +37,10 @@ const updateHtml = () => {
   elCardRating.innerText = cardRating(card.up, card.down)
 
   // Top-Left
+  elActionCreate.addEventListener('click', () => {/* TODO cardCreate() */})
+  elActionEdit.addEventListener('click', () => {/* TODO cardEdit() */})
+  elActionDelete.addEventListener('click', () => {/* TODO cardDelete() */})
+
   elActionRatingUp.addEventListener('click', () => {
     elActionRatingUp.remove()
     elActionRatingDown.remove()
@@ -105,5 +112,5 @@ getActiveDecks()
   })
   .finally(() => {
     registerRouteLink()
-    console.timeEnd('[Application] Render')
+    console.timeEnd('[App] Render')
   })

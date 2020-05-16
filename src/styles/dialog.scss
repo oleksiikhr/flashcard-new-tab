@@ -17,12 +17,12 @@
 
 .dialog-wrap {
   position: relative;
-  background: rgba(var(--background), 1);
+  background: var(--theme-layout);
   color: rgba(var(--text), 1);
   border-radius: var(--radius);
   box-shadow: 0 5px 30px 0 rgba(0, 0, 0, var(--shadow-opacity));
   max-width: 800px;
-  min-width: 400px;
+  min-width: 600px;
 }
 
 .dialog-header {
@@ -45,11 +45,16 @@
   background: inherit;
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, var(--shadow-opacity));
   padding: 9px;
-  opacity: .7;
-  transition: opacity, transform .1s;
+  transition: transform .1s;
   cursor: pointer;
   &:hover {
-    opacity: 1;
     transform: scale(1.1);
+    svg {
+      opacity: 1;
+    }
+  }
+  svg {
+    opacity: .7;
+    transition: opacity .1s;
   }
 }

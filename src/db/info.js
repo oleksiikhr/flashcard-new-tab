@@ -11,6 +11,7 @@ export function getActiveDecks() {
 
   return info.decks
     .where('is_active').equals(1)
+    .filter((row) => !!row.cards_count)
     .toArray()
     .finally(() => {
       console.timeEnd('[DB.info] getActiveDecks')
