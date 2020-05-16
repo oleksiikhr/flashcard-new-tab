@@ -1,5 +1,12 @@
 import './index.scss'
 
-export function render(to, view, attributes) {
-  document.querySelector('#s-message').innerText = attributes.message || 'Something went wrong'
+export function render(to, view, msg) {
+  const el = document.querySelector('#s-message')
+
+  if (msg instanceof Error) {
+    console.error(msg)
+    msg = msg.message
+  }
+
+  el.innerText = msg || 'Something went wrong'
 }

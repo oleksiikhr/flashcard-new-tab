@@ -9,7 +9,7 @@ export function updateAsideDecks() {
   return getDecks()
     .then((decks) => {
       const template = htmlToElement(`
-        <div class="deck" to="deck-view" to.view="settings">
+        <div class="deck" to="deck" to.view="settings">
           <div class="deck-name"></div>
         </div>
       `)
@@ -39,11 +39,7 @@ export function render(to, view, attributes) {
   updateAsideDecks()
   registerRouteLink()
 
-  if (attributes.page === 'deck-create') {
-    return routeRender('deck-create', 'settings')
-  }
-
-  if (attributes.page === 'deck-view' && attributes.id) {
-    return routeRender('deck-view', 'settings', { id: +attributes.id })
+  if (attributes.page === 'deck' && attributes.id) {
+    return routeRender('deck', 'settings', { id: +attributes.id })
   }
 }

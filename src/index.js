@@ -1,13 +1,14 @@
 'use strict'
 
 import { registerRouteLink, routeRender } from './pages/router'
+import notification from './scripts/notification'
 import cardRating from './scripts/cardRating'
 import calcFS from './scripts/calcFontSize'
 import { getActiveDecks } from './db/info'
 import { rnd } from './scripts/helpers'
 import DB from './db/DB'
 
-// TODO replace all catch to notification
+console.time('[Application] Render')
 
 // Common Variables
 let db, card
@@ -15,9 +16,6 @@ let db, card
 // Functions
 const updateHtml = () => {
   // Elements
-  const elActionCreate = document.querySelector('#h-action-create')
-  const elActionEdit = document.querySelector('#h-action-edit')
-  const elActionDelete = document.querySelector('#h-action-delete')
   const elActionRatingUp = document.querySelector('#h-action-up')
   const elActionRatingDown = document.querySelector('#h-action-down')
   const elDeckName = document.querySelector('#h-deck-name')
@@ -42,7 +40,7 @@ const updateHtml = () => {
 
     db.incrementRatingUp(card.id, card.up)
       .then(() => elCardRating.innerText = cardRating(card.up + 1, card.down))
-      .catch((e) => console.error(e))
+      .catch((e) => notification(e))
   })
 
   elActionRatingDown.addEventListener('click', () => {
@@ -51,10 +49,8 @@ const updateHtml = () => {
 
     db.incrementRatingDown(card.id, card.down)
       .then(() => elCardRating.innerText = cardRating(card.up, card.down + 1))
-      .catch((e) => console.error(e))
+      .catch((e) => notification(e))
   })
-
-  // TODO Create / Edit / Delete for Card
 
   // Center
   elQuestion.innerText = card.question
@@ -67,13 +63,13 @@ const updateHtml = () => {
 
     db.incrementClicks(card.id, card.clicks)
       .then((count) => elCardClicks.innerText = count)
-      .catch((e) => console.error(e))
+      .catch((e) => notification(e))
   }, { once: true })
 
   // Statistics
   db.incrementViews(card.id, card.views)
     .then((count) => elCardViews.innerText = count)
-    .catch((e) => console.error(e))
+    .catch((e) => notification(e))
 }
 
 // Launch the page
@@ -104,10 +100,10 @@ getActiveDecks()
       case 'no-cards':
         return routeRender(e, 'root')
       default:
-        console.error(e)
-        return routeRender('error', 'root', { message: e.message })
+        return routeRender('error', 'root', e)
     }
   })
   .finally(() => {
     registerRouteLink()
+    console.timeEnd('[Application] Render')
   })

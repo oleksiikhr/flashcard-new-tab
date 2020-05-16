@@ -1,9 +1,10 @@
 'use strict'
 
-import { htmlToElement } from '../../../../scripts/html'
-import { getDeck } from '../../../../db/info'
-import info from '../../../../db/info'
-import DB from '../../../../db/DB'
+import notification from '../../../scripts/notification'
+import { htmlToElement } from '../../../scripts/html'
+import { getDeck } from '../../../db/info'
+import info from '../../../db/info'
+import DB from '../../../db/DB'
 
 export function render(to, view, attributes) {
   const id = +attributes.id
@@ -80,9 +81,6 @@ function generate(db) {
       .then((count) => {
         info.decks.update(db.deck.id, { cards_count: count })
       })
-      .catch((e) => {
-        console.log(e)
-        // TODO Notification
-      })
+      .catch(notification)
   })
 }
