@@ -30,14 +30,16 @@
 }
 
 #h-deck-name {
-  padding: 5px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
   margin-right: 25px;
-  background-color: rgba(0, 0, 0, .1);
+  background-color: rgba(0, 0, 0, .2);
   width: 200px;
-  text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-radius: 10px;
+  height: 28px;
   transition: background-color .2s;
   &:hover {
     background-color: rgba(0, 0, 0, .3);
@@ -70,8 +72,17 @@
 .h-statistics {
   display: flex;
   align-items: center;
+  justify-content: center;
   > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 65px;
     margin-left: 10px;
+    background: rgba(0, 0, 0, .1);
+    padding: 0 4px;
+    height: 28px;
+    width: 100%;
   }
 }
 
