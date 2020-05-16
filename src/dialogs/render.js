@@ -37,7 +37,7 @@ function render(template) {
     }
   }
 
-  return template
+  return { template, exit }
 }
 
 export default (header, content) => {

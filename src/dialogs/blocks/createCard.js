@@ -10,13 +10,16 @@ export default (db) => {
     .then((html) => {
       return render('Create Card', htmlToElement(html))
     })
-    .then((template) => {
+    .then(({ template, exit }) => {
       return new Promise((resolve) => {
+        const questionElement = document.querySelector('#card-question-input')
+        const answerElement = document.querySelector('#card-answer-input')
+
         template.addEventListener('submit', function (evt) {
           evt.preventDefault()
 
-          const question = document.querySelector('#card-question-input').value.trim()
-          const answer = document.querySelector('#card-answer-input').value.trim()
+          const question = questionElement.value.trim()
+          const answer = answerElement.value.trim()
 
           if (!question || !answer) {
             return
@@ -35,7 +38,10 @@ export default (db) => {
           })
             .then(() => db.cardsCount())
             .then((count) => info.decks.update(db.deck.id, { cards_count: count }))
-            .then(() => resolve())
+            .then(() => {
+              notification('Card created!')
+              resolve({ exit })
+            })
             .catch(notification)
         })
       })

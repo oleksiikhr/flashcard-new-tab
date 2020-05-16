@@ -15,5 +15,9 @@ export default (up, down) => {
     return '0.0'
   }
 
+  if (down === up) {
+    return '5.0'
+  }
+
   return (10 - (down * 10 / up)).toFixed(1)
 }

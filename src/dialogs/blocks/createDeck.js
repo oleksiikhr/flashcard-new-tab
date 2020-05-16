@@ -10,12 +10,14 @@ export default () => {
     .then((html) => {
       return render('Create Deck', htmlToElement(html))
     })
-    .then((template) => {
+    .then(({ template, exit }) => {
       return new Promise((resolve) => {
+        const nameElement = document.querySelector('#deck-name-input')
+
         template.addEventListener('submit', function (evt) {
           evt.preventDefault()
 
-          const name = this.querySelector('#deck-name-input').value.trim()
+          const name = nameElement.value.trim()
 
           if (!name) {
             return
@@ -28,7 +30,10 @@ export default () => {
             updated_at: new Date(),
             created_at: new Date()
           })
-            .then(resolve)
+            .then(() => {
+              notification('Deck created!')
+              resolve({ exit })
+            })
             .catch(notification)
         })
       })

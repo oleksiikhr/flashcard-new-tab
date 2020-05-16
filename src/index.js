@@ -7,6 +7,7 @@ import calcFS from './scripts/calcFontSize'
 import { getActiveDecks } from './db/info'
 import { rnd } from './scripts/helpers'
 import DB from './db/DB'
+import createCard from './dialogs/blocks/createCard'
 
 console.time('[App] Render')
 
@@ -37,7 +38,10 @@ const updateHtml = () => {
   elCardRating.innerText = cardRating(card.up, card.down)
 
   // Top-Left
-  elActionCreate.addEventListener('click', () => {/* TODO cardCreate() */})
+  elActionCreate.addEventListener('click', () => {
+    createCard(db).then(({ exit }) => exit())
+  })
+
   elActionEdit.addEventListener('click', () => {/* TODO cardEdit() */})
   elActionDelete.addEventListener('click', () => {/* TODO cardDelete() */})
 
