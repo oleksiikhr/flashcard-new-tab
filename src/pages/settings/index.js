@@ -66,7 +66,14 @@ export function render(to, view, attributes) {
     .addEventListener('click', () => location.reload())
 
   document.querySelector('#action-deck-create')
-    .addEventListener('click', () => createDeck())
+    .addEventListener('click', () => {
+      createDeck()
+        .then(({ exit }) => {
+          updateAsideDecks()
+          exit()
+        })
+        .catch(notification)
+    })
 
   if (attributes.page === 'deck' && attributes.id) {
     return routeRender('deck', 'settings', { id: +attributes.id })
