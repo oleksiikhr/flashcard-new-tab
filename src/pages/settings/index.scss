@@ -96,3 +96,15 @@
 #action-deck-create {
   cursor: pointer;
 }
+
+@media only screen and (max-width: 1024px) {
+  .settings-aside {
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .settings-page {
+    display: flex;
+    flex-direction: column;
+  }
+}
