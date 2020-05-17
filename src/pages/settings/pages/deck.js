@@ -1,59 +1,106 @@
 'use strict'
 
+import { deleteDeck as deleteDeckConfirm } from '../../../dialogs/confirm'
+import createCard from '../../../dialogs/blocks/createCard'
+import notification from '../../../scripts/notification'
 import { htmlToElement } from '../../../scripts/html'
 import cardRating from '../../../scripts/cardRating'
+import { deleteDeck } from '../../../db/info'
 import { getDeck } from '../../../db/info'
 import DB from '../../../db/DB'
+import './deck.scss'
 
 export function render(to, view, attributes) {
   const id = +attributes.id
 
   return getDeck(id)
     .then((deck) => {
-      return new DB(deck)
-    })
-    .then((db) => {
+      const db = new DB(deck)
+
       generate(db)
     })
 }
 
 function generate(db) {
-  const table = document.querySelector('#d-table-cards')
+  const tbodyElement = document.querySelector('#d-table-cards tbody')
 
-  db.paginate(1)
-    .then((cards) => {
-      const row = htmlToElement(`
-        <tr class="d-table-row">
-          <td class="d-row-question"></td>
-          <td class="d-row-answer"></td>
-          <td class="d-row-clicks"></td>
-          <td class="d-row-views"></td>
-          <td class="d-row-rating"></td>
-          <td class="d-row-active"></td>
-          <td class="d-row-updated_at"></td>
-          <td class="d-row-created_at"></td>
-        </tr>
-      `)
+  const generateRows = (page) => {
+    db.paginate(page)
+      .then((cards) => {
+        const row = htmlToElement(`
+          <tr class="d-table-row">
+            <td class="d-row-question"></td>
+            <td class="d-row-answer"></td>
+            <td class="d-row-clicks"></td>
+            <td class="d-row-views"></td>
+            <td class="d-row-rating"></td>
+            <td class="d-row-active"></td>
+            <td class="d-row-updated_at"></td>
+            <td class="d-row-created_at"></td>
+          </tr>
+        `)
 
-      const elements = []
+        const elements = []
 
-      cards.forEach((card) => {
-        const el = row.cloneNode(true)
+        cards.forEach((card) => {
+          const el = row.cloneNode(true)
 
-        el.querySelector('.d-row-question').innerText = card.question
-        el.querySelector('.d-row-answer').innerText = card.answer
-        el.querySelector('.d-row-clicks').innerText = card.clicks
-        el.querySelector('.d-row-views').innerText = card.views
-        el.querySelector('.d-row-rating').innerText = cardRating(card.up, card.down)
-        el.querySelector('.d-row-active').innerText = card.is_active ? '+' : '-'
-        el.querySelector('.d-row-updated_at').innerText = card.updated_at.toLocaleString()
-        el.querySelector('.d-row-created_at').innerText = card.created_at.toLocaleString()
+          el.querySelector('.d-row-question').innerText = card.question
+          el.querySelector('.d-row-answer').innerText = card.answer
+          el.querySelector('.d-row-clicks').innerText = card.clicks
+          el.querySelector('.d-row-views').innerText = card.views
+          el.querySelector('.d-row-rating').innerText = cardRating(card.up, card.down)
+          el.querySelector('.d-row-active').innerText = card.is_active ? 'Yes' : 'No'
+          el.querySelector('.d-row-updated_at').innerText = toDate(card.updated_at)
+          el.querySelector('.d-row-created_at').innerText = toDate(card.created_at)
 
-        elements.push(el)
+          elements.push(el)
+        })
+
+        tbodyElement.innerHTML = ''
+        tbodyElement.append(...elements)
       })
+  }
 
-      const toElement = table.querySelector('tbody')
-      toElement.innerHTML = ''
-      toElement.append(...elements)
+  document.querySelector('#deck-title').innerText = db.deck.name
+
+  document.querySelector('#deck-action-delete')
+    .addEventListener('click', () => {
+      if (deleteDeckConfirm()) {
+        deleteDeck(db.deck)
+          .then(() => {
+            notification(`Deck "${db.deck.name}" deleted`)
+            location.reload()
+          })
+          .catch(notification)
+      }
     })
+
+  document.querySelector('#card-action-create')
+    .addEventListener('click', () => {
+      createCard(db).then(({ exit }) => {
+        generateRows(1)
+        exit()
+      })
+    })
+
+  generateRows()
+}
+
+const startOfDay = new Date()
+startOfDay.setHours(0, 0, 0)
+
+const endOfDay = new Date(startOfDay)
+endOfDay.setDate(endOfDay.getDate() + 1)
+
+/**
+ * @param {Date} date
+ * @return {string}
+ */
+function toDate(date) {
+  if (date > startOfDay && date < endOfDay) {
+    return `${date.toLocaleTimeString()}`
+  }
+
+  return date.toDateString()
 }

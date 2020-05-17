@@ -13,8 +13,6 @@ export function routeClickHandle() {
 }
 
 export function routeRender(to, view, attributes) {
-  console.time(`[Router: ${to} | ${view}] Render`)
-
   const toElement = document.querySelector(`[view="${view}"]`)
   if (!toElement) {
     throw new Error(`Route View [${view}] not found`)
@@ -33,9 +31,6 @@ export function routeRender(to, view, attributes) {
     })
     .catch((err) => {
       return routeRender('error', 'root', err)
-    })
-    .finally(() => {
-      console.timeEnd(`[Router: ${to} | ${view}] Render`)
     })
 }
 

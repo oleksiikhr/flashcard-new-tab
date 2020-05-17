@@ -1,0 +1,20 @@
+.deck-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.deck-header__left {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+#card-action-create {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+#deck-action-delete {
+  cursor: pointer;
+}

@@ -2,7 +2,9 @@
 
 import { registerRouteLink, routeClickHandle, routeRender } from '../router'
 import createDeck from '../../dialogs/blocks/createDeck'
+import notification from '../../scripts/notification'
 import { htmlToElement } from '../../scripts/html'
+import { toggleDeckStatus } from '../../db/info'
 import { getDecks } from '../../db/info'
 import './index.scss'
 
@@ -10,8 +12,9 @@ export function updateAsideDecks() {
   return getDecks()
     .then((decks) => {
       const template = htmlToElement(`
-        <div class="deck" to="deck" to.view="settings">
-          <div class="deck-name"></div>
+        <div class="deck">
+          <div class="deck-name" to="deck" to.view="settings"></div>
+          <div class="deck-status"></div>
         </div>
       `)
 
@@ -19,11 +22,30 @@ export function updateAsideDecks() {
 
       decks.forEach((deck) => {
         const el = template.cloneNode(true)
+        const elName = el.querySelector('.deck-name')
+        const elStatus = el.querySelector('.deck-status')
 
-        el.setAttribute('title', deck.name)
-        el.setAttribute('to.id', deck.id)
-        el.querySelector('.deck-name').innerText = deck.name
-        el.addEventListener('click', routeClickHandle)
+        elName.setAttribute('title', deck.name)
+        elName.setAttribute('to.id', deck.id)
+        elName.innerText = deck.name
+
+        const updateStatus = () => {
+          elStatus.innerText = deck.is_active ? 'A' : 'D'
+          elStatus.title = deck.is_active ? 'Active' : 'Disable'
+          elStatus.classList.add(deck.is_active ? 'active' : 'disable')
+        }
+
+        updateStatus()
+
+        elName.addEventListener('click', routeClickHandle)
+        elStatus.addEventListener('click', () => {
+          toggleDeckStatus(deck)
+            .then(() => {
+              notification('Status Changed!')
+              updateStatus()
+            })
+            .catch(notification)
+        })
 
         elements.push(el)
       })

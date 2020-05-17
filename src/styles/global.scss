@@ -59,6 +59,31 @@ textarea {
   max-height: 500px;
 }
 
+table {
+  width: 100%;
+  border-spacing: 0;
+  background: rgba(0, 0, 0, .1);
+  padding: 10px;
+  border-radius: 10px;
+  th, td {
+    padding: 0 16px;
+    height: 48px;
+  }
+  th {
+    font-size: .75rem;
+    text-align: left;
+    user-select: none;
+    color: var(--theme-color-secondary);
+  }
+  tbody {
+    tr {
+      &:hover {
+        background: rgba(255, 255, 255, .1);
+      }
+    }
+  }
+}
+
 [to] {
   cursor: pointer;
 }

@@ -9,6 +9,7 @@
     background: rgba(0, 0, 0, .1);
     border: 1px solid rgba(0, 0, 0, .1);
     border-radius: 10px;
+    overflow-x: auto;
   }
 }
 
@@ -62,16 +63,33 @@
 }
 
 .deck {
+  display: flex;
+  align-items: center;
   margin: 5px 0;
-  padding: 5px;
   white-space: nowrap;
-  transition: background .1s;
-  &:hover {
-    background: rgba(0, 0, 0, .2);
-  }
   > div {
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+}
+
+.deck-name {
+  flex: 1;
+  padding: 5px;
+  &:hover {
+    background: rgba(0, 0, 0, .2);
+  }
+}
+
+.deck-status {
+  font-size: .7rem;
+  color: var(--theme-color-secondary);
+  padding: 5px;
+  margin-left: 5px;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.3);
+    color: var(--theme-color);
   }
 }
 

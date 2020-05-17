@@ -7,33 +7,22 @@ info.version(1).stores({
 })
 
 export function getActiveDecks() {
-  console.time('[DB.info] getActiveDecks')
-
   return info.decks
     .where('is_active').equals(1)
     .toArray()
-    .finally(() => console.timeEnd('[DB.info] getActiveDecks'))
 }
 
 export function getDecks() {
-  console.time('[DB.info] getDecks')
-
   return info.decks.toArray()
-    .finally(() => console.timeEnd('[DB.info] getDecks'))
 }
 
 export function getDeck(id) {
-  console.time(`[DB.info] getDeck ${id}`)
-
   return info.decks
     .where('id').equals(id)
     .first()
-    .finally(() => console.timeEnd(`[DB.info] getDeck ${id}`))
 }
 
 export function createDeck(obj) {
-  console.time('[DB.info] createDeck')
-
   return info.decks.put({
     name: '',
     is_active: 1,
@@ -42,7 +31,18 @@ export function createDeck(obj) {
     created_at: new Date(),
     ...obj
   })
-    .finally(() => console.timeEnd('[DB.info] createDeck'))
+}
+
+export function deleteDeck(deck) {
+  return Dexie.delete(`deck-${deck.name}`)
+    .then(() => info.decks.delete(deck.id))
+}
+
+export function toggleDeckStatus(deck) {
+  const newStatus = deck.is_active ? 0 : 1
+
+  return info.decks.update(deck.id, { is_active: newStatus })
+    .then(() => deck.is_active = newStatus)
 }
 
 export default info
