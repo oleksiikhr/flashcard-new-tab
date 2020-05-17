@@ -13,6 +13,12 @@
   padding: 80px 0;
   z-index: 10;
   background: rgba(0, 0, 0, var(--background-opacity));
+  &.visible {
+    .dialog-wrap {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 }
 
 .dialog-wrap {
@@ -21,6 +27,9 @@
   color: rgba(var(--text), 1);
   border-radius: var(--radius);
   box-shadow: 0 5px 30px 0 rgba(0, 0, 0, var(--shadow-opacity));
+  transform: scale(.8);
+  opacity: 0;
+  transition: opacity, transform .15s;
   width: 700px;
 }
 

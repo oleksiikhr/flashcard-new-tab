@@ -8,6 +8,8 @@ function render(template) {
   app.style.filter = 'blur(2px)'
   document.body.appendChild(template)
 
+  setTimeout(() => template.classList.add('visible'), 50)
+
   const exit = () => {
     app.style.filter = null
     document.removeEventListener('keydown', handleWindow)
