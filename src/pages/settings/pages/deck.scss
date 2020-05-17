@@ -2,12 +2,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  overflow-x: hidden;
 }
 
 .deck-header__left {
   display: flex;
   align-items: center;
   margin-right: 20px;
+  overflow-x: hidden;
+}
+
+.d-table-wrap {
+  overflow: auto;
+}
+
+#deck-title {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 #card-action-create {
