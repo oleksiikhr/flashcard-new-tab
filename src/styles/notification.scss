@@ -3,6 +3,7 @@
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
+  user-select: none;
   pointer-events: none;
   z-index: 20;
   &:hover {

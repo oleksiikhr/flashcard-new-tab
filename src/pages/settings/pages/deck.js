@@ -23,10 +23,16 @@ export function render(to, view, attributes) {
 
 function generate(db) {
   const tbodyElement = document.querySelector('#d-table-cards tbody')
+  const pageElement = document.querySelector('.pagination__page')
+  let currentPage = 1
 
   const generateRows = (page) => {
-    db.paginate(page)
+    return db.paginate(page, 2)
       .then((cards) => {
+        if (!cards.length) {
+          return
+        }
+
         const row = htmlToElement(`
           <tr class="d-table-row">
             <td class="d-row-question"></td>
@@ -59,6 +65,9 @@ function generate(db) {
 
         tbodyElement.innerHTML = ''
         tbodyElement.append(...elements)
+
+        currentPage = page
+        pageElement.innerText = page
       })
   }
 
@@ -84,7 +93,19 @@ function generate(db) {
       })
     })
 
-  generateRows()
+  document.querySelector('.pagination__right')
+    .addEventListener('click', () => {
+      generateRows(currentPage + 1)
+    })
+
+  document.querySelector('.pagination__left')
+    .addEventListener('click', () => {
+      if (currentPage > 1) {
+        generateRows(currentPage - 1)
+      }
+    })
+
+  generateRows(1)
 }
 
 const startOfDay = new Date()

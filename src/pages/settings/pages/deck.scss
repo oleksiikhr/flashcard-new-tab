@@ -18,3 +18,10 @@
 #deck-action-delete {
   cursor: pointer;
 }
+
+#d-table-cards {
+  user-select: none;
+  tbody tr {
+    cursor: pointer;
+  }
+}
