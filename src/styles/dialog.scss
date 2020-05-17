@@ -21,8 +21,7 @@
   color: rgba(var(--text), 1);
   border-radius: var(--radius);
   box-shadow: 0 5px 30px 0 rgba(0, 0, 0, var(--shadow-opacity));
-  max-width: 800px;
-  min-width: 600px;
+  width: 700px;
 }
 
 .dialog-header {
@@ -57,5 +56,19 @@
   svg {
     opacity: .7;
     transition: opacity .1s;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .dialog-wrap {
+    width: 100%;
+    margin: 0 20px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .dialog {
+    padding-top: 40px;
+    padding-bottom: 40px;
   }
 }

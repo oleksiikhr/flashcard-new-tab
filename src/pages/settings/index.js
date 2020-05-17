@@ -40,6 +40,9 @@ export function render(to, view, attributes) {
   updateAsideDecks()
   registerRouteLink()
 
+  document.querySelector('#actionGoTop')
+    .addEventListener('click', () => location.reload())
+
   document.querySelector('#action-deck-create')
     .addEventListener('click', () => createDeck())
 
