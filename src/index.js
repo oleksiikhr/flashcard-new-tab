@@ -62,8 +62,13 @@ const updateHtml = () => {
   })
 
   elActionEdit.addEventListener('click', () => {
-    editCard(db, card).then(({ exit }) => {
-      updateCenter()
+    editCard(db, card).then(({ type, exit }) => {
+      if (type === 'delete') {
+        location.reload()
+      } else {
+        updateCenter()
+      }
+
       exit()
     })
   })

@@ -3,6 +3,7 @@
 import { deleteDeck as deleteDeckConfirm } from '../../../dialogs/confirm'
 import createCard from '../../../dialogs/blocks/createCard'
 import notification from '../../../scripts/notification'
+import editCard from '../../../dialogs/blocks/editCard'
 import { htmlToElement } from '../../../scripts/html'
 import cardRating from '../../../scripts/cardRating'
 import { deleteDeck } from '../../../db/info'
@@ -27,7 +28,7 @@ function generate(db) {
   let currentPage = 1
 
   const generateRows = (page) => {
-    return db.paginate(page, 2)
+    return db.paginate(page)
       .then((cards) => {
         if (!cards.length) {
           return
@@ -51,14 +52,30 @@ function generate(db) {
         cards.forEach((card) => {
           const el = row.cloneNode(true)
 
-          el.querySelector('.d-row-question').innerText = card.question
-          el.querySelector('.d-row-answer').innerText = card.answer
-          el.querySelector('.d-row-clicks').innerText = card.clicks
-          el.querySelector('.d-row-views').innerText = card.views
-          el.querySelector('.d-row-rating').innerText = cardRating(card.up, card.down)
-          el.querySelector('.d-row-active').innerText = card.is_active ? 'Yes' : 'No'
-          el.querySelector('.d-row-updated_at').innerText = toDate(card.updated_at)
-          el.querySelector('.d-row-created_at').innerText = toDate(card.created_at)
+          const updateCard = () => {
+            el.querySelector('.d-row-question').innerText = card.question
+            el.querySelector('.d-row-answer').innerText = card.answer
+            el.querySelector('.d-row-clicks').innerText = card.clicks
+            el.querySelector('.d-row-views').innerText = card.views
+            el.querySelector('.d-row-rating').innerText = cardRating(card.up, card.down)
+            el.querySelector('.d-row-active').innerText = card.is_active ? 'Yes' : 'No'
+            el.querySelector('.d-row-updated_at').innerText = toDate(card.updated_at)
+            el.querySelector('.d-row-created_at').innerText = toDate(card.created_at)
+          }
+
+          updateCard()
+
+          el.addEventListener('click', () => {
+            editCard(db, card).then(({ type, exit }) => {
+              if (type === 'delete') {
+                el.remove()
+              } else {
+                updateCard()
+              }
+
+              exit()
+            })
+          })
 
           elements.push(el)
         })

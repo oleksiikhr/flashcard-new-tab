@@ -21,7 +21,7 @@ export default (db, card) => {
             db.deleteCard(card.id)
               .then(() => {
                 notification(`Card #${card.id} deleted`)
-                location.reload()
+                resolve({ type: 'delete', card, exit })
               })
               .catch(notification)
           }
@@ -43,7 +43,7 @@ export default (db, card) => {
           db.updateCard(card, { question, answer })
             .then(() => {
               notification('Card updated!')
-              resolve({ exit })
+              resolve({ type: 'update', card, exit })
             })
             .catch(notification)
         })
