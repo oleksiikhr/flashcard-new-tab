@@ -51,6 +51,10 @@ input, textarea {
   border-radius: 10px;
   font-size: 16px;
   border: 0;
+  &::placeholder {
+    color: var(--theme-color-secondary);
+    opacity: 1;
+  }
 }
 
 textarea {

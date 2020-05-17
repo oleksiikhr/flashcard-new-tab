@@ -16,6 +16,12 @@ export default class DB {
     return this.dexie.cards.count()
   }
 
+  activeCardsCount() {
+    return this.dexie.cards
+      .where('is_active').equals(1)
+      .count()
+  }
+
   createCard(obj) {
     return this.dexie.cards.put({
       question: '',
