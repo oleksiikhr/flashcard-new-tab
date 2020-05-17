@@ -17,13 +17,6 @@ export default (db, card) => {
         const actionDeleteElement = document.querySelector('#card-delete')
         const actionStatusElement = document.querySelector('#card-status')
 
-        let isActive = card.is_active
-
-        actionStatusElement.addEventListener('click', function () {
-          isActive = !isActive
-          this.innerText = isActive ? 'Active' : 'Disable'
-        })
-
         actionDeleteElement.addEventListener('click', () => {
           if (deleteCardConfirm()) {
             db.deleteCard(card.id)
@@ -37,7 +30,6 @@ export default (db, card) => {
 
         questionElement.value = card.question
         answerElement.value = card.answer
-        actionStatusElement.innerText = isActive ? 'Active' : 'Disable'
 
         template.addEventListener('submit', function (evt) {
           evt.preventDefault()
@@ -49,7 +41,7 @@ export default (db, card) => {
             return
           }
 
-          db.updateCard(card, { question, answer, is_active: isActive ? 1 : 0 })
+          db.updateCard(card, { question, answer })
             .then(() => {
               notification('Card updated!')
               resolve({ type: 'update', card, exit })

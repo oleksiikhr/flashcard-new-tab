@@ -8,18 +8,12 @@ export default class DB {
     this.dexie = new Dexie(`deck-${this.deck.name}`)
 
     this.dexie.version(1).stores({
-      'cards': '++id,is_active'
+      'cards': '++id'
     })
   }
 
   cardsCount() {
     return this.dexie.cards.count()
-  }
-
-  activeCardsCount() {
-    return this.dexie.cards
-      .where('is_active').equals(1)
-      .count()
   }
 
   createCard(obj) {
@@ -30,7 +24,6 @@ export default class DB {
       views: 0,
       up: 0,
       down: 0,
-      is_active: 1,
       updated_at: new Date(),
       created_at: new Date(),
       ...obj
@@ -74,7 +67,6 @@ export default class DB {
     }
 
     return this.dexie.cards
-      .where('is_active').equals(1)
       .offset(rnd(0, this.deck.cards_count - 1))
       .limit(1)
       .first()

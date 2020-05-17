@@ -41,7 +41,6 @@ function generate(db) {
             <td class="d-row-clicks"></td>
             <td class="d-row-views"></td>
             <td class="d-row-rating"></td>
-            <td class="d-row-active"></td>
             <td class="d-row-updated_at"></td>
             <td class="d-row-created_at"></td>
           </tr>
@@ -58,7 +57,6 @@ function generate(db) {
             el.querySelector('.d-row-clicks').innerText = card.clicks
             el.querySelector('.d-row-views').innerText = card.views
             el.querySelector('.d-row-rating').innerText = cardRating(card.up, card.down)
-            el.querySelector('.d-row-active').innerText = card.is_active ? 'Yes' : 'No'
             el.querySelector('.d-row-updated_at').innerText = toDate(card.updated_at)
             el.querySelector('.d-row-created_at').innerText = toDate(card.created_at)
           }
