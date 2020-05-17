@@ -1,6 +1,7 @@
 'use strict'
 
 import { htmlToElement } from '../../../scripts/html'
+import cardRating from '../../../scripts/cardRating'
 import { getDeck } from '../../../db/info'
 import DB from '../../../db/DB'
 
@@ -21,7 +22,7 @@ function generate(db) {
 
   db.paginate(1)
     .then((cards) => {
-      const template = htmlToElement(`
+      const row = htmlToElement(`
         <tr class="d-table-row">
           <td class="d-row-question"></td>
           <td class="d-row-answer"></td>
@@ -37,16 +38,16 @@ function generate(db) {
       const elements = []
 
       cards.forEach((card) => {
-        const el = template.cloneNode(true)
+        const el = row.cloneNode(true)
 
         el.querySelector('.d-row-question').innerText = card.question
         el.querySelector('.d-row-answer').innerText = card.answer
         el.querySelector('.d-row-clicks').innerText = card.clicks
         el.querySelector('.d-row-views').innerText = card.views
-        el.querySelector('.d-row-rating').innerText = card.up / card.down
-        el.querySelector('.d-row-active').innerText = card.is_active
-        el.querySelector('.d-row-updated_at').innerText = card.updated_at
-        el.querySelector('.d-row-created_at').innerText = card.created_at
+        el.querySelector('.d-row-rating').innerText = cardRating(card.up, card.down)
+        el.querySelector('.d-row-active').innerText = card.is_active ? '+' : '-'
+        el.querySelector('.d-row-updated_at').innerText = card.updated_at.toLocaleString()
+        el.querySelector('.d-row-created_at').innerText = card.created_at.toLocaleString()
 
         elements.push(el)
       })

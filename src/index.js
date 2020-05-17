@@ -1,13 +1,14 @@
 'use strict'
 
 import { registerRouteLink, routeRender } from './pages/router'
+import createCard from './dialogs/blocks/createCard'
 import notification from './scripts/notification'
+import editCard from './dialogs/blocks/editCard'
 import cardRating from './scripts/cardRating'
 import calcFS from './scripts/calcFontSize'
 import { getActiveDecks } from './db/info'
 import { rnd } from './scripts/helpers'
 import DB from './db/DB'
-import createCard from './dialogs/blocks/createCard'
 
 console.time('[App] Render')
 
@@ -19,7 +20,6 @@ const updateHtml = () => {
   // Elements
   const elActionCreate = document.querySelector('#h-action-create')
   const elActionEdit = document.querySelector('#h-action-edit')
-  const elActionDelete = document.querySelector('#h-action-delete')
   const elActionRatingUp = document.querySelector('#h-action-up')
   const elActionRatingDown = document.querySelector('#h-action-down')
   const elDeckName = document.querySelector('#h-deck-name')
@@ -30,6 +30,13 @@ const updateHtml = () => {
   const elQuestion = document.querySelector('#h-question')
   const elAnswer = document.querySelector('#h-answer')
 
+  const updateCenter = () => {
+    elQuestion.innerText = card.question
+    elQuestion.style.fontSize = `${calcFS(elQuestion.textContent)}px`
+    elAnswer.innerText = card.answer
+    elAnswer.style.fontSize = `${Math.round(calcFS(elAnswer.textContent) / 1.4)}px`
+  }
+
   // Top-Right
   elDeckName.innerText = db.deck.name
   elDeckName.setAttribute('to.id', db.deck.id)
@@ -37,13 +44,28 @@ const updateHtml = () => {
   elCardClicks.innerText = card.clicks
   elCardRating.innerText = cardRating(card.up, card.down)
 
+  // Center
+  updateCenter()
+
+  elQuestion.addEventListener('click', () => {
+    elActionCard.classList.add('clicked')
+
+    db.incrementClicks(card.id, card.clicks)
+      .then((count) => elCardClicks.innerText = count)
+      .catch((e) => notification(e))
+  }, { once: true })
+
   // Top-Left
   elActionCreate.addEventListener('click', () => {
     createCard(db).then(({ exit }) => exit())
   })
 
-  elActionEdit.addEventListener('click', () => {/* TODO cardEdit() */})
-  elActionDelete.addEventListener('click', () => {/* TODO cardDelete() */})
+  elActionEdit.addEventListener('click', () => {
+    editCard(db, card).then(({ exit }) => {
+      updateCenter()
+      exit()
+    })
+  })
 
   elActionRatingUp.addEventListener('click', () => {
     elActionRatingUp.remove()
@@ -62,20 +84,6 @@ const updateHtml = () => {
       .then(() => elCardRating.innerText = cardRating(card.up, card.down + 1))
       .catch((e) => notification(e))
   })
-
-  // Center
-  elQuestion.innerText = card.question
-  elQuestion.style.fontSize = `${calcFS(elQuestion.textContent)}px`
-  elAnswer.innerText = card.answer
-  elAnswer.style.fontSize = `${Math.round(calcFS(elAnswer.textContent) / 1.4)}px`
-
-  elQuestion.addEventListener('click', () => {
-    elActionCard.classList.add('clicked')
-
-    db.incrementClicks(card.id, card.clicks)
-      .then((count) => elCardClicks.innerText = count)
-      .catch((e) => notification(e))
-  }, { once: true })
 
   // Statistics
   db.incrementViews(card.id, card.views)

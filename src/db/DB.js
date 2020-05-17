@@ -41,6 +41,34 @@ export default class DB {
       .finally(() => console.timeEnd('[DB] createCard'))
   }
 
+  updateCard(card, obj) {
+    console.time(`[DB] editCard ${card.id}`)
+
+    const changes = {
+      updated_at: new Date(),
+      ...obj
+    }
+
+    return this.dexie.cards.update(card.id, changes)
+      .then(() => this.cardsCount())
+      .then((count) => info.decks.update(this.deck.id, { cards_count: count }))
+      .then(() => {
+        Object.entries(changes).forEach(([key, val]) => card[key] = val)
+
+        return card
+      })
+      .finally(() => console.timeEnd(`[DB] editCard ${card.id}`))
+  }
+
+  deleteCard(cardId) {
+    console.time(`[DB] deleteCard ${cardId}`)
+
+    return this.dexie.cards.delete(cardId)
+      .then(() => this.cardsCount())
+      .then((count) => info.decks.update(this.deck.id, { cards_count: count }))
+      .finally(() => console.timeEnd(`[DB] deleteCard ${cardId}`))
+  }
+
   paginate(page = 1, itemsPerPage = 50) {
     console.time(`[DB] paginate ${page} | ${itemsPerPage}`)
 

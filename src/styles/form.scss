@@ -13,7 +13,21 @@
 }
 
 .form-submit {
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  &.multiple {
+    justify-content: space-between;
+  }
+}
+
+.form-submit__left-action {
+  padding: 10px;
+  transition: opacity .15s;
+  cursor: pointer;
+  &:hover {
+    opacity: .7;
+  }
 }
 
 @media only screen and (max-width: 768px) {
