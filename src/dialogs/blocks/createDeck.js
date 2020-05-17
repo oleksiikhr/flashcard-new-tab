@@ -2,8 +2,8 @@
 
 import notification from '../../scripts/notification'
 import { htmlToElement } from '../../scripts/html'
+import { createDeck } from '../../db/info'
 import render from '../render'
-import db from '../../db/info'
 
 export default () => {
   return import('./createDeck.html')
@@ -23,13 +23,7 @@ export default () => {
             return
           }
 
-          db.decks.put({
-            name,
-            is_active: 1,
-            cards_count: 0,
-            updated_at: new Date(),
-            created_at: new Date()
-          })
+          createDeck(name)
             .then(() => {
               notification('Deck created!')
               resolve({ exit })

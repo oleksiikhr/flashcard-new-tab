@@ -12,18 +12,14 @@ export function getActiveDecks() {
   return info.decks
     .where('is_active').equals(1)
     .toArray()
-    .finally(() => {
-      console.timeEnd('[DB.info] getActiveDecks')
-    })
+    .finally(() => console.timeEnd('[DB.info] getActiveDecks'))
 }
 
 export function getDecks() {
   console.time('[DB.info] getDecks')
 
   return info.decks.toArray()
-    .finally(() => {
-      console.timeEnd('[DB.info] getDecks')
-    })
+    .finally(() => console.timeEnd('[DB.info] getDecks'))
 }
 
 export function getDeck(id) {
@@ -32,9 +28,21 @@ export function getDeck(id) {
   return info.decks
     .where('id').equals(id)
     .first()
-    .finally(() => {
-      console.timeEnd(`[DB.info] getDeck ${id}`)
-    })
+    .finally(() => console.timeEnd(`[DB.info] getDeck ${id}`))
+}
+
+export function createDeck(obj) {
+  console.time('[DB.info] createDeck')
+
+  return info.decks.put({
+    name: '',
+    is_active: 1,
+    cards_count: 0,
+    updated_at: new Date(),
+    created_at: new Date(),
+    ...obj
+  })
+    .finally(() => console.timeEnd('[DB.info] createDeck'))
 }
 
 export default info

@@ -2,7 +2,6 @@
 
 import notification from '../../scripts/notification'
 import { htmlToElement } from '../../scripts/html'
-import info from '../../db/info'
 import render from '../render'
 
 export default (db) => {
@@ -25,19 +24,7 @@ export default (db) => {
             return
           }
 
-          db.dexie.cards.put({
-            question,
-            answer,
-            clicks: 0,
-            views: 0,
-            up: 0,
-            down: 0,
-            is_active: 1,
-            updated_at: new Date(),
-            created_at: new Date()
-          })
-            .then(() => db.cardsCount())
-            .then((count) => info.decks.update(db.deck.id, { cards_count: count }))
+          db.createCard({ question, answer })
             .then(() => {
               notification('Card created!')
               resolve({ exit })

@@ -1,5 +1,6 @@
 import Dexie from 'dexie'
 import { rnd } from '../scripts/helpers'
+import info from './info'
 
 export default class DB {
   constructor(deck) {
@@ -20,6 +21,26 @@ export default class DB {
       })
   }
 
+  createCard(obj) {
+    console.time('[DB] createCard')
+
+    return this.dexie.cards.put({
+      question: '',
+      answer: '',
+      clicks: 0,
+      views: 0,
+      up: 0,
+      down: 0,
+      is_active: 1,
+      updated_at: new Date(),
+      created_at: new Date(),
+      ...obj
+    })
+      .then(() => this.cardsCount())
+      .then((count) => info.decks.update(this.deck.id, { cards_count: count }))
+      .finally(() => console.timeEnd('[DB] createCard'))
+  }
+
   paginate(page = 1, itemsPerPage = 50) {
     console.time(`[DB] paginate ${page} | ${itemsPerPage}`)
 
@@ -27,9 +48,7 @@ export default class DB {
       .offset((page - 1) * itemsPerPage)
       .limit(itemsPerPage)
       .toArray()
-      .finally(() => {
-        console.timeEnd(`[DB] paginate ${page} | ${itemsPerPage}`)
-      })
+      .finally(() => console.timeEnd(`[DB] paginate ${page} | ${itemsPerPage}`))
   }
 
   randomActiveCard() {
@@ -44,9 +63,7 @@ export default class DB {
       .offset(rnd(0, this.deck.cards_count - 1))
       .limit(1)
       .first()
-      .finally(() => {
-        console.timeEnd('[DB] randomActiveCard')
-      })
+      .finally(() => console.timeEnd('[DB] randomActiveCard'))
   }
 
   incrementViews(cardId, count) {
@@ -55,9 +72,7 @@ export default class DB {
     return this.dexie.cards
       .update(cardId, { views: count + 1 })
       .then(() => count + 1)
-      .finally(() => {
-        console.timeEnd('[DB] incrementViews')
-      })
+      .finally(() => console.timeEnd('[DB] incrementViews'))
   }
 
   incrementClicks(cardId, count) {
@@ -66,9 +81,7 @@ export default class DB {
     return this.dexie.cards
       .update(cardId, { clicks: count + 1 })
       .then(() => count + 1)
-      .finally(() => {
-        console.timeEnd('[DB] incrementClicks')
-      })
+      .finally(() => console.timeEnd('[DB] incrementClicks'))
   }
 
   incrementRatingUp(cardId, count) {
@@ -77,9 +90,7 @@ export default class DB {
     return this.dexie.cards
       .update(cardId, { up: count + 1 })
       .then(() => count + 1)
-      .finally(() => {
-        console.timeEnd('[DB] incrementRatingUp')
-      })
+      .finally(() => console.timeEnd('[DB] incrementRatingUp'))
   }
 
   incrementRatingDown(cardId, count) {
@@ -88,8 +99,6 @@ export default class DB {
     return this.dexie.cards
       .update(cardId, { down: count + 1 })
       .then(() => count + 1)
-      .finally(() => {
-        console.timeEnd('[DB] incrementRatingDown')
-      })
+      .finally(() => console.timeEnd('[DB] incrementRatingDown'))
   }
 }
