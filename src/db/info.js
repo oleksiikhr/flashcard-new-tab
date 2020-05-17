@@ -3,7 +3,7 @@ import Dexie from 'dexie'
 const info = new Dexie('__info')
 
 info.version(1).stores({
-  'decks': '++id,is_active'
+  'decks': '++id,&name,is_active'
 })
 
 export function getActiveDecks() {

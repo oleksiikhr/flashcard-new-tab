@@ -13,8 +13,8 @@
 }
 
 .settings-aside {
-  max-width: 250px;
-  width: 100%;
+  width: 250px;
+  min-width: 250px;
   padding: 0 20px;
   user-select: none;
   ul {

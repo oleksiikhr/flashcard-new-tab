@@ -3,6 +3,10 @@
 }
 
 #h-top-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   top: 30px;
   left: 30px;
@@ -69,10 +73,19 @@
   }
 }
 
+.h-group-statistics {
+  display: flex;
+  align-items: center;
+}
+
 .h-statistics {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 30px;
+  &:last-child {
+    margin-right: 0;
+  }
   > span {
     display: flex;
     align-items: center;
@@ -107,6 +120,11 @@
       user-select: auto;
     }
   }
+  &.visible {
+    #h-answer {
+      display: block;
+    }
+  }
 }
 
 #h-question {
@@ -117,9 +135,88 @@
 }
 
 #h-answer {
+  display: none;
   color: var(--theme-color-secondary);
   opacity: 0;
   user-select: none;
   margin-bottom: 60px;
   transition: opacity .2s;
+}
+
+@media only screen and (max-width: 1280px) {
+  #h-top-left {
+    flex-direction: row;
+    top: auto;
+    bottom: 30px;
+  }
+
+  #h-action-card {
+    margin: 120px 50px;
+  }
+
+  .h-action {
+    margin-bottom: auto;
+    margin-right: 30px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  #h-bottom-right {
+    display: none;
+  }
+
+  #h-top-left {
+    left: auto;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  #h-action-card {
+    margin-top: 80px;
+    margin-bottom: 100px;
+  }
+
+  #h-top-right > * {
+    margin-right: 10px;
+  }
+
+  .h-statistics {
+    margin-right: 10px;
+    > span {
+      background: none;
+      margin-left: 5px;
+      min-width: auto;
+    }
+  }
+
+  .h-action {
+    padding: 20px;
+    margin-right: 10px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  #h-settings {
+    display: none;
+  }
+
+  #h-answer {
+    margin-bottom: 30px;
+  }
+
+  #h-action-card {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+
+  #h-deck-name {
+    width: 150px;
+    margin-right: 0;
+  }
+
+  .h-statistics {
+    svg {
+      display: none;
+    }
+  }
 }

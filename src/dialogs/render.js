@@ -15,7 +15,7 @@ function render(template) {
   }
 
   document.querySelector('.dialog')
-    .addEventListener('click', () => {
+    .addEventListener('click', (evt) => {
       exit()
     })
 

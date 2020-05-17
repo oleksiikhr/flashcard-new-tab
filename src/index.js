@@ -48,7 +48,8 @@ const updateHtml = () => {
   updateCenter()
 
   elQuestion.addEventListener('click', () => {
-    elActionCard.classList.add('clicked')
+    setTimeout(() => elActionCard.classList.add('clicked'))
+    elActionCard.classList.add('visible')
 
     db.incrementClicks(card.id, card.clicks)
       .then((count) => elCardClicks.innerText = count)
