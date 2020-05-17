@@ -34,9 +34,6 @@
 }
 
 #h-deck-name {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 0 20px;
   margin-right: 25px;
   background-color: rgba(0, 0, 0, .2);
@@ -44,6 +41,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   height: 28px;
+  text-align: center;
+  line-height: 28px;
+  white-space: nowrap;
   transition: background-color .2s;
   &:hover {
     background-color: rgba(0, 0, 0, .3);
