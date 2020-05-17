@@ -23,7 +23,7 @@ export default () => {
             return
           }
 
-          createDeck(name)
+          createDeck({ name })
             .then(() => {
               notification('Deck created!')
               resolve({ exit })
