@@ -1,0 +1,21 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination__left {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.pagination__page {
+  user-select: none;
+  margin: 0 20px;
+}
+
+.pagination__right {
+  padding: 10px 15px;
+  cursor: pointer;
+}

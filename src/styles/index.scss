@@ -1,4 +1,10 @@
-body {
-  background: black;
-  color: #fff;
-}
+// Common styles
+@import "root";
+@import "global";
+@import "fonts";
+@import "dialog";
+@import "form";
+@import "notification";
+@import "pagination";
+
+@import "main";

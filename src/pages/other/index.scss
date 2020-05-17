@@ -1,0 +1,55 @@
+.s-wrap {
+  max-width: 1200px;
+  width: 100%;
+  margin: 80px auto 50px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  > *:first-child {
+    margin-right: 80px;
+  }
+}
+
+.s-svg {
+  width: 500px;
+}
+
+.s-content {
+  position: relative;
+  margin-top: 30px;
+  font-size: 20px;
+  width: 50%;
+  padding: 20px;
+  button {
+    margin-top: 10px;
+  }
+}
+
+.s-github {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.s-title {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+@media screen and (max-width: 1024px) {
+  .s-wrap {
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px;
+    > *:first-child {
+      margin-right: 0;
+    }
+  }
+  .s-svg {
+    width: 100%;
+    max-width: 300px;
+  }
+  .s-content {
+    width: 100%;
+  }
+}
