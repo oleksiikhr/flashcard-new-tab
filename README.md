@@ -21,7 +21,7 @@ After each opening of a new tab, you will see a random question.
 ## Where to find extension?
 
 - [Google Chrome]()
-- [Firefox]()
+- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/flashcard-new-tab/)
 
 ## Screenshots
 
