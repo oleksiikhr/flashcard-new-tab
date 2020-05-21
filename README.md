@@ -20,8 +20,8 @@ After each opening of a new tab, you will see a random question.
 
 ## Where to find extension?
 
-- [Google Chrome]()
-- [Firefox]()
+- [Google Chrome](https://chrome.google.com/webstore/detail/flashcard-new-tab/aglggobkfpbjcgkhchdcflocblfbadfa)
+- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/flashcard-new-tab/)
 
 ## Screenshots
 
