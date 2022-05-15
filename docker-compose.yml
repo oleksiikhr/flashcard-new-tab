@@ -1,13 +1,11 @@
-version: "3.8"
+version: "3.9"
 
 services:
-  node:
-    build: .
+  app:
+    build:
+      dockerfile: Dockerfile
+    command: pnpm dev
+    tty: true
     user: node
-    working_dir: /home/node/app
-    environment:
-      - NODE_ENV=development
     volumes:
       - ./:/home/node/app
-    ports:
-      - 1234:1234

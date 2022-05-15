@@ -1,8 +1,9 @@
-FROM node:14.1-alpine
+FROM node:16-alpine
 
-RUN yarn
-RUN yarn global add parcel-bundler
+WORKDIR /home/node/app
 
-EXPOSE 1234
+RUN npm i -g pnpm
 
-CMD ["yarn", "start"]
+COPY package.json pnpm-lock.yaml ./
+
+RUN pnpm i --frozen-lockfile

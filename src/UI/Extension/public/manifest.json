@@ -1,0 +1,14 @@
+{
+  "name": "Flashcard New Tab",
+  "version": "2.0",
+  "description": "Repeat your knowledge with flashcard on each new tab",
+  "chrome_url_overrides" : {
+    "newtab": "index.html"
+  },
+  "icons": {
+    "16": "img/16.png",
+    "48": "img/48.png",
+    "128": "img/128.png"
+  },
+  "manifest_version": 3
+}
