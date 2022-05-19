@@ -4,7 +4,7 @@ services:
   app:
     build:
       dockerfile: Dockerfile
-    command: pnpm dev
+    command: sh -c "pnpm i --frozen-lockfile && pnpm dev"
     tty: true
     user: node
     volumes:

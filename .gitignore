@@ -1,4 +1,7 @@
 .idea/
 .git/
 coverage/
+
 node_modules/
+.pnpm-debug.log
+.pnpm-store

@@ -7,6 +7,9 @@ down:
 restart:
 	docker-compose down && docker-compose build && docker-compose up -d
 
+build:
+	docker-compose build app --no-cache
+
 logs:
 	docker-compose logs -f app
 
