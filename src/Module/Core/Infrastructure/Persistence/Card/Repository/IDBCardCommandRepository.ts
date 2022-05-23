@@ -1,36 +1,43 @@
 import Card from '../../../../Domain/Card/Card';
 import IndexedDB from '../../../../../Shared/Infrastructure/Persistence/IndexedDB/IndexedDB';
 import { CardCommandRepository } from '../../../../Domain/Card/Repository/CardCommandRepository';
-import AlreadyExistsError from '../../../../../Shared/Infrastructure/Persistence/IndexedDB/Error/AlreadyExistsError';
-import DoesNotExistsIdError from '../../../../../Shared/Infrastructure/Persistence/IndexedDB/Error/DoesNotExistsIdError';
+import DomainAlreadyExistsError from '../../../../../Shared/Infrastructure/Persistence/IndexedDB/Error/DomainAlreadyExistsError';
+import CardId from '../../../../Domain/Card/CardId';
+import CardMemento from '../../../../Domain/Card/Service/CardMemento';
+import DeckMemento from '../../../../Domain/Deck/Service/DeckMemento';
 
 export default class IDBCardCommandRepository implements CardCommandRepository {
-  constructor(private idb: IndexedDB) {}
+  constructor(
+    private deckMemento: DeckMemento,
+    private cardMemento: CardMemento,
+    private idb: IndexedDB
+  ) {}
 
   async create(card: Card): Promise<void> {
-    const raw = card.serialize();
+    const cardRaw = this.cardMemento.serialize(card);
+    const deckRaw = this.deckMemento.serialize(card.getDeck());
 
-    if (undefined !== raw.id) {
-      throw new AlreadyExistsError();
+    if (undefined !== cardRaw.id) {
+      throw new DomainAlreadyExistsError();
     }
 
     const db = await this.idb.connection();
-    delete raw.id;
+    delete cardRaw.id;
 
-    const request = db
-      .transaction('cards', 'readwrite')
-      .objectStore('cards')
-      .add(raw);
+    const transaction = db.transaction(['cards', 'decks'], 'readwrite');
+    const cardRequest = transaction.objectStore('cards').add(cardRaw);
+    const deckRequest = transaction.objectStore('decks').put(deckRaw);
 
-    return this.idb.request(request);
+    await Promise.all([
+      this.idb
+        .request<number>(cardRequest)
+        .then((id) => card.setId(CardId.of(id as number))),
+      this.idb.request(deckRequest),
+    ]);
   }
 
   async update(card: Card): Promise<void> {
-    const raw = card.serialize();
-
-    if (undefined === raw.id) {
-      throw new DoesNotExistsIdError();
-    }
+    const raw = this.cardMemento.serialize(card);
 
     const db = await this.idb.connection();
 
@@ -39,6 +46,6 @@ export default class IDBCardCommandRepository implements CardCommandRepository {
       .objectStore('cards')
       .put(raw);
 
-    return this.idb.request(request);
+    await this.idb.request(request);
   }
 }

@@ -9,6 +9,12 @@ export default class CardStatistics {
     this.views = obj.views || 0;
   }
 
+  public static create(): CardStatistics {
+    return new CardStatistics({
+      views: 0,
+    });
+  }
+
   public increaseViews(value = 1): void {
     this.views += value;
   }

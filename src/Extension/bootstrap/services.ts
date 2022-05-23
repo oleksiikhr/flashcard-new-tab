@@ -9,12 +9,20 @@ import LSSettingsCommandRepository from '../../Module/Core/Infrastructure/Persis
 import IDBCardQueryRepository from '../../Module/Core/Infrastructure/Persistence/Card/Repository/IDBCardQueryRepository';
 import CardContentFactory from '../../Module/Core/Domain/Card/Content/CardContentFactory';
 import IDBCardCommandRepository from '../../Module/Core/Infrastructure/Persistence/Card/Repository/IDBCardCommandRepository';
+import IDBDeckQueryRepository from '../../Module/Core/Infrastructure/Persistence/Deck/Repository/IDBDeckQueryRepository';
+import IDBDeckCommandRepository from '../../Module/Core/Infrastructure/Persistence/Deck/Repository/IDBDeckCommandRepository';
+import DeckCreator from '../../Module/Core/Domain/Deck/Service/DeckCreator';
+import CardCreator from '../../Module/Core/Domain/Card/Service/CardCreator';
+import DeckMemento from '../../Module/Core/Domain/Deck/Service/DeckMemento';
+import CardMemento from '../../Module/Core/Domain/Card/Service/CardMemento';
 
 export const contentFactory = new CardContentFactory();
 
 export const themeInjector = new ThemeInjector();
 
 export const pageManager = new PageManager();
+
+export const deckMemento = new DeckMemento();
 
 const indexedDB = new IndexedDB(idbConfig.name, list);
 const localStorage = new LocalStorage();
@@ -27,18 +35,44 @@ export const settingsCommandRepository = new LSSettingsCommandRepository(
   localStorage
 );
 
+export const deckQueryRepository = new IDBDeckQueryRepository(
+  deckMemento,
+  indexedDB
+);
+
+export const deckCommandRepository = new IDBDeckCommandRepository(
+  deckMemento,
+  indexedDB
+);
+
+export const cardMemento = new CardMemento(deckQueryRepository, contentFactory);
+
 export const cardQueryRepository = new IDBCardQueryRepository(
+  cardMemento,
   contentFactory,
   indexedDB
 );
 
-export const cardCommandRepository = new IDBCardCommandRepository(indexedDB);
+export const cardCommandRepository = new IDBCardCommandRepository(
+  deckMemento,
+  cardMemento,
+  indexedDB
+);
+
+export const deckCreator = new DeckCreator(deckCommandRepository);
+
+export const cardCreator = new CardCreator(cardCommandRepository);
 
 export default {
   settingsCommandRepository,
   settingsQueryRepository,
+  deckCommandRepository,
   cardCommandRepository,
   cardQueryRepository,
+  deckQueryRepository,
   themeInjector,
   pageManager,
+  deckCreator,
+  deckMemento,
+  cardCreator,
 };

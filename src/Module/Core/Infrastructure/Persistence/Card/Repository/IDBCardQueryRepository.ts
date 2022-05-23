@@ -1,11 +1,15 @@
-import Card, { CardRaw, unserialize } from '../../../../Domain/Card/Card';
+import Card from '../../../../Domain/Card/Card';
 import CardId from '../../../../Domain/Card/CardId';
 import CardContentFactory from '../../../../Domain/Card/Content/CardContentFactory';
 import { CardQueryRepository } from '../../../../Domain/Card/Repository/CardQueryRepository';
 import IndexedDB from '../../../../../Shared/Infrastructure/Persistence/IndexedDB/IndexedDB';
+import CardMemento, {
+  CardRaw,
+} from '../../../../Domain/Card/Service/CardMemento';
 
 export default class IDBCardQueryRepository implements CardQueryRepository {
   constructor(
+    private memento: CardMemento,
     private contentFactory: CardContentFactory,
     private idb: IndexedDB
   ) {}
@@ -21,7 +25,7 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
     return this.idb
       .request<CardRaw>(request)
       .then((raw) =>
-        undefined !== raw ? unserialize(raw, this.contentFactory) : undefined
+        undefined !== raw ? this.memento.unserialize(raw) : undefined
       );
   }
 }

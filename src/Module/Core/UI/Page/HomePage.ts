@@ -1,7 +1,7 @@
 import SettingsPage from './SettingsPage';
 import { pageManager } from '../../../../Extension/bootstrap/services';
 import Page from '../Page';
-import { findActiveCard } from '../../../../Extension/bootstrap/bus';
+import { findActiveCardHandler } from '../../../../Extension/bootstrap/bus';
 import FindActiveCardCommand from '../../Application/Query/Card/FindActiveCardCommand';
 import { error } from '../../../Shared/Model/Util/notification';
 import { displayCard } from '../Component/card';
@@ -26,7 +26,8 @@ export default class HomePage implements Page {
   }
 
   mount() {
-    findActiveCard
+    // TODO Feed handler
+    findActiveCardHandler
       .invoke(new FindActiveCardCommand())
       .then((card) => {
         if (undefined !== card) {

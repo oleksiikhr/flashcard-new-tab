@@ -4,23 +4,35 @@ export default (event: IDBVersionChangeEvent): Promise<void> =>
 
     db.onerror = reject;
 
-    db.createObjectStore('cards', {
+    const decks = db.createObjectStore('decks', {
       keyPath: 'id',
       autoIncrement: true,
     });
 
-    db.createObjectStore('decks', {
+    decks.createIndex('name', 'name');
+    decks.createIndex('is_active', 'is_active');
+
+    const cards = db.createObjectStore('cards', {
       keyPath: 'id',
       autoIncrement: true,
     });
 
-    db.createObjectStore('labels', {
+    cards.createIndex('question', 'question');
+    cards.createIndex('next_at', 'next_at');
+
+    const labels = db.createObjectStore('labels', {
       keyPath: 'id',
       autoIncrement: true,
     });
+
+    labels.createIndex('is_active', 'is_active');
 
     db.createObjectStore('card_label', {
       keyPath: ['card_id', 'label_id'],
+    });
+
+    db.createObjectStore('feed', {
+      keyPath: ['card_id'],
     });
 
     resolve();

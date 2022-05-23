@@ -19,7 +19,7 @@ export default class FindActiveCardHandler {
       return card;
     }
 
-    card.getStatistics().increaseViews();
+    card.updateLastView();
 
     await this.commandRepository.update(card);
 

@@ -1,4 +1,5 @@
 import { error } from '../../../Model/Util/logger';
+import { random } from '../../../Model/Util/number';
 
 export default class IndexedDB {
   private conn: IDBDatabase | null = null;
@@ -8,9 +9,32 @@ export default class IndexedDB {
     private migrations: ((event: IDBVersionChangeEvent) => Promise<void>)[]
   ) {}
 
-  public request<T>(req: IDBRequest): Promise<T | undefined> {
+  public random<T>(
+    request: IDBRequest<IDBCursorWithValue | null>,
+    total: number
+  ): Promise<T | null> {
     return new Promise((resolve, reject) => {
-      req.onsuccess = (event) => {
+      let searching = true;
+
+      request.onsuccess = (event) => {
+        const cursor = (event.target as IDBRequest)
+          .result as IDBCursorWithValue;
+
+        if (searching) {
+          searching = false;
+          cursor.advance(random(1, total - 1));
+        } else {
+          resolve(cursor.value as T);
+        }
+      };
+
+      request.onerror = reject;
+    });
+  }
+
+  public request<T>(request: IDBRequest): Promise<T | undefined> {
+    return new Promise((resolve, reject) => {
+      request.onsuccess = (event) => {
         const result = (event.target as IDBRequest).result as T;
 
         try {
@@ -20,7 +44,7 @@ export default class IndexedDB {
         }
       };
 
-      req.onerror = reject;
+      request.onerror = reject;
     });
   }
 
