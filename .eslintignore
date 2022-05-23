@@ -1,2 +1,3 @@
 coverage/
-src/UI/Extension/public/dist/
+.pnpm-store/
+src/Extension/public/dist/

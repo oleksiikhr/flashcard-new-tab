@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "description": "Repeat your knowledge with flashcard on each new tab",
   "scripts": {
-    "dev": "esbuild src/UI/Extension/bootstrap/app.ts --outdir=src/UI/Extension/public/dist --bundle --watch",
-    "build": "esbuild src/UI/Extension/bootstrap/app.ts --outdir=src/UI/Extension/public/dist --bundle",
+    "dev": "esbuild src/Extension/bootstrap/app.ts --outdir=src/Extension/public/dist --bundle --watch",
+    "build": "esbuild src/Extension/bootstrap/app.ts --outdir=src/Extension/public/dist --bundle --minify",
     "lint": "npm run eslint && npm run prettier && npm run stylelint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix && npm run stylelint:fix",
     "eslint": "eslint --ext .ts,.js .",

@@ -4,26 +4,23 @@ up:
 down:
 	docker-compose down
 
-restart:
-	docker-compose down && docker-compose build && docker-compose up -d
-
-build:
-	docker-compose build app --no-cache
-
 logs:
 	docker-compose logs -f app
 
+build:
+	docker-compose run app pnpm run build
+
 lint:
-	docker-compose exec app pnpm lint:fix
+	docker-compose run app pnpm lint:fix
 
 eslint:
-	docker-compose exec app pnpm eslint:fix
+	docker-compose run app pnpm eslint:fix
 
 prettier:
-	docker-compose exec app pnpm prettier:fix
+	docker-compose run app pnpm prettier:fix
 
 stylelint:
-	docker-compose exec app pnpm stylelint:fix
+	docker-compose run app pnpm stylelint:fix
 
 tests:
-	docker-compose exec app pnpm test
+	docker-compose run app pnpm test
