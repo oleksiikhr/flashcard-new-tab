@@ -8,14 +8,23 @@ export default class IndexedDB {
     private migrations: ((event: IDBVersionChangeEvent) => Promise<void>)[]
   ) {}
 
-  public findSomething() {
-    console.log('findSomething');
-    return this.connection().then((db) => {
-      console.log('res', db);
+  public request<T>(req: IDBRequest): Promise<T | undefined> {
+    return new Promise((resolve, reject) => {
+      req.onsuccess = (event) => {
+        const result = (event.target as IDBRequest).result as T;
+
+        try {
+          resolve(result);
+        } catch (e) {
+          reject(e);
+        }
+      };
+
+      req.onerror = reject;
     });
   }
 
-  private connection(): Promise<IDBDatabase> {
+  public connection(): Promise<IDBDatabase> {
     if (null !== this.conn) {
       return Promise.resolve(this.conn);
     }

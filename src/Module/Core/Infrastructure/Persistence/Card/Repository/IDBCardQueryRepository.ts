@@ -1,23 +1,27 @@
-import Card from '../../../../Domain/Card/Card';
+import Card, { CardRaw, unserialize } from '../../../../Domain/Card/Card';
 import CardId from '../../../../Domain/Card/CardId';
-import CardQuestion from '../../../../Domain/Card/CardQuestion';
 import CardContentFactory from '../../../../Domain/Card/Content/CardContentFactory';
-import CardStatistics from '../../../../Domain/Card/CardStatistics';
 import { CardQueryRepository } from '../../../../Domain/Card/Repository/CardQueryRepository';
-import { CardTemplateType } from '../../../../Domain/Card/CardTemplateType';
+import IndexedDB from '../../../../../Shared/Infrastructure/Persistence/IndexedDB/IndexedDB';
 
 export default class IDBCardQueryRepository implements CardQueryRepository {
-  findById(id: number): Card {
-    const templateType = CardTemplateType.QUESTION;
+  constructor(
+    private contentFactory: CardContentFactory,
+    private idb: IndexedDB
+  ) {}
 
-    return new Card(
-      CardId.of(id),
-      new CardQuestion('asd'),
-      new CardContentFactory().make({}, templateType),
-      templateType,
-      new CardStatistics(),
-      new Date(),
-      new Date()
-    );
+  async findById(id: CardId): Promise<Card | undefined> {
+    const db = await this.idb.connection();
+
+    const request = db
+      .transaction('cards')
+      .objectStore('cards')
+      .get(id.getIdentifier());
+
+    return this.idb
+      .request<CardRaw>(request)
+      .then((raw) =>
+        undefined !== raw ? unserialize(raw, this.contentFactory) : undefined
+      );
   }
 }

@@ -20,8 +20,7 @@ export default (event: IDBVersionChangeEvent): Promise<void> =>
     });
 
     db.createObjectStore('card_label', {
-      keyPath: 'id',
-      autoIncrement: true,
+      keyPath: ['card_id', 'label_id'],
     });
 
     resolve();

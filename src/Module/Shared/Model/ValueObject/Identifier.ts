@@ -10,4 +10,8 @@ export default abstract class Identifier {
 
     this.id = id;
   }
+
+  public getIdentifier(): number {
+    return this.id;
+  }
 }
