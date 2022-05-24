@@ -1,23 +1,23 @@
-import LSSettingsQueryRepository from '../../Module/Core/Infrastructure/Persistence/Settings/Repository/LSSettingsQueryRepository';
-import ThemeInjector from '../../Module/Core/Domain/Settings/Theme/Service/ThemeInjector';
-import PageManager from '../../Module/Core/UI/PageManager';
+import LSSettingsQueryRepository from '../../Infrastructure/Persistence/Model/Settings/Repository/LSSettingsQueryRepository';
+import ThemeInjector from '../../Domain/Model/Settings/Theme/Service/ThemeInjector';
+import PageManager from '../../UI/PageManager';
 import { indexedDB as idbConfig } from '../config/database';
-import LocalStorage from '../../Module/Shared/Infrastructure/Persistence/LocalStorage/LocalStorage';
-import list from '../../Module/Shared/Infrastructure/Persistence/IndexedDB/Migration/list';
-import IndexedDB from '../../Module/Shared/Infrastructure/Persistence/IndexedDB/IndexedDB';
-import LSSettingsCommandRepository from '../../Module/Core/Infrastructure/Persistence/Settings/Repository/LSSettingsCommandRepository';
-import IDBCardQueryRepository from '../../Module/Core/Infrastructure/Persistence/Card/Repository/IDBCardQueryRepository';
-import CardContentFactory from '../../Module/Core/Domain/Card/Content/CardContentFactory';
-import IDBCardCommandRepository from '../../Module/Core/Infrastructure/Persistence/Card/Repository/IDBCardCommandRepository';
-import IDBDeckQueryRepository from '../../Module/Core/Infrastructure/Persistence/Deck/Repository/IDBDeckQueryRepository';
-import IDBDeckCommandRepository from '../../Module/Core/Infrastructure/Persistence/Deck/Repository/IDBDeckCommandRepository';
-import DeckCreator from '../../Module/Core/Domain/Deck/Service/DeckCreator';
-import CardCreator from '../../Module/Core/Domain/Card/Service/CardCreator';
-import DeckMemento from '../../Module/Core/Domain/Deck/Service/DeckMemento';
-import CardMemento from '../../Module/Core/Domain/Card/Service/CardMemento';
-import DeckUpdater from '../../Module/Core/Domain/Deck/Service/DeckUpdater';
+import LocalStorage from '../../Infrastructure/Persistence/LocalStorage/LocalStorage';
+import list from '../../Infrastructure/Persistence/IndexedDB/Migration/list';
+import IndexedDB from '../../Infrastructure/Persistence/IndexedDB/IndexedDB';
+import LSSettingsCommandRepository from '../../Infrastructure/Persistence/Model/Settings/Repository/LSSettingsCommandRepository';
+import IDBCardQueryRepository from '../../Infrastructure/Persistence/Model/Card/Repository/IDBCardQueryRepository';
+import CardContentFactory from '../../Domain/Model/Card/Content/CardContentFactory';
+import IDBCardCommandRepository from '../../Infrastructure/Persistence/Model/Card/Repository/IDBCardCommandRepository';
+import IDBDeckQueryRepository from '../../Infrastructure/Persistence/Model/Deck/Repository/IDBDeckQueryRepository';
+import IDBDeckCommandRepository from '../../Infrastructure/Persistence/Model/Deck/Repository/IDBDeckCommandRepository';
+import DeckCreator from '../../Domain/Model/Deck/Service/DeckCreator';
+import CardCreator from '../../Domain/Model/Card/Service/CardCreator';
+import DeckMemento from '../../Domain/Model/Deck/Service/DeckMemento';
+import CardMemento from '../../Domain/Model/Card/Service/CardMemento';
+import DeckUpdater from '../../Domain/Model/Deck/Service/DeckUpdater';
 
-export const contentFactory = new CardContentFactory();
+export const cardContentFactory = new CardContentFactory();
 
 export const themeInjector = new ThemeInjector();
 
@@ -46,11 +46,14 @@ export const deckCommandRepository = new IDBDeckCommandRepository(
   indexedDB
 );
 
-export const cardMemento = new CardMemento(deckQueryRepository, contentFactory);
+export const cardMemento = new CardMemento(
+  deckQueryRepository,
+  cardContentFactory
+);
 
 export const cardQueryRepository = new IDBCardQueryRepository(
   cardMemento,
-  contentFactory,
+  cardContentFactory,
   indexedDB
 );
 

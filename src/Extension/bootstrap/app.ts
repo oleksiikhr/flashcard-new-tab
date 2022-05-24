@@ -1,5 +1,5 @@
-import HomePage from '../../Module/Core/UI/Page/HomePage';
-import ApplyThemeCommand from '../../Module/Core/Application/Command/Theme/ApplyThemeCommand';
+import HomePage from '../../UI/Page/HomePage';
+import ApplyThemeCommand from '../../Application/Command/Theme/ApplyThemeCommand';
 import { theme } from '../config/settings';
 import { pageManager } from './services';
 import { applyThemeHandler } from './bus';
