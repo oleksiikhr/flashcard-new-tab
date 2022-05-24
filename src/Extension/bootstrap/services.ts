@@ -15,6 +15,7 @@ import DeckCreator from '../../Module/Core/Domain/Deck/Service/DeckCreator';
 import CardCreator from '../../Module/Core/Domain/Card/Service/CardCreator';
 import DeckMemento from '../../Module/Core/Domain/Deck/Service/DeckMemento';
 import CardMemento from '../../Module/Core/Domain/Card/Service/CardMemento';
+import DeckUpdater from '../../Module/Core/Domain/Deck/Service/DeckUpdater';
 
 export const contentFactory = new CardContentFactory();
 
@@ -63,6 +64,11 @@ export const deckCreator = new DeckCreator(deckCommandRepository);
 
 export const cardCreator = new CardCreator(cardCommandRepository);
 
+export const deckUpdater = new DeckUpdater(
+  deckCommandRepository,
+  deckQueryRepository
+);
+
 export default {
   settingsCommandRepository,
   settingsQueryRepository,
@@ -74,5 +80,6 @@ export default {
   pageManager,
   deckCreator,
   deckMemento,
+  deckUpdater,
   cardCreator,
 };

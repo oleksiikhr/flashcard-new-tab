@@ -8,7 +8,7 @@ import Deck from '../Deck/Deck';
 export default class Card {
   constructor(
     private id: CardId | undefined,
-    private deck: Deck,
+    private deck: Deck | undefined,
     private question: CardQuestion,
     private content: CardContent,
     private templateType: CardTemplateType,
@@ -57,7 +57,7 @@ export default class Card {
     return this.id;
   }
 
-  public getDeck(): Deck {
+  public getDeck(): Deck | undefined {
     return this.deck;
   }
 

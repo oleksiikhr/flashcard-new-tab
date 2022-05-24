@@ -5,6 +5,7 @@ import DomainAlreadyExistsError from '../../../../../Shared/Infrastructure/Persi
 import CardId from '../../../../Domain/Card/CardId';
 import CardMemento from '../../../../Domain/Card/Service/CardMemento';
 import DeckMemento from '../../../../Domain/Deck/Service/DeckMemento';
+import DomainDoesNotExistsError from '../../../../../Shared/Infrastructure/Persistence/IndexedDB/Error/DomainDoesNotExistsError';
 
 export default class IDBCardCommandRepository implements CardCommandRepository {
   constructor(
@@ -14,8 +15,14 @@ export default class IDBCardCommandRepository implements CardCommandRepository {
   ) {}
 
   async create(card: Card): Promise<void> {
+    const deck = card.getDeck();
+
+    if (undefined === deck) {
+      throw new DomainDoesNotExistsError();
+    }
+
     const cardRaw = this.cardMemento.serialize(card);
-    const deckRaw = this.deckMemento.serialize(card.getDeck());
+    const deckRaw = this.deckMemento.serialize(deck);
 
     if (undefined !== cardRaw.id) {
       throw new DomainAlreadyExistsError();
@@ -38,7 +45,6 @@ export default class IDBCardCommandRepository implements CardCommandRepository {
 
   async update(card: Card): Promise<void> {
     const raw = this.cardMemento.serialize(card);
-
     const db = await this.idb.connection();
 
     const request = db

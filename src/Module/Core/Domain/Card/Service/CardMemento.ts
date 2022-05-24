@@ -9,7 +9,7 @@ import DeckQueryRepository from '../../Deck/Repository/DeckQueryRepository';
 
 export type CardRaw = {
   id: number | undefined;
-  deck_id: number;
+  deck_id: number | undefined;
   question: string;
   content: object;
   template_type: number;
@@ -29,7 +29,7 @@ export default class CardMemento {
   public serialize(card: Card): CardRaw {
     return {
       id: card.getId()?.getIdentifier(),
-      deck_id: card.getDeck().getId()?.getIdentifier(),
+      deck_id: card.getDeck()?.getId()?.getIdentifier(),
       question: card.getQuestion().getValue(),
       content: card.getContent().serialize(),
       template_type: card.getTemplateType().getValue(),
@@ -42,12 +42,14 @@ export default class CardMemento {
   }
 
   public async unserialize(raw: CardRaw): Promise<Card> {
-    const deck = await this.deckQueryRepository.findById(
-      DeckId.of(raw.deck_id)
-    );
+    let deck;
+
+    if (undefined !== raw.deck_id) {
+      deck = await this.deckQueryRepository.findById(DeckId.of(raw.deck_id));
+    }
+
     const templateType = new CardTemplateType(raw.template_type);
 
-    // TODO ????
     return new Card(
       undefined !== raw.id ? CardId.of(raw.id) : undefined,
       deck,

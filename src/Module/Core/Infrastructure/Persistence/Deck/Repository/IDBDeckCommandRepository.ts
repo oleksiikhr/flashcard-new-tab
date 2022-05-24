@@ -23,8 +23,20 @@ export default class IDBDeckCommandRepository implements DeckCommandRepository {
       .objectStore('decks')
       .add(raw);
 
-    return this.idb.request<number>(request).then((id) => {
+    await this.idb.request<number>(request).then((id) => {
       deck.setId(DeckId.of(id as number));
     });
+  }
+
+  public async update(deck: Deck): Promise<void> {
+    const raw = this.memento.serialize(deck);
+    const db = await this.idb.connection();
+
+    const request = db
+      .transaction('decks', 'readwrite')
+      .objectStore('decks')
+      .put(raw);
+
+    await this.idb.request(request);
   }
 }

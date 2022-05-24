@@ -31,6 +31,13 @@ export default class Deck {
     );
   }
 
+  public from(name: DeckName, isActive: boolean, settings: DeckSettings): void {
+    this.name = name;
+    this.isActive = isActive;
+    this.settings = settings;
+    this.updatedAt = new Date();
+  }
+
   public setId(id: DeckId): void {
     if (undefined !== this.id) {
       throw new Error('ID is already exists');

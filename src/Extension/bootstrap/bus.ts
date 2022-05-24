@@ -6,14 +6,18 @@ import {
   contentFactory,
   deckCreator,
   deckQueryRepository,
+  deckUpdater,
   settingsQueryRepository,
   themeInjector,
 } from './services';
 import FindActiveCardHandler from '../../Module/Core/Application/Query/Card/FindActiveCardHandler';
 import CreateDeckHandler from '../../Module/Core/Application/Command/Deck/CreateDeckHandler';
 import CreateCardHandler from '../../Module/Core/Application/Command/Card/CreateCardHandler';
+import UpdateDeckHandler from '../../Module/Core/Application/Command/Deck/UpdateDeckHandler';
 
 export const createDeckHandler = new CreateDeckHandler(deckCreator);
+
+export const updateDeckHandler = new UpdateDeckHandler(deckUpdater);
 
 export const createCardHandler = new CreateCardHandler(
   deckQueryRepository,
@@ -36,4 +40,5 @@ export default {
   applyThemeHandler,
   createDeckHandler,
   createCardHandler,
+  updateDeckHandler,
 };
