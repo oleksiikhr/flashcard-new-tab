@@ -1,9 +1,9 @@
-import Deck from '../../../Domain/Model/Deck/Deck';
-import DeckName from '../../../Domain/Model/Deck/DeckName';
-import DeckSettings from '../../../Domain/Model/Deck/DeckSettings';
-import DeckUpdater from '../../../Domain/Model/Deck/Service/DeckUpdater';
+import Deck from '../../../Domain/Deck/Deck';
+import DeckName from '../../../Domain/Deck/DeckName';
+import DeckSettings from '../../../Domain/Deck/DeckSettings';
+import DeckUpdater from '../../../Domain/Deck/Service/DeckUpdater';
 import UpdateDeckCommand from './UpdateDeckCommand';
-import DeckId from '../../../Domain/Model/Deck/DeckId';
+import DeckId from '../../../Domain/Deck/DeckId';
 
 export default class UpdateDeckHandler {
   constructor(private updater: DeckUpdater) {}

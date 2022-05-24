@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,minimum-scale=1,initial-scale=1"
+    />
+    <title>New Tab</title>
+    <link href="dist/app.css" rel="stylesheet" />
+    <script src="dist/app.js"></script>
+  </head>
+  <body>
+    <div page="home" style="display: none">
+      <div>Home page</div>
+      <div id="btn-1">Go Settings</div>
+      <div component="card"></div>
+      <br />
+      <form id="form-create">
+        <input id="deck-name" />
+        <input type="checkbox" id="deck-is_active" />
+        <button type="submit">Create Deck</button>
+      </form>
+    </div>
+    <div page="settings" style="display: none">
+      <div>Settings page</div>
+      <div id="btn-2">Go Home</div>
+    </div>
+  </body>
+</html>

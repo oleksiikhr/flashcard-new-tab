@@ -1,8 +1,8 @@
 import FindActiveCardCommand from './FindActiveCardCommand';
-import { CardQueryRepository } from '../../../Domain/Model/Card/Repository/CardQueryRepository';
-import CardId from '../../../Domain/Model/Card/CardId';
-import Card from '../../../Domain/Model/Card/Card';
-import { CardCommandRepository } from '../../../Domain/Model/Card/Repository/CardCommandRepository';
+import { CardQueryRepository } from '../../../Domain/Card/Repository/CardQueryRepository';
+import CardId from '../../../Domain/Card/CardId';
+import Card from '../../../Domain/Card/Card';
+import { CardCommandRepository } from '../../../Domain/Card/Repository/CardCommandRepository';
 
 export default class FindActiveCardHandler {
   constructor(

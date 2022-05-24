@@ -1,8 +1,8 @@
 import CreateDeckCommand from './CreateDeckCommand';
-import Deck from '../../../Domain/Model/Deck/Deck';
-import DeckCreator from '../../../Domain/Model/Deck/Service/DeckCreator';
-import DeckName from '../../../Domain/Model/Deck/DeckName';
-import DeckSettings from '../../../Domain/Model/Deck/DeckSettings';
+import Deck from '../../../Domain/Deck/Deck';
+import DeckCreator from '../../../Domain/Deck/Service/DeckCreator';
+import DeckName from '../../../Domain/Deck/DeckName';
+import DeckSettings from '../../../Domain/Deck/DeckSettings';
 
 export default class CreateDeckHandler {
   constructor(private creator: DeckCreator) {}

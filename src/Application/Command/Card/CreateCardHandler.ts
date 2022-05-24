@@ -1,12 +1,12 @@
-import Card from '../../../Domain/Model/Card/Card';
-import CardCreator from '../../../Domain/Model/Card/Service/CardCreator';
-import DeckId from '../../../Domain/Model/Deck/DeckId';
+import Card from '../../../Domain/Card/Card';
+import CardCreator from '../../../Domain/Card/Service/CardCreator';
+import DeckId from '../../../Domain/Deck/DeckId';
 import CreateCardCommand from './CreateCardCommand';
-import CardQuestion from '../../../Domain/Model/Card/CardQuestion';
-import CardTemplateType from '../../../Domain/Model/Card/CardTemplateType';
-import CardContentFactory from '../../../Domain/Model/Card/Content/CardContentFactory';
-import DeckQueryRepository from '../../../Domain/Model/Deck/Repository/DeckQueryRepository';
-import DomainNotFoundError from '../../../Infrastructure/Persistence/IndexedDB/Error/DomainNotFoundError';
+import CardQuestion from '../../../Domain/Card/CardQuestion';
+import CardTemplateType from '../../../Domain/Card/CardTemplateType';
+import CardContentFactory from '../../../Domain/Card/Content/CardContentFactory';
+import DeckQueryRepository from '../../../Domain/Deck/Repository/DeckQueryRepository';
+import DomainNotFoundError from '../../../Infrastructure/Persistence/Shared/IndexedDB/Error/DomainNotFoundError';
 
 export default class CreateCardHandler {
   constructor(
