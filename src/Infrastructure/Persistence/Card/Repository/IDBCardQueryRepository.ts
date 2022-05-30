@@ -15,7 +15,7 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
   ) {}
 
   async findById(id: CardId): Promise<Card | undefined> {
-    const db = await this.idb.connection();
+    const db = await this.idb.database();
 
     const request = db
       .transaction('cards')

@@ -27,6 +27,20 @@ import DeleteDeckCommand from '../../Application/Command/Deck/DeleteDeckCommand'
 import CreateCardCommand from '../../Application/Command/Card/CreateCardCommand';
 import FindActiveCardCommand from '../../Application/Query/Card/FindActiveCardCommand';
 import ApplyThemeCommand from '../../Application/Command/Theme/ApplyThemeCommand';
+import GenerateFeedHandler from '../../Application/Command/Feed/GenerateFeedHandler';
+import GenerateFeedCommand from '../../Application/Command/Feed/GenerateFeedCommand';
+import TagMemento from '../../Domain/Tag/Service/TagMemento';
+import IDBTagQueryRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagQueryRepository';
+import IDBTagCommandRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagCommandRepository';
+import TagCreator from '../../Domain/Tag/Service/TagCreator';
+import TagDeleter from '../../Domain/Tag/Service/TagDeleter';
+import TagUpdater from '../../Domain/Tag/Service/TagUpdater';
+import CreateTagHandler from '../../Application/Command/Tag/CreateTagHandler';
+import CreateTagCommand from '../../Application/Command/Tag/CreateTagCommand';
+
+/* ------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 
 const cardContentFactory = new CardContentFactory();
 
@@ -68,20 +82,33 @@ const deckUpdater = new DeckUpdater(deckCommandRepository, deckQueryRepository);
 
 const deckDeleter = new DeckDeleter(deckCommandRepository, deckQueryRepository);
 
+const tagMemento = new TagMemento(deckQueryRepository);
+
+const tagQueryRepository = new IDBTagQueryRepository(tagMemento, indexedDB);
+
+const tagCommandRepository = new IDBTagCommandRepository(tagMemento, indexedDB);
+
+const tagCreator = new TagCreator(tagCommandRepository);
+
+const tagUpdator = new TagUpdater(tagCommandRepository, tagQueryRepository);
+
+const tagDeleter = new TagDeleter(tagCommandRepository, tagQueryRepository);
+
 /* ------------------------------------------------------------------------- */
 /* ------------------------------------------------------------------------- */
 /* ------------------------------------------------------------------------- */
 
-export const createDeckHandler = (
-  name: string,
-  isActive: boolean,
-  settings: object
-) =>
+export const createDeck = (name: string, isActive: boolean, settings: object) =>
   new CreateDeckHandler(deckCreator).invoke(
     new CreateDeckCommand(name, isActive, settings)
   );
 
-export const updateDeckHandler = (
+export const createTag = (deckId: number, name: string, isActive: boolean) =>
+  new CreateTagHandler(deckQueryRepository, tagCreator).invoke(
+    new CreateTagCommand(deckId, name, isActive)
+  );
+
+export const updateDeck = (
   id: number,
   name: string,
   isActive: boolean,
@@ -91,10 +118,10 @@ export const updateDeckHandler = (
     new UpdateDeckCommand(id, name, isActive, settings)
   );
 
-export const deleteDeckHandler = (id: number) =>
+export const deleteDeck = (id: number) =>
   new DeleteDeckHandler(deckDeleter).invoke(new DeleteDeckCommand(id));
 
-export const createCardHandler = (
+export const createCard = (
   deckId: number,
   question: string,
   content: object,
@@ -106,21 +133,30 @@ export const createCardHandler = (
     cardCreator
   ).invoke(new CreateCardCommand(deckId, question, content, templateType));
 
-export const findActiveCardHandler = () =>
+export const findActiveCard = () =>
   new FindActiveCardHandler(cardCommandRepository, cardQueryRepository).invoke(
     new FindActiveCardCommand()
   );
 
-export const applyThemeHandler = (selector: string) =>
+export const applyTheme = (selector: string) =>
   new ApplyThemeHandler(settingsQueryRepository, themeInjector).invoke(
     new ApplyThemeCommand(selector)
   );
 
+export const generateFeed = (limit: number) =>
+  new GenerateFeedHandler(
+    deckCommandRepository,
+    deckQueryRepository,
+    tagQueryRepository
+  ).invoke(new GenerateFeedCommand(limit));
+
 export default {
-  findActiveCardHandler,
-  deleteDeckHandler,
-  applyThemeHandler,
-  createDeckHandler,
-  createCardHandler,
-  updateDeckHandler,
+  findActiveCard,
+  generateFeed,
+  deleteDeck,
+  applyTheme,
+  createDeck,
+  createCard,
+  updateDeck,
+  createTag,
 };

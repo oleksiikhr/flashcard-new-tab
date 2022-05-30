@@ -28,7 +28,7 @@ export default class IDBCardCommandRepository implements CardCommandRepository {
       throw new DomainAlreadyExistsError();
     }
 
-    const db = await this.idb.connection();
+    const db = await this.idb.database();
     delete cardRaw.id;
 
     const transaction = db.transaction(['cards', 'decks'], 'readwrite');
@@ -45,7 +45,7 @@ export default class IDBCardCommandRepository implements CardCommandRepository {
 
   async update(card: Card): Promise<void> {
     const raw = this.cardMemento.serialize(card);
-    const db = await this.idb.connection();
+    const db = await this.idb.database();
 
     const request = db
       .transaction('cards', 'readwrite')

@@ -15,7 +15,7 @@ export default class IDBDeckCommandRepository implements DeckCommandRepository {
       throw new DomainAlreadyExistsError();
     }
 
-    const db = await this.idb.connection();
+    const db = await this.idb.database();
     delete raw.id;
 
     const request = db
@@ -30,7 +30,7 @@ export default class IDBDeckCommandRepository implements DeckCommandRepository {
 
   public async update(deck: Deck): Promise<void> {
     const raw = this.memento.serialize(deck);
-    const db = await this.idb.connection();
+    const db = await this.idb.database();
 
     const request = db
       .transaction('decks', 'readwrite')
@@ -41,14 +41,14 @@ export default class IDBDeckCommandRepository implements DeckCommandRepository {
   }
 
   public async delete(id: DeckId): Promise<void> {
-    const db = await this.idb.connection();
+    const db = await this.idb.database();
 
     const request = db
       .transaction('decks', 'readwrite')
       .objectStore('decks')
       .delete(id.getIdentifier());
 
-    // TODO relations? (labels/cards)
+    // TODO relations? (tags/cards)
 
     await this.idb.request(request);
   }

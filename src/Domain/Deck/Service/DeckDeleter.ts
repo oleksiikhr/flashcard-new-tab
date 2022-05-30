@@ -19,7 +19,7 @@ export default class DeckDeleter {
       throw new Error(''); // TODO error
     }
 
-    // TODO Delete labels
+    // TODO Delete tags
 
     await this.commandRepository.delete(id);
   }

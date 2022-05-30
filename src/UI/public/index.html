@@ -16,10 +16,19 @@
       <div id="btn-1">Go Settings</div>
       <div component="card"></div>
       <br />
-      <form id="form-create">
-        <input id="deck-name" />
-        <input type="checkbox" id="deck-is_active" />
+      <form id="deck-form-create">
+        Create Deck
+        <input id="deck-name" placeholder="Deck Name" value="d1" />
+        <input id="deck-is_active" type="checkbox" checked />
         <button type="submit">Create Deck</button>
+      </form>
+      <br />
+      <form id="tag-form-create">
+        Create Tag
+        <input id="tag-deck_id" placeholder="Deck ID" value="1" />
+        <input id="tag-name" placeholder="Tag Name" value="t1" />
+        <input id="tag-is_active" type="checkbox" checked />
+        <button type="submit">Create Tag</button>
       </form>
     </div>
     <div page="settings" style="display: none">

@@ -24,8 +24,9 @@ $ make up
 - name
 - is_active
 - cards_count
-- labels_count
+- tags_count
 - settings ({ count: 1000, recalculate: 'day/week/month', algorithm: 'random/sm2/leitner' })
+- generate_at
 - updated_at
 - created_at
 
@@ -41,7 +42,7 @@ $ make up
 - updated_at
 - created_at
 
-> labels
+> tags
 - id
 - deck_id
 - name
@@ -50,9 +51,9 @@ $ make up
 - updated_at
 - created_at
 
-> card_label
+> card_tag
 - card_id
-- label_id
+- tag_id
 
 > feed
 - card_id
@@ -64,5 +65,5 @@ https://www.gettyimages.com/
 # Generate feed (every day/week/month OR on user request)
 
 - search **N** decks `true === is_active AND cards_count > 0`
-- search **N** labels `true === is_active AND cards_count > 0 AND in_decks`
-- search **N** cards `in_decks AND in_labels`
+- search **N** tags `true === is_active AND cards_count > 0 AND in_decks`
+- search **N** cards `in_decks AND in_tags`

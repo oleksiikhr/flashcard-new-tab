@@ -8,8 +8,9 @@ export default class Deck {
     private name: DeckName,
     private isActive: boolean,
     private cardsCount: number,
-    private labelsCount: number,
+    private tagsCount: number,
     private settings: DeckSettings,
+    private generateAt: Date,
     private updatedAt: Date,
     private createdAt: Date
   ) {}
@@ -26,6 +27,7 @@ export default class Deck {
       0,
       0,
       settings,
+      new Date(),
       new Date(),
       new Date()
     );
@@ -68,12 +70,20 @@ export default class Deck {
     return this.cardsCount;
   }
 
-  public getLabelsCount(): number {
-    return this.labelsCount;
+  public getTagsCount(): number {
+    return this.tagsCount;
   }
 
   public getSettings(): DeckSettings {
     return this.settings;
+  }
+
+  public updateGenerateAt(): void {
+    this.generateAt = new Date();
+  }
+
+  public getGeneratedAt(): Date {
+    return this.generateAt;
   }
 
   public getUpdatedAt(): Date {

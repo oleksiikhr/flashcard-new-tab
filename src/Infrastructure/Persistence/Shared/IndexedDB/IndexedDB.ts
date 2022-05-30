@@ -2,7 +2,7 @@ import { error } from '../../../../Domain/Shared/Util/logger';
 import { random } from '../../../../Domain/Shared/Util/number';
 
 export default class IndexedDB {
-  private conn: IDBDatabase | null = null;
+  private db: IDBDatabase | null = null;
 
   constructor(
     private name: string,
@@ -24,7 +24,11 @@ export default class IndexedDB {
           searching = false;
           cursor.advance(random(1, total - 1));
         } else {
-          resolve(cursor.value as T);
+          try {
+            resolve(cursor.value as T);
+          } catch (e) {
+            reject(e);
+          }
         }
       };
 
@@ -48,9 +52,9 @@ export default class IndexedDB {
     });
   }
 
-  public connection(): Promise<IDBDatabase> {
-    if (null !== this.conn) {
-      return Promise.resolve(this.conn);
+  public database(): Promise<IDBDatabase> {
+    if (null !== this.db) {
+      return Promise.resolve(this.db);
     }
 
     return new Promise<IDBDatabase>((resolve, reject) => {
@@ -67,10 +71,10 @@ export default class IndexedDB {
       };
 
       req.onerror = reject;
-    }).then((connection) => {
-      this.conn = connection;
+    }).then((db) => {
+      this.db = db;
 
-      return connection;
+      return db;
     });
   }
 }
