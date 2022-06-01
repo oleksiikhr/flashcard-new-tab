@@ -9,14 +9,14 @@ import DomainDoesNotExistsError from '../../../Infrastructure/Persistence/Shared
 export default class DeckUpdater {
   constructor(
     private commandRepository: DeckCommandRepository,
-    private queryRepository: DeckQueryRepository
+    private queryRepository: DeckQueryRepository,
   ) {}
 
   public async update(
     id: DeckId,
     name: DeckName,
     isActive: boolean,
-    settings: DeckSettings
+    settings: DeckSettings,
   ): Promise<Deck> {
     const deck = await this.queryRepository.findById(id);
 

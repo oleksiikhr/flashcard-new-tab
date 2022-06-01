@@ -1,6 +1,6 @@
 export function h(
   type: string,
-  props: { [key: string]: string | EventListenerOrEventListenerObject } = {}
+  props: { [key: string]: string | EventListenerOrEventListenerObject } = {},
 ) {
   const element = document.createElement(type);
 

@@ -8,13 +8,13 @@ import DomainDoesNotExistsError from '../../../Infrastructure/Persistence/Shared
 export default class TagUpdater {
   constructor(
     private commandRepository: TagCommandRepository,
-    private queryRepository: TagQueryRepository
+    private queryRepository: TagQueryRepository,
   ) {}
 
   public async update(
     id: TagId,
     name: TagName,
-    isActive: boolean
+    isActive: boolean,
   ): Promise<Tag> {
     const tag = await this.queryRepository.findById(id);
 

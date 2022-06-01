@@ -13,7 +13,7 @@ export default class UpdateDeckHandler {
       DeckId.of(command.getId()),
       new DeckName(command.getName()),
       command.getIsActive(),
-      new DeckSettings(command.getSettings())
+      new DeckSettings(command.getSettings()),
     );
   }
 }

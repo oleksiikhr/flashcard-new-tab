@@ -12,22 +12,47 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
     const db = await this.idb.database();
 
     const request = db
-      .transaction('tags')
+      .transaction('tags', 'readonly')
       .objectStore('tags')
       .get(id.getIdentifier());
 
     return this.idb
       .request<TagRaw>(request)
       .then((raw) =>
-        undefined !== raw ? this.memento.unserialize(raw) : undefined
+        undefined !== raw ? this.memento.unserialize(raw) : undefined,
       );
+  }
+
+  async findByIds(ids: TagId[]): Promise<Tag[]> {
+    const db = await this.idb.database();
+
+    const request = db.transaction('tags', 'readonly').objectStore('tags');
+
+    const promises = ids.map((id) =>
+      this.idb
+        .request<TagRaw>(request.get(id.getIdentifier()))
+        .then((raw) =>
+          undefined !== raw ? this.memento.unserialize(raw) : undefined,
+        ),
+    );
+
+    const tags = await Promise.all<Tag | undefined>(promises);
+    const filtered: Tag[] = [];
+
+    tags.forEach((tag) => {
+      if (undefined !== tag) {
+        filtered.push(tag);
+      }
+    });
+
+    return filtered;
   }
 
   async findActiveByDeckId(deckId: DeckId): Promise<Tag[]> {
     const db = await this.idb.database();
 
     const request = db
-      .transaction('tags')
+      .transaction('tags', 'readonly')
       .objectStore('tags')
       .index('deck_id_and_is_active')
       .getAll([deckId.getIdentifier(), 1]);
@@ -36,8 +61,8 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
       .request<TagRaw[]>(request)
       .then((raws) =>
         Promise.all(
-          (raws as TagRaw[]).map((raw) => this.memento.unserialize(raw))
-        )
+          (raws as TagRaw[]).map((raw) => this.memento.unserialize(raw)),
+        ),
       );
   }
 }

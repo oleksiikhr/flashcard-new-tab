@@ -32,9 +32,11 @@ export default (event: IDBVersionChangeEvent): Promise<void> =>
       keyPath: ['card_id', 'tag_id'],
     });
 
-    db.createObjectStore('feed', {
+    const feed = db.createObjectStore('feed', {
       keyPath: 'card_id',
     });
+
+    feed.createIndex('deck_id', 'deck_id');
 
     resolve();
   });

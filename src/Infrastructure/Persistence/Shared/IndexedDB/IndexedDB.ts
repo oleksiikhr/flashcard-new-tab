@@ -6,13 +6,13 @@ export default class IndexedDB {
 
   constructor(
     private name: string,
-    private migrations: ((event: IDBVersionChangeEvent) => Promise<void>)[]
+    private migrations: ((event: IDBVersionChangeEvent) => Promise<void>)[],
   ) {}
 
   public random<T>(
     request: IDBRequest<IDBCursorWithValue | null>,
-    total: number
-  ): Promise<T | null> {
+    totalRecords: number,
+  ): Promise<T | undefined> {
     return new Promise((resolve, reject) => {
       let searching = true;
 
@@ -20,21 +20,47 @@ export default class IndexedDB {
         const cursor = (event.target as IDBRequest)
           .result as IDBCursorWithValue;
 
-        if (searching) {
+        if (searching && 1 !== totalRecords) {
           searching = false;
-          cursor.advance(random(1, total - 1));
+          cursor.advance(random(1, totalRecords - 1));
         } else {
-          try {
-            resolve(cursor.value as T);
-          } catch (e) {
-            reject(e);
-          }
+          resolve(cursor.value as T);
         }
       };
 
       request.onerror = reject;
     });
   }
+
+  // public cursor<T>(
+  //   request: IDBRequest,
+  //   callback: (result: T) => boolean,
+  // ): Promise<void> {
+  //   return new Promise((resolve, reject) => {
+  //     request.onsuccess = (event) => {
+  //       const cursor = (event.target as IDBRequest)
+  //         .result as IDBCursorWithValue | undefined;
+  //
+  //       if (!cursor) {
+  //         resolve();
+  //         return;
+  //       }
+  //
+  //       try {
+  //         if (!callback(cursor.value as T)) {
+  //           resolve();
+  //           return;
+  //         }
+  //
+  //         cursor.continue();
+  //       } catch (e) {
+  //         reject(e);
+  //       }
+  //     };
+  //
+  //     request.onerror = reject;
+  //   });
+  // }
 
   public request<T>(request: IDBRequest): Promise<T | undefined> {
     return new Promise((resolve, reject) => {

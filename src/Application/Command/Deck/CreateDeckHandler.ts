@@ -11,7 +11,7 @@ export default class CreateDeckHandler {
     return this.creator.create(
       new DeckName(command.getName()),
       command.getIsActive(),
-      new DeckSettings(command.getSettings())
+      new DeckSettings(command.getSettings()),
     );
   }
 }

@@ -4,6 +4,7 @@ import TagCommandRepository from '../../../../Domain/Tag/Repository/TagCommandRe
 import DomainAlreadyExistsError from '../../Shared/IndexedDB/Error/DomainAlreadyExistsError';
 import TagId from '../../../../Domain/Tag/TagId';
 import TagMemento from '../../../../Domain/Tag/Service/TagMemento';
+import DeckId from '../../../../Domain/Deck/DeckId';
 
 export default class IDBTagCommandRepository implements TagCommandRepository {
   constructor(private memento: TagMemento, private idb: IndexedDB) {}
@@ -52,4 +53,16 @@ export default class IDBTagCommandRepository implements TagCommandRepository {
 
     await this.idb.request(request);
   }
+
+  // public async deleteByDeckId(deckId: DeckId): Promise<void> {
+  //   const db = await this.idb.database();
+  //
+  //   const request = db
+  //     .transaction('tags', 'readwrite')
+  //     .objectStore('tags')
+  //     .index('deck_id_and_is_active')
+  //     .openKeyCursor();
+  //
+  //   await Promise.all(this.idb.request(request));
+  // }
 }

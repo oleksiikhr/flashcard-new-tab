@@ -5,7 +5,7 @@ import DeckQueryRepository from '../Repository/DeckQueryRepository';
 export default class DeckDeleter {
   constructor(
     private commandRepository: DeckCommandRepository,
-    private queryRepository: DeckQueryRepository
+    private queryRepository: DeckQueryRepository,
   ) {}
 
   public async delete(id: DeckId): Promise<void> {

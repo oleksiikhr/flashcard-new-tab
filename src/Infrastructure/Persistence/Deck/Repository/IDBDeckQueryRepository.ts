@@ -1,9 +1,7 @@
 import DeckQueryRepository from '../../../../Domain/Deck/Repository/DeckQueryRepository';
 import Deck from '../../../../Domain/Deck/Deck';
 import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
-import DeckMemento, {
-  DeckRaw,
-} from '../../../../Domain/Deck/Service/DeckMemento';
+import DeckMemento, { DeckRaw } from '../../../../Domain/Deck/DeckMemento';
 import DeckId from '../../../../Domain/Deck/DeckId';
 
 export default class IDBDeckQueryRepository implements DeckQueryRepository {
@@ -20,7 +18,7 @@ export default class IDBDeckQueryRepository implements DeckQueryRepository {
     return this.idb
       .request<DeckRaw>(request)
       .then((raw) =>
-        undefined !== raw ? this.memento.unserialize(raw) : undefined
+        undefined !== raw ? this.memento.unserialize(raw) : undefined,
       );
   }
 

@@ -9,7 +9,7 @@ export default class DeckCreator {
   public async create(
     name: DeckName,
     isActive: boolean,
-    settings: DeckSettings
+    settings: DeckSettings,
   ): Promise<Deck> {
     const deck = Deck.create(name, isActive, settings);
 

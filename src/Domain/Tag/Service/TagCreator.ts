@@ -9,7 +9,7 @@ export default class TagCreator {
   public async create(
     deck: Deck,
     name: TagName,
-    isActive: boolean
+    isActive: boolean,
   ): Promise<Tag> {
     const tag = Tag.create(deck, name, isActive);
 

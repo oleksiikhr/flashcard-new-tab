@@ -10,7 +10,7 @@ export default class Tag {
     private cardsCount: number,
     private isActive: boolean,
     private updatedAt: Date,
-    private createdAt: Date
+    private createdAt: Date,
   ) {}
 
   public static create(deck: Deck, name: TagName, isActive: boolean): Tag {

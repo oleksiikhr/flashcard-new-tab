@@ -4,6 +4,7 @@ import CardContent from './Content/CardContent';
 import CardTemplateType from './CardTemplateType';
 import CardStatistics from './CardStatistics';
 import Deck from '../Deck/Deck';
+import Tag from '../Tag/Tag';
 
 export default class Card {
   constructor(
@@ -16,14 +17,16 @@ export default class Card {
     private nextAt: Date,
     private seenAt: Date,
     private updatedAt: Date,
-    private createdAt: Date
+    private createdAt: Date,
+    private tags: Tag[],
   ) {}
 
   public static create(
     deck: Deck,
     question: CardQuestion,
     content: CardContent,
-    templateType: CardTemplateType
+    templateType: CardTemplateType,
+    tags: Tag[],
   ): Card {
     return new Card(
       undefined,
@@ -35,7 +38,8 @@ export default class Card {
       new Date(),
       new Date(),
       new Date(),
-      new Date()
+      new Date(),
+      tags,
     );
   }
 
@@ -91,5 +95,9 @@ export default class Card {
 
   public getCreatedAt(): Date {
     return this.createdAt;
+  }
+
+  public getTags(): Tag[] {
+    return this.tags;
   }
 }

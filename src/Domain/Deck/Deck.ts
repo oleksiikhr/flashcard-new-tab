@@ -12,13 +12,13 @@ export default class Deck {
     private settings: DeckSettings,
     private generateAt: Date,
     private updatedAt: Date,
-    private createdAt: Date
+    private createdAt: Date,
   ) {}
 
   public static create(
     name: DeckName,
     isActive: boolean,
-    settings: DeckSettings
+    settings: DeckSettings,
   ): Deck {
     return new Deck(
       undefined,
@@ -29,7 +29,7 @@ export default class Deck {
       settings,
       new Date(),
       new Date(),
-      new Date()
+      new Date(),
     );
   }
 

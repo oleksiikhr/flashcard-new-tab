@@ -9,12 +9,12 @@ import DeckId from '../../../Domain/Deck/DeckId';
 export default class CreateTagHandler {
   constructor(
     private deckQueryRepository: DeckQueryRepository,
-    private creator: TagCreator
+    private creator: TagCreator,
   ) {}
 
   public async invoke(command: CreateTagCommand): Promise<Tag> {
     const deck = await this.deckQueryRepository.findById(
-      DeckId.of(command.getDeckId())
+      DeckId.of(command.getDeckId()),
     );
 
     if (undefined === deck) {
@@ -24,7 +24,7 @@ export default class CreateTagHandler {
     return this.creator.create(
       deck,
       new TagName(command.getName()),
-      command.getIsActive()
+      command.getIsActive(),
     );
   }
 }

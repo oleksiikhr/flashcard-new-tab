@@ -5,7 +5,7 @@ import TagId from '../TagId';
 export default class TagDeleter {
   constructor(
     private commandRepository: TagCommandRepository,
-    private queryRepository: TagQueryRepository
+    private queryRepository: TagQueryRepository,
   ) {}
 
   public async delete(id: TagId): Promise<void> {

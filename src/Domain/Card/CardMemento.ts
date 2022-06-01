@@ -1,11 +1,14 @@
-import CardContentFactory from '../Content/CardContentFactory';
-import CardStatistics, { CardStatisticsRaw } from '../CardStatistics';
-import Card from '../Card';
-import CardTemplateType from '../CardTemplateType';
-import CardId from '../CardId';
-import DeckId from '../../Deck/DeckId';
-import CardQuestion from '../CardQuestion';
-import DeckQueryRepository from '../../Deck/Repository/DeckQueryRepository';
+import CardContentFactory from './Content/CardContentFactory';
+import CardStatistics, { CardStatisticsRaw } from './CardStatistics';
+import Card from './Card';
+import CardTemplateType from './CardTemplateType';
+import CardId from './CardId';
+import DeckId from '../Deck/DeckId';
+import CardQuestion from './CardQuestion';
+import DeckQueryRepository from '../Deck/Repository/DeckQueryRepository';
+import TagQueryRepository from '../Tag/Repository/TagQueryRepository';
+import Tag from '../Tag/Tag';
+import TagId from '../Tag/TagId';
 
 export type CardRaw = {
   id: number | undefined;
@@ -18,12 +21,14 @@ export type CardRaw = {
   seen_at: Date;
   updated_at: Date;
   created_at: Date;
+  tagIds: number[];
 };
 
 export default class CardMemento {
   constructor(
     private deckQueryRepository: DeckQueryRepository,
-    private contentFactory: CardContentFactory
+    private tagQueryRepository: TagQueryRepository,
+    private contentFactory: CardContentFactory,
   ) {}
 
   public serialize(card: Card): CardRaw {
@@ -38,14 +43,25 @@ export default class CardMemento {
       seen_at: card.getSeenAt(),
       updated_at: card.getUpdatedAt(),
       created_at: card.getCreatedAt(),
+      tagIds: card
+        .getTags()
+        .map((tag) => tag.getId()?.getIdentifier() as number),
     };
   }
 
   public async unserialize(raw: CardRaw): Promise<Card> {
+    console.log(raw);
+    let tags: Tag[] = [];
     let deck;
 
     if (undefined !== raw.deck_id) {
       deck = await this.deckQueryRepository.findById(DeckId.of(raw.deck_id));
+    }
+
+    if ([] !== raw.tagIds) {
+      tags = await this.tagQueryRepository.findByIds(
+        raw.tagIds.map((tagId) => TagId.of(tagId)),
+      );
     }
 
     const templateType = new CardTemplateType(raw.template_type);
@@ -60,7 +76,8 @@ export default class CardMemento {
       raw.next_at,
       raw.seen_at,
       raw.updated_at,
-      raw.created_at
+      raw.created_at,
+      tags,
     );
   }
 }

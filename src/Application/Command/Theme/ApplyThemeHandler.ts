@@ -6,7 +6,7 @@ import SettingsQueryRepository from '../../../Domain/Settings/Repository/Setting
 export default class ApplyThemeHandler {
   constructor(
     private queryRepository: SettingsQueryRepository,
-    private themeInjector: ThemeInjector
+    private themeInjector: ThemeInjector,
   ) {}
 
   public invoke(command: ApplyThemeCommand) {

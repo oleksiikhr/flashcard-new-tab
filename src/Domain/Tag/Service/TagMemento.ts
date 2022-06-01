@@ -43,7 +43,7 @@ export default class TagMemento {
       raw.cards_count,
       !!raw.is_active,
       raw.updated_at,
-      raw.created_at
+      raw.created_at,
     );
   }
 }

@@ -1,7 +1,7 @@
-import Deck from '../Deck';
-import DeckId from '../DeckId';
-import DeckName from '../DeckName';
-import DeckSettings from '../DeckSettings';
+import Deck from './Deck';
+import DeckId from './DeckId';
+import DeckName from './DeckName';
+import DeckSettings from './DeckSettings';
 
 export type DeckRaw = {
   id: number | undefined;
@@ -40,7 +40,7 @@ export default class DeckMemento {
       new DeckSettings(raw.settings),
       raw.generate_at,
       raw.updated_at,
-      raw.created_at
+      raw.created_at,
     );
   }
 }

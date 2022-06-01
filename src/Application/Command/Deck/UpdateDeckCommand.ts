@@ -3,7 +3,7 @@ export default class UpdateDeckCommand {
     private id: number,
     private name: string,
     private isActive: boolean,
-    private settings: object
+    private settings: object,
   ) {}
 
   public getId(): number {

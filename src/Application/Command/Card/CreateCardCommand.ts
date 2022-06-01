@@ -3,7 +3,8 @@ export default class CreateCardCommand {
     private deckId: number,
     private question: string,
     private content: object,
-    private templateType: number
+    private templateType: number,
+    private tagIds: number[],
   ) {}
 
   public getDeckId(): number {
@@ -20,5 +21,9 @@ export default class CreateCardCommand {
 
   public getTemplateType(): number {
     return this.templateType;
+  }
+
+  public getTagIds(): number[] {
+    return this.tagIds;
   }
 }

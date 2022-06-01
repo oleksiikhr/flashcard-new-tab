@@ -3,15 +3,15 @@ import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 import { CardCommandRepository } from '../../../../Domain/Card/Repository/CardCommandRepository';
 import DomainAlreadyExistsError from '../../Shared/IndexedDB/Error/DomainAlreadyExistsError';
 import CardId from '../../../../Domain/Card/CardId';
-import CardMemento from '../../../../Domain/Card/Service/CardMemento';
-import DeckMemento from '../../../../Domain/Deck/Service/DeckMemento';
+import CardMemento from '../../../../Domain/Card/CardMemento';
+import DeckMemento from '../../../../Domain/Deck/DeckMemento';
 import DomainDoesNotExistsError from '../../Shared/IndexedDB/Error/DomainDoesNotExistsError';
 
 export default class IDBCardCommandRepository implements CardCommandRepository {
   constructor(
     private deckMemento: DeckMemento,
     private cardMemento: CardMemento,
-    private idb: IndexedDB
+    private idb: IndexedDB,
   ) {}
 
   async create(card: Card): Promise<void> {

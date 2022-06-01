@@ -2,7 +2,7 @@ export default class CreateTagCommand {
   constructor(
     private deckId: number,
     private name: string,
-    private isActive: boolean
+    private isActive: boolean,
   ) {}
 
   public getDeckId(): number {

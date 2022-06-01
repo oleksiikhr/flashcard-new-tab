@@ -18,7 +18,7 @@ export default class Theme {
     // console.log(raw); // TODO Or default
     return new Theme(
       ThemeType.of(raw.type ?? ThemeType.CLASSIC),
-      raw.color ? new ThemeColor(raw.color) : ThemeColor.createBlue()
+      raw.color ? new ThemeColor(raw.color) : ThemeColor.createBlue(),
     );
   }
 
