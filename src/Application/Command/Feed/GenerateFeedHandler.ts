@@ -17,11 +17,11 @@ export default class GenerateFeedHandler {
   ) {}
 
   async invoke(command: GenerateFeedCommand) {
-    await this.cardQueryRepository.findById(CardId.of(1))
+    await this.cardQueryRepository.findById(CardId.of(1));
 
-    // const decks = await this.deckQueryRepository.findGenerateAtUpperByNow(
-    //   command.getLimit(),
-    // );
+    const decks = await this.deckQueryRepository.findGenerateAtUpperByNow(
+      command.getLimit(),
+    );
     // console.log('GenerateFeedHandler', decks);
     //
     // const card = await this.cardQueryRepository.findById(CardId.of(1));

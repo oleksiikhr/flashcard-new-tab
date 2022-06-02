@@ -17,37 +17,38 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
 
     const transaction = db.transaction(['feed', 'cards'], 'readwrite');
 
-    transaction.addEventListener('complete', (evt) => console.log(evt))
+    transaction.addEventListener('complete', (evt) => console.log(evt));
 
     const promises = [];
-    for (let i = 0; i < 2000; i++) {
-      const request = transaction.objectStore('feed')
+    for (let i = 0; 2000 > i; i += 1) {
+      const request = transaction
+        .objectStore('feed')
         .add({ card_id: i, deck_id: i });
 
       promises.push(this.idb.request(request));
 
-      if (i === 100) {
+      if (100 === i) {
         transaction.abort();
-        throw new Error('2')
+        throw new Error('2');
       }
     }
     // console.log(promises);
-    throw new Error('1')
+    throw new Error('1');
 
     console.log(id);
-  //   const db = await this.idb.database();
-  //
-  //   const transaction = db.transaction(['cards', 'tags'], 'readonly');
-  //
-  //   // TODO
-  //   console.log(id);
-  //
-  //   const request = transaction.objectStore('cards').get(id.getIdentifier());
-  //
-  //   return this.idb
-  //     .request<CardRaw>(request)
-  //     .then((raw) =>
-  //       undefined !== raw ? this.memento.unserialize(raw) : undefined,
-  //     );
+    //   const db = await this.idb.database();
+    //
+    //   const transaction = db.transaction(['cards', 'tags'], 'readonly');
+    //
+    //   // TODO
+    //   console.log(id);
+    //
+    //   const request = transaction.objectStore('cards').get(id.getIdentifier());
+    //
+    //   return this.idb
+    //     .request<CardRaw>(request)
+    //     .then((raw) =>
+    //       undefined !== raw ? this.memento.unserialize(raw) : undefined,
+    //     );
   }
 }
