@@ -12,7 +12,7 @@ import TagId from '../Tag/TagId';
 
 export type CardRaw = {
   id: number | undefined;
-  deck_id: number | undefined;
+  deck_id: number;
   question: string;
   content: object;
   template_type: number;
@@ -33,8 +33,8 @@ export default class CardMemento {
 
   public serialize(card: Card): CardRaw {
     return {
-      id: card.getId()?.getIdentifier(),
-      deck_id: card.getDeck()?.getId()?.getIdentifier(),
+      id: card.getId().getIdentifier(),
+      deck_id: card.getDeck().getId().getIdentifier(),
       question: card.getQuestion().getValue(),
       content: card.getContent().serialize(),
       template_type: card.getTemplateType().getValue(),
@@ -43,19 +43,18 @@ export default class CardMemento {
       seen_at: card.getSeenAt(),
       updated_at: card.getUpdatedAt(),
       created_at: card.getCreatedAt(),
-      tagIds: card
-        .getTags()
-        .map((tag) => tag.getId()?.getIdentifier() as number),
+      tagIds: card.getTags().map((tag) => tag.getId()?.getIdentifier()), // TODO Store
     };
   }
 
   public async unserialize(raw: CardRaw): Promise<Card> {
-    console.log(raw);
     let tags: Tag[] = [];
-    let deck;
+    const deck = await this.deckQueryRepository.findById(
+      DeckId.of(raw.deck_id),
+    );
 
-    if (undefined !== raw.deck_id) {
-      deck = await this.deckQueryRepository.findById(DeckId.of(raw.deck_id));
+    if (undefined === deck) {
+      throw new Error(''); // TODO
     }
 
     if ([] !== raw.tagIds) {

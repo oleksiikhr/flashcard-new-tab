@@ -1,8 +1,7 @@
 import FeedQueryRepository from '../../../Domain/Feed/Repository/FeedQueryRepository';
-import FindFeedCommand from './FindFeedCommand';
-import { CardCommandRepository } from '../../../Domain/Card/Repository/CardCommandRepository';
+import CardCommandRepository from '../../../Domain/Card/Repository/CardCommandRepository';
 import Card from '../../../Domain/Card/Card';
-import { CardQueryRepository } from '../../../Domain/Card/Repository/CardQueryRepository';
+import CardQueryRepository from '../../../Domain/Card/Repository/CardQueryRepository';
 
 export default class FindFeedHandler {
   constructor(
@@ -11,7 +10,7 @@ export default class FindFeedHandler {
     private queryRepository: FeedQueryRepository,
   ) {}
 
-  public async invoke(command: FindFeedCommand): Promise<Card | undefined> {
+  public async invoke(): Promise<Card | undefined> {
     const cardId = await this.queryRepository.findRandom();
 
     if (undefined === cardId) {

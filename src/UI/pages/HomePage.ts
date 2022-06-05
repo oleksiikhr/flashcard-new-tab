@@ -4,8 +4,8 @@ import {
   createCard,
   createDeck,
   createTag,
+  deleteCard,
   findFeed,
-  generateFeed,
 } from '../bootstrap/bus';
 import { log, error } from '../../Domain/Shared/Util/logger';
 import pageManager from './PageManager';
@@ -94,14 +94,15 @@ export default class HomePage implements Page {
       ?.addEventListener('click', (evt) => {
         evt.preventDefault();
 
-        generateFeed(10).then(console.log).catch(console.error);
+        deleteCard(1).then(log).catch(error);
+        // generateFeed(10).then(console.log).catch(console.error);
       });
   }
 
   mount() {
     findFeed()
-      .then((r) => console.log('findFeed', r))
-      .catch(console.error);
+      .then((r) => log('findFeed', r))
+      .catch(error);
 
     // TODO opacity/transition
     this.rootElement.style.display = '';

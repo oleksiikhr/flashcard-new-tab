@@ -16,6 +16,7 @@ export default class ThemeInjector {
       body: {
         background: 'black',
         color: 'white',
+        something: theme.getType().getValue().toString(),
       },
     });
   }

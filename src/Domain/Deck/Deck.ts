@@ -40,15 +40,23 @@ export default class Deck {
     this.updatedAt = new Date();
   }
 
+  public isExists(): boolean {
+    return undefined !== this.id;
+  }
+
   public setId(id: DeckId): void {
-    if (undefined !== this.id) {
+    if (this.isExists()) {
       throw new Error('ID is already exists');
     }
 
     this.id = id;
   }
 
-  public getId(): DeckId | undefined {
+  public getId(): DeckId {
+    if (undefined === this.id) {
+      throw new Error(''); // TODO
+    }
+
     return this.id;
   }
 
@@ -58,12 +66,6 @@ export default class Deck {
 
   public getIsActive(): boolean {
     return this.isActive;
-  }
-
-  public incrementCardsCount(increment = 1): void {
-    this.cardsCount += increment;
-
-    this.updatedAt = new Date();
   }
 
   public getCardsCount(): number {

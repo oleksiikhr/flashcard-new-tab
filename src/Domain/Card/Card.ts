@@ -9,7 +9,7 @@ import Tag from '../Tag/Tag';
 export default class Card {
   constructor(
     private id: CardId | undefined,
-    private deck: Deck | undefined,
+    private deck: Deck,
     private question: CardQuestion,
     private content: CardContent,
     private templateType: CardTemplateType,
@@ -43,25 +43,27 @@ export default class Card {
     );
   }
 
+  public isExists(): boolean {
+    return undefined !== this.id;
+  }
+
   public setId(id: CardId): void {
-    if (undefined !== this.id) {
+    if (this.isExists()) {
       throw new Error('ID is already exists');
     }
 
     this.id = id;
   }
 
-  public updateLastView(): void {
-    this.nextAt = new Date();
+  public getId(): CardId {
+    if (undefined === this.id) {
+      throw new Error(''); // TODO
+    }
 
-    this.statistics.increaseViews();
-  }
-
-  public getId(): CardId | undefined {
     return this.id;
   }
 
-  public getDeck(): Deck | undefined {
+  public getDeck(): Deck {
     return this.deck;
   }
 
@@ -99,5 +101,11 @@ export default class Card {
 
   public getTags(): Tag[] {
     return this.tags;
+  }
+
+  public updateLastView(): void {
+    this.nextAt = new Date();
+
+    this.statistics.increaseViews();
   }
 }

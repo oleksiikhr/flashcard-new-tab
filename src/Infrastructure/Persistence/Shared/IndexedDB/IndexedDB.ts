@@ -78,7 +78,7 @@ export default class IndexedDB {
     });
   }
 
-  public database(): Promise<IDBDatabase> {
+  public openDB(): Promise<IDBDatabase> {
     if (null !== this.db) {
       return Promise.resolve(this.db);
     }

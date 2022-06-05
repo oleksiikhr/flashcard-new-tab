@@ -1,6 +1,6 @@
 import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 import TagQueryRepository from '../../../../Domain/Tag/Repository/TagQueryRepository';
-import TagMemento, { TagRaw } from '../../../../Domain/Tag/Service/TagMemento';
+import TagMemento, { TagRaw } from '../../../../Domain/Tag/TagMemento';
 import TagId from '../../../../Domain/Tag/TagId';
 import Tag from '../../../../Domain/Tag/Tag';
 import DeckId from '../../../../Domain/Deck/DeckId';
@@ -9,7 +9,7 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
   constructor(private memento: TagMemento, private idb: IndexedDB) {}
 
   async findById(id: TagId): Promise<Tag | undefined> {
-    const db = await this.idb.database();
+    const db = await this.idb.openDB();
 
     const request = db
       .transaction('tags', 'readonly')
@@ -24,7 +24,7 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
   }
 
   async findByIds(ids: TagId[]): Promise<Tag[]> {
-    const db = await this.idb.database();
+    const db = await this.idb.openDB();
 
     const request = db.transaction('tags', 'readonly').objectStore('tags');
 
@@ -49,7 +49,7 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
   }
 
   async findActiveByDeckId(deckId: DeckId): Promise<Tag[]> {
-    const db = await this.idb.database();
+    const db = await this.idb.openDB();
 
     const request = db
       .transaction('tags', 'readonly')

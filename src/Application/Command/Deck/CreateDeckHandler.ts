@@ -1,17 +1,24 @@
-import CreateDeckCommand from './CreateDeckCommand';
 import Deck from '../../../Domain/Deck/Deck';
-import DeckCreator from '../../../Domain/Deck/Service/DeckCreator';
 import DeckName from '../../../Domain/Deck/DeckName';
 import DeckSettings from '../../../Domain/Deck/DeckSettings';
+import DeckCommandRepository from '../../../Domain/Deck/Repository/DeckCommandRepository';
 
 export default class CreateDeckHandler {
-  constructor(private creator: DeckCreator) {}
+  constructor(private commandRepository: DeckCommandRepository) {}
 
-  public invoke(command: CreateDeckCommand): Promise<Deck> {
-    return this.creator.create(
-      new DeckName(command.getName()),
-      command.getIsActive(),
-      new DeckSettings(command.getSettings()),
+  public async invoke(
+    name: string,
+    isActive: boolean,
+    settings: object,
+  ): Promise<Deck> {
+    const deck = Deck.create(
+      new DeckName(name),
+      isActive,
+      new DeckSettings(settings),
     );
+
+    await this.commandRepository.create(deck);
+
+    return deck;
   }
 }

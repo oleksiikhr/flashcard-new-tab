@@ -5,7 +5,7 @@ import Deck from '../Deck/Deck';
 export default class Tag {
   constructor(
     private id: TagId | undefined,
-    private deck: Deck | undefined,
+    private deck: Deck,
     private name: TagName,
     private cardsCount: number,
     private isActive: boolean,
@@ -23,19 +23,27 @@ export default class Tag {
     this.updatedAt = new Date();
   }
 
+  public isExists(): boolean {
+    return undefined !== this.id;
+  }
+
   public setId(id: TagId): void {
-    if (undefined !== this.id) {
+    if (this.isExists()) {
       throw new Error('ID is already exists');
     }
 
     this.id = id;
   }
 
-  public getId(): TagId | undefined {
+  public getId(): TagId {
+    if (undefined === this.id) {
+      throw new Error(''); // TODO
+    }
+
     return this.id;
   }
 
-  public getDeck(): Deck | undefined {
+  public getDeck(): Deck {
     return this.deck;
   }
 

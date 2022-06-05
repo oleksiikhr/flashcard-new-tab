@@ -1,14 +1,17 @@
 import Card from '../../../../Domain/Card/Card';
 import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
-import { CardCommandRepository } from '../../../../Domain/Card/Repository/CardCommandRepository';
+import CardCommandRepository from '../../../../Domain/Card/Repository/CardCommandRepository';
 import DomainAlreadyExistsError from '../../Shared/IndexedDB/Error/DomainAlreadyExistsError';
 import CardId from '../../../../Domain/Card/CardId';
 import CardMemento from '../../../../Domain/Card/CardMemento';
 import DeckMemento from '../../../../Domain/Deck/DeckMemento';
 import DomainDoesNotExistsError from '../../Shared/IndexedDB/Error/DomainDoesNotExistsError';
+import TransactionPipeline from '../../Shared/IndexedDB/TransactionPipeline';
+import CardDeleteTransactionEvent from '../Event/CardDeleteTransactionEvent';
 
 export default class IDBCardCommandRepository implements CardCommandRepository {
   constructor(
+    private pipeline: TransactionPipeline,
     private deckMemento: DeckMemento,
     private cardMemento: CardMemento,
     private idb: IndexedDB,
@@ -28,7 +31,7 @@ export default class IDBCardCommandRepository implements CardCommandRepository {
       throw new DomainAlreadyExistsError();
     }
 
-    const db = await this.idb.database();
+    const db = await this.idb.openDB();
     delete cardRaw.id;
 
     const transaction = db.transaction(['cards', 'decks'], 'readwrite');
@@ -45,7 +48,7 @@ export default class IDBCardCommandRepository implements CardCommandRepository {
 
   async update(card: Card): Promise<void> {
     const raw = this.cardMemento.serialize(card);
-    const db = await this.idb.database();
+    const db = await this.idb.openDB();
 
     const request = db
       .transaction('cards', 'readwrite')
@@ -53,5 +56,9 @@ export default class IDBCardCommandRepository implements CardCommandRepository {
       .put(raw);
 
     await this.idb.request(request);
+  }
+
+  delete(card: Card): Promise<void> {
+    return this.pipeline.trigger(new CardDeleteTransactionEvent(card));
   }
 }

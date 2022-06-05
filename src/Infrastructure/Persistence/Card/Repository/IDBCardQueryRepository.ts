@@ -1,9 +1,10 @@
 import Card from '../../../../Domain/Card/Card';
 import CardId from '../../../../Domain/Card/CardId';
+import CardQueryRepository from '../../../../Domain/Card/Repository/CardQueryRepository';
 import CardContentFactory from '../../../../Domain/Card/Content/CardContentFactory';
-import { CardQueryRepository } from '../../../../Domain/Card/Repository/CardQueryRepository';
-import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 import CardMemento, { CardRaw } from '../../../../Domain/Card/CardMemento';
+import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
+import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
 
 export default class IDBCardQueryRepository implements CardQueryRepository {
   constructor(
@@ -13,42 +14,14 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
   ) {}
 
   async findById(id: CardId): Promise<Card | undefined> {
-    const db = await this.idb.database();
+    const db = await this.idb.openDB();
 
-    const transaction = db.transaction(['feed', 'cards'], 'readwrite');
+    const transaction = db.transaction(['cards', 'tags'], 'readonly');
 
-    transaction.addEventListener('complete', (evt) => console.log(evt));
+    const request = transaction.objectStore('cards').get(id.getIdentifier());
 
-    const promises = [];
-    for (let i = 0; 2000 > i; i += 1) {
-      const request = transaction
-        .objectStore('feed')
-        .add({ card_id: i, deck_id: i });
-
-      promises.push(this.idb.request(request));
-
-      if (100 === i) {
-        transaction.abort();
-        throw new Error('2');
-      }
-    }
-    // console.log(promises);
-    throw new Error('1');
-
-    console.log(id);
-    //   const db = await this.idb.database();
-    //
-    //   const transaction = db.transaction(['cards', 'tags'], 'readonly');
-    //
-    //   // TODO
-    //   console.log(id);
-    //
-    //   const request = transaction.objectStore('cards').get(id.getIdentifier());
-    //
-    //   return this.idb
-    //     .request<CardRaw>(request)
-    //     .then((raw) =>
-    //       undefined !== raw ? this.memento.unserialize(raw) : undefined,
-    //     );
+    return requestPromise<CardRaw>(request).then((raw) =>
+      undefined !== raw ? this.memento.unserialize(raw) : undefined,
+    );
   }
 }

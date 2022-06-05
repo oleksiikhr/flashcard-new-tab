@@ -1,4 +1,3 @@
-import ApplyThemeCommand from './ApplyThemeCommand';
 import ThemeInjector from '../../../Domain/Settings/Theme/Service/ThemeInjector';
 import Theme from '../../../Domain/Settings/Theme/Theme';
 import SettingsQueryRepository from '../../../Domain/Settings/Repository/SettingsQueryRepository';
@@ -9,9 +8,9 @@ export default class ApplyThemeHandler {
     private themeInjector: ThemeInjector,
   ) {}
 
-  public invoke(command: ApplyThemeCommand) {
+  public invoke(selector: string): void {
     const theme = this.queryRepository.findTheme() ?? Theme.create();
 
-    this.themeInjector.inject(command.getSelector(), theme);
+    this.themeInjector.inject(selector, theme);
   }
 }

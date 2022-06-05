@@ -7,7 +7,7 @@ export default class IDBFeedQueryRepository implements FeedQueryRepository {
   constructor(private memento: CardMemento, private idb: IndexedDB) {}
 
   async findRandom(): Promise<CardId | undefined> {
-    const db = await this.idb.database();
+    const db = await this.idb.openDB();
 
     const request = db.transaction('feed', 'readonly').objectStore('feed');
 

@@ -2,34 +2,23 @@ import CreateCardHandler from '../../Application/Command/Card/CreateCardHandler'
 import IDBDeckQueryRepository from '../../Infrastructure/Persistence/Deck/Repository/IDBDeckQueryRepository';
 import IDBTagQueryRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagQueryRepository';
 import CardContentFactory from '../../Domain/Card/Content/CardContentFactory';
-import CardCreator from '../../Domain/Card/Service/CardCreator';
-import CreateCardCommand from '../../Application/Command/Card/CreateCardCommand';
 import ApplyThemeHandler from '../../Application/Command/Theme/ApplyThemeHandler';
 import LSSettingsQueryRepository from '../../Infrastructure/Persistence/Settings/Repository/LSSettingsQueryRepository';
 import ThemeInjector from '../../Domain/Settings/Theme/Service/ThemeInjector';
-import ApplyThemeCommand from '../../Application/Command/Theme/ApplyThemeCommand';
 import make from './services';
 import GenerateFeedHandler from '../../Application/Command/Feed/GenerateFeedHandler';
 import IDBDeckCommandRepository from '../../Infrastructure/Persistence/Deck/Repository/IDBDeckCommandRepository';
 import IDBFeedCommandRepository from '../../Infrastructure/Persistence/Feed/Repository/IDBFeedCommandRepository';
 import IDBCardQueryRepository from '../../Infrastructure/Persistence/Card/Repository/IDBCardQueryRepository';
-import GenerateFeedCommand from '../../Application/Command/Feed/GenerateFeedCommand';
 import FindFeedHandler from '../../Application/Query/Feed/FindFeedHandler';
 import IDBCardCommandRepository from '../../Infrastructure/Persistence/Card/Repository/IDBCardCommandRepository';
 import IDBFeedQueryRepository from '../../Infrastructure/Persistence/Feed/Repository/IDBFeedQueryRepository';
-import FindFeedCommand from '../../Application/Query/Feed/FindFeedCommand';
 import CreateDeckHandler from '../../Application/Command/Deck/CreateDeckHandler';
-import DeckCreator from '../../Domain/Deck/Service/DeckCreator';
-import CreateDeckCommand from '../../Application/Command/Deck/CreateDeckCommand';
 import CreateTagHandler from '../../Application/Command/Tag/CreateTagHandler';
-import TagCreator from '../../Domain/Tag/Service/TagCreator';
-import CreateTagCommand from '../../Application/Command/Tag/CreateTagCommand';
 import UpdateDeckHandler from '../../Application/Command/Deck/UpdateDeckHandler';
-import DeckUpdater from '../../Domain/Deck/Service/DeckUpdater';
-import UpdateDeckCommand from '../../Application/Command/Deck/UpdateDeckCommand';
 import DeleteDeckHandler from '../../Application/Command/Deck/DeleteDeckHandler';
-import DeckDeleter from '../../Domain/Deck/Service/DeckDeleter';
-import DeleteDeckCommand from '../../Application/Command/Deck/DeleteDeckCommand';
+import DeleteCardHandler from '../../Application/Command/Card/DeleteDeckHandler';
+import IDBTagCommandRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagCommandRepository';
 
 /* ------------------------------------------------------------------------- */
 
@@ -39,15 +28,17 @@ export const applyTheme = (selector: string) =>
   new ApplyThemeHandler(
     make(LSSettingsQueryRepository),
     make(ThemeInjector),
-  ).invoke(new ApplyThemeCommand(selector));
+  ).invoke(selector);
 
 /* ------------------------------------------------------------------------- */
 
 // Deck
 
 export const createDeck = (name: string, isActive: boolean, settings: object) =>
-  new CreateDeckHandler(make(DeckCreator)).invoke(
-    new CreateDeckCommand(name, isActive, settings),
+  new CreateDeckHandler(make(IDBDeckCommandRepository)).invoke(
+    name,
+    isActive,
+    settings,
   );
 
 export const updateDeck = (
@@ -56,12 +47,16 @@ export const updateDeck = (
   isActive: boolean,
   settings: object,
 ) =>
-  new UpdateDeckHandler(make(DeckUpdater)).invoke(
-    new UpdateDeckCommand(id, name, isActive, settings),
-  );
+  new UpdateDeckHandler(
+    make(IDBDeckCommandRepository),
+    make(IDBDeckQueryRepository),
+  ).invoke(id, name, isActive, settings);
 
 export const deleteDeck = (id: number) =>
-  new DeleteDeckHandler(make(DeckDeleter)).invoke(new DeleteDeckCommand(id));
+  new DeleteDeckHandler(
+    make(IDBDeckCommandRepository),
+    make(IDBDeckQueryRepository),
+  ).invoke(id);
 
 /* ------------------------------------------------------------------------- */
 
@@ -75,22 +70,27 @@ export const createCard = (
   tagIds: number[],
 ) =>
   new CreateCardHandler(
+    make(IDBCardCommandRepository),
     make(IDBDeckQueryRepository),
     make(IDBTagQueryRepository),
     make(CardContentFactory),
-    make(CardCreator),
-  ).invoke(
-    new CreateCardCommand(deckId, question, content, templateType, tagIds),
-  );
+  ).invoke(deckId, question, content, templateType, tagIds);
+
+export const deleteCard = (id: number) =>
+  new DeleteCardHandler(
+    make(IDBCardCommandRepository),
+    make(IDBCardQueryRepository),
+  ).invoke(id);
 
 /* ------------------------------------------------------------------------- */
 
 // Tag
 
 export const createTag = (deckId: number, name: string, isActive: boolean) =>
-  new CreateTagHandler(make(IDBDeckQueryRepository), make(TagCreator)).invoke(
-    new CreateTagCommand(deckId, name, isActive),
-  );
+  new CreateTagHandler(
+    make(IDBTagCommandRepository),
+    make(IDBDeckQueryRepository),
+  ).invoke(deckId, name, isActive);
 
 /* ------------------------------------------------------------------------- */
 
@@ -103,13 +103,13 @@ export const generateFeed = (limit: number) =>
     make(IDBDeckQueryRepository),
     make(IDBCardQueryRepository),
     make(IDBTagQueryRepository),
-  ).invoke(new GenerateFeedCommand(limit));
+  ).invoke(limit);
 
 export const findFeed = () =>
   new FindFeedHandler(
     make(IDBCardCommandRepository),
     make(IDBCardQueryRepository),
     make(IDBFeedQueryRepository),
-  ).invoke(new FindFeedCommand());
+  ).invoke();
 
 /* ------------------------------------------------------------------------- */

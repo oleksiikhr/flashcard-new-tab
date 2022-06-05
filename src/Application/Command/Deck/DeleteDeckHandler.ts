@@ -1,11 +1,20 @@
 import DeckId from '../../../Domain/Deck/DeckId';
-import DeleteDeckCommand from './DeleteDeckCommand';
-import DeckDeleter from '../../../Domain/Deck/Service/DeckDeleter';
+import DeckQueryRepository from '../../../Domain/Deck/Repository/DeckQueryRepository';
+import DeckCommandRepository from '../../../Domain/Deck/Repository/DeckCommandRepository';
 
 export default class DeleteDeckHandler {
-  constructor(private deleter: DeckDeleter) {}
+  constructor(
+    private commandRepository: DeckCommandRepository,
+    private queryRepository: DeckQueryRepository,
+  ) {}
 
-  public invoke(command: DeleteDeckCommand): Promise<void> {
-    return this.deleter.delete(DeckId.of(command.getId()));
+  public async invoke(id: number): Promise<void> {
+    const deck = await this.queryRepository.findById(DeckId.of(id));
+
+    if (undefined === deck) {
+      return Promise.resolve();
+    }
+
+    return this.commandRepository.delete(deck);
   }
 }

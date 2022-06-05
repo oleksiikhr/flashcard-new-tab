@@ -1,8 +1,5 @@
-import DeckCreator from '../../Domain/Deck/Service/DeckCreator';
 import IDBDeckCommandRepository from '../../Infrastructure/Persistence/Deck/Repository/IDBDeckCommandRepository';
-import DeckUpdater from '../../Domain/Deck/Service/DeckUpdater';
 import IDBDeckQueryRepository from '../../Infrastructure/Persistence/Deck/Repository/IDBDeckQueryRepository';
-import DeckDeleter from '../../Domain/Deck/Service/DeckDeleter';
 import DeckMemento from '../../Domain/Deck/DeckMemento';
 import IndexedDB from '../../Infrastructure/Persistence/Shared/IndexedDB/IndexedDB';
 import CardContentFactory from '../../Domain/Card/Content/CardContentFactory';
@@ -10,7 +7,6 @@ import CardMemento from '../../Domain/Card/CardMemento';
 import IDBTagQueryRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagQueryRepository';
 import IDBCardQueryRepository from '../../Infrastructure/Persistence/Card/Repository/IDBCardQueryRepository';
 import IDBCardCommandRepository from '../../Infrastructure/Persistence/Card/Repository/IDBCardCommandRepository';
-import CardCreator from '../../Domain/Card/Service/CardCreator';
 import ThemeInjector from '../../Domain/Settings/Theme/Service/ThemeInjector';
 import LSSettingsQueryRepository from '../../Infrastructure/Persistence/Settings/Repository/LSSettingsQueryRepository';
 import LocalStorage from '../../Infrastructure/Persistence/Shared/LocalStorage/LocalStorage';
@@ -18,11 +14,19 @@ import IDBFeedQueryRepository from '../../Infrastructure/Persistence/Feed/Reposi
 import IDBFeedCommandRepository from '../../Infrastructure/Persistence/Feed/Repository/IDBFeedCommandRepository';
 import { indexedDB as idbConfig } from '../config/database';
 import list from '../../Infrastructure/Persistence/Shared/IndexedDB/Migration/list';
-import TagMemento from '../../Domain/Tag/Service/TagMemento';
+import TagMemento from '../../Domain/Tag/TagMemento';
 import IDBTagCommandRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagCommandRepository';
-import TagCreator from '../../Domain/Tag/Service/TagCreator';
-import TagUpdater from '../../Domain/Tag/Service/TagUpdater';
-import TagDeleter from '../../Domain/Tag/Service/TagDeleter';
+import UpdateDeckOnDeleteCardTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/UpdateDeckOnDeleteCardTransactionListener';
+import TransactionPipeline from '../../Infrastructure/Persistence/Shared/IndexedDB/TransactionPipeline';
+import UpdateDeckOnCreateTagTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/UpdateDeckOnCreateTagTransactionListener';
+import CreateCardTransactionListener from '../../Infrastructure/Persistence/Card/Listener/CreateCardTransactionListener';
+import UpdateDeckOnCreateCardTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/UpdateDeckOnCreateCardTransactionListener';
+import UpdateCardTransactionListener from '../../Infrastructure/Persistence/Card/Listener/UpdateCardTransactionListener';
+import DeleteCardTransactionListener from '../../Infrastructure/Persistence/Card/Listener/DeleteCardTransactionListener';
+import DeleteFeedOnDeleteCardTransactionListener from '../../Infrastructure/Persistence/Feed/Listener/DeleteFeedOnDeleteCardTransactionListener';
+import DeleteDeckTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/DeleteDeckTransactionListener';
+import CreateDeckTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/CreateDeckTransactionListener';
+import CreateTagTransactionListener from '../../Infrastructure/Persistence/Tag/Listener/CreateTagTransactionListener';
 
 const { register, make } = (() => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,7 +64,10 @@ const { register, make } = (() => {
 // Shared
 
 register(IndexedDB, () => new IndexedDB(idbConfig.name, list));
+
 register(LocalStorage, () => new LocalStorage());
+
+register(TransactionPipeline, () => new TransactionPipeline(make(IndexedDB)));
 
 /* ------------------------------------------------------------------------- */
 
@@ -77,24 +84,9 @@ register(
 
 // Deck
 
-register(DeckCreator, () => new DeckCreator(make(IDBDeckCommandRepository)));
-
 register(
-  DeckUpdater,
-  () =>
-    new DeckUpdater(
-      make(IDBDeckCommandRepository),
-      make(IDBDeckQueryRepository),
-    ),
-);
-
-register(
-  DeckDeleter,
-  () =>
-    new DeckDeleter(
-      make(IDBDeckCommandRepository),
-      make(IDBDeckQueryRepository),
-    ),
+  UpdateDeckOnDeleteCardTransactionListener,
+  () => new UpdateDeckOnDeleteCardTransactionListener(make(DeckMemento)),
 );
 
 register(DeckMemento, () => new DeckMemento());
@@ -106,7 +98,22 @@ register(
 
 register(
   IDBDeckCommandRepository,
-  () => new IDBDeckCommandRepository(make(DeckMemento), make(IndexedDB)),
+  () => new IDBDeckCommandRepository(make(TransactionPipeline)),
+);
+
+register(
+  UpdateDeckOnCreateCardTransactionListener,
+  () => new UpdateDeckOnCreateCardTransactionListener(make(DeckMemento)),
+);
+
+register(
+  CreateDeckTransactionListener,
+  () => new CreateDeckTransactionListener(make(DeckMemento)),
+);
+
+register(
+  DeleteDeckTransactionListener,
+  () => new DeleteDeckTransactionListener(),
 );
 
 /* ------------------------------------------------------------------------- */
@@ -114,6 +121,11 @@ register(
 // Card
 
 register(CardContentFactory, () => new CardContentFactory());
+
+register(
+  CreateCardTransactionListener,
+  () => new CreateCardTransactionListener(make(CardMemento)),
+);
 
 register(
   CardMemento,
@@ -149,17 +161,31 @@ register(
   IDBCardCommandRepository,
   () =>
     new IDBCardCommandRepository(
+      make(TransactionPipeline),
       make(DeckMemento),
       make(CardMemento),
       make(IndexedDB),
     ),
 );
 
-register(CardCreator, () => new CardCreator(make(IDBCardCommandRepository)));
+register(
+  UpdateCardTransactionListener,
+  () => new UpdateCardTransactionListener(make(CardMemento)),
+);
+
+register(
+  DeleteCardTransactionListener,
+  () => new DeleteCardTransactionListener(),
+);
 
 /* ------------------------------------------------------------------------- */
 
 // Tag
+
+register(
+  UpdateDeckOnCreateTagTransactionListener,
+  () => new UpdateDeckOnCreateTagTransactionListener(make(DeckMemento)),
+);
 
 register(TagMemento, () => new TagMemento(make(IDBDeckQueryRepository)));
 
@@ -170,21 +196,12 @@ register(
 
 register(
   IDBTagCommandRepository,
-  () => new IDBTagCommandRepository(make(TagMemento), make(IndexedDB)),
-);
-
-register(TagCreator, () => new TagCreator(make(IDBTagCommandRepository)));
-
-register(
-  TagUpdater,
-  () =>
-    new TagUpdater(make(IDBTagCommandRepository), make(IDBTagQueryRepository)),
+  () => new IDBTagCommandRepository(make(TransactionPipeline)),
 );
 
 register(
-  TagDeleter,
-  () =>
-    new TagDeleter(make(IDBTagCommandRepository), make(IDBTagQueryRepository)),
+  CreateTagTransactionListener,
+  () => new CreateTagTransactionListener(make(TagMemento)),
 );
 
 /* ------------------------------------------------------------------------- */
@@ -199,6 +216,11 @@ register(
 register(
   IDBFeedCommandRepository,
   () => new IDBFeedCommandRepository(make(CardMemento), make(IndexedDB)),
+);
+
+register(
+  DeleteFeedOnDeleteCardTransactionListener,
+  () => new DeleteFeedOnDeleteCardTransactionListener(),
 );
 
 /* ------------------------------------------------------------------------- */

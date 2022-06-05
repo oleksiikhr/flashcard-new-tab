@@ -18,7 +18,7 @@ export type DeckRaw = {
 export default class DeckMemento {
   public serialize(deck: Deck): DeckRaw {
     return {
-      id: deck.getId()?.getIdentifier(),
+      id: deck.isExists() ? deck.getId().getIdentifier() : undefined,
       name: deck.getName().getValue(),
       is_active: +deck.getIsActive(),
       cards_count: deck.getCardsCount(),

@@ -1,12 +1,12 @@
-import Tag from '../Tag';
-import TagId from '../TagId';
-import TagName from '../TagName';
-import DeckId from '../../Deck/DeckId';
-import DeckQueryRepository from '../../Deck/Repository/DeckQueryRepository';
+import Tag from './Tag';
+import TagId from './TagId';
+import TagName from './TagName';
+import DeckId from '../Deck/DeckId';
+import DeckQueryRepository from '../Deck/Repository/DeckQueryRepository';
 
 export type TagRaw = {
   id: number | undefined;
-  deck_id: number | undefined;
+  deck_id: number;
   name: string;
   cards_count: number;
   is_active: number;
@@ -19,7 +19,7 @@ export default class TagMemento {
 
   public serialize(tag: Tag): TagRaw {
     return {
-      id: tag.getId()?.getIdentifier(),
+      id: tag.isExists() ? tag.getId().getIdentifier() : undefined,
       deck_id: tag.getDeck()?.getId()?.getIdentifier(),
       name: tag.getName().getValue(),
       cards_count: tag.getCardsCount(),
@@ -30,10 +30,12 @@ export default class TagMemento {
   }
 
   public async unserialize(raw: TagRaw): Promise<Tag> {
-    let deck;
+    const deck = await this.deckQueryRepository.findById(
+      DeckId.of(raw.deck_id),
+    );
 
-    if (undefined !== raw.deck_id) {
-      deck = await this.deckQueryRepository.findById(DeckId.of(raw.deck_id));
+    if (undefined === deck) {
+      throw new Error(''); // TODO
     }
 
     return new Tag(
