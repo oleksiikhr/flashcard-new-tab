@@ -1,9 +1,10 @@
 import SettingsPage from './SettingsPage';
 import Page from './Page';
-import { createCard, createTag, deleteCard, findFeed } from '../bootstrap/bus';
+import { createTag, findFeed } from '../bootstrap/bus';
 import { log, error } from '../../Domain/Shared/Util/logger';
 import pageManager from './PageManager';
 import { cardTestHandle } from '../components/card';
+import { deckTestHandle } from '../components/deck';
 
 export default class HomePage implements Page {
   protected rootElement!: HTMLDivElement;
@@ -23,6 +24,7 @@ export default class HomePage implements Page {
       pageManager.setPage(SettingsPage);
     });
 
+    deckTestHandle(this.rootElement);
     cardTestHandle(this.rootElement);
 
     this.rootElement
@@ -43,41 +45,6 @@ export default class HomePage implements Page {
         createTag(+deckId.value, name.value, isActive.checked)
           .then(log)
           .catch(error);
-      });
-
-    this.rootElement
-      .querySelector('#card-form-create')
-      ?.addEventListener('submit', (evt) => {
-        evt.preventDefault();
-
-        const deckId = this.rootElement.querySelector(
-          '#card-deck_id',
-        ) as HTMLInputElement;
-        const question = this.rootElement.querySelector(
-          '#card-question',
-        ) as HTMLInputElement;
-        const answer = this.rootElement.querySelector(
-          '#card-answer',
-        ) as HTMLInputElement;
-
-        createCard(
-          +deckId.value,
-          question.value,
-          { answer: answer.value },
-          0,
-          [1, 2],
-        )
-          .then(log)
-          .catch(error);
-      });
-
-    this.rootElement
-      .querySelector('#feed-generate')
-      ?.addEventListener('click', (evt) => {
-        evt.preventDefault();
-
-        deleteCard(1).then(log).catch(error);
-        // generateFeed(10).then(console.log).catch(console.error);
       });
   }
 

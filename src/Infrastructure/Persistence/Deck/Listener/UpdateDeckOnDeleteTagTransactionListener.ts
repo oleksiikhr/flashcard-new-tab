@@ -4,7 +4,7 @@ import TagDeleteTransactionEvent from '../../Tag/Event/TagDeleteTransactionEvent
 import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 
-export default class UpdateDeckOnTagDeleteTransactionListener
+export default class UpdateDeckOnDeleteTagTransactionListener
   implements TransactionListener<TagDeleteTransactionEvent>
 {
   constructor(private memento: DeckMemento) {}

@@ -4,7 +4,7 @@ import CardContent from './Content/CardContent';
 import CardTemplateType from './CardTemplateType';
 import CardStatistics from './CardStatistics';
 import Deck from '../Deck/Deck';
-import Tag from '../Tag/Tag';
+import DomainNotExistsError from '../../Infrastructure/Persistence/Shared/IndexedDB/Error/DomainNotExistsError';
 
 export default class Card {
   constructor(
@@ -18,7 +18,6 @@ export default class Card {
     private seenAt: Date,
     private updatedAt: Date,
     private createdAt: Date,
-    private tags: Tag[],
   ) {}
 
   public static create(
@@ -26,7 +25,6 @@ export default class Card {
     question: CardQuestion,
     content: CardContent,
     templateType: CardTemplateType,
-    tags: Tag[],
   ): Card {
     return new Card(
       undefined,
@@ -39,8 +37,17 @@ export default class Card {
       new Date(),
       new Date(),
       new Date(),
-      tags,
     );
+  }
+
+  public from(
+    question: CardQuestion,
+    content: CardContent,
+    templateType: CardTemplateType,
+  ): void {
+    this.question = question;
+    this.content = content;
+    this.templateType = templateType;
   }
 
   public isExists(): boolean {
@@ -57,7 +64,7 @@ export default class Card {
 
   public getId(): CardId {
     if (undefined === this.id) {
-      throw new Error(''); // TODO
+      throw new DomainNotExistsError();
     }
 
     return this.id;
@@ -97,10 +104,6 @@ export default class Card {
 
   public getCreatedAt(): Date {
     return this.createdAt;
-  }
-
-  public getTags(): Tag[] {
-    return this.tags;
   }
 
   public updateLastView(): void {

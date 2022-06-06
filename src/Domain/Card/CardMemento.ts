@@ -7,8 +7,6 @@ import DeckId from '../Deck/DeckId';
 import CardQuestion from './CardQuestion';
 import DeckQueryRepository from '../Deck/Repository/DeckQueryRepository';
 import TagQueryRepository from '../Tag/Repository/TagQueryRepository';
-import Tag from '../Tag/Tag';
-import TagId from '../Tag/TagId';
 
 export type CardRaw = {
   id: number | undefined;
@@ -21,7 +19,6 @@ export type CardRaw = {
   seen_at: Date;
   updated_at: Date;
   created_at: Date;
-  tagIds: number[];
 };
 
 export default class CardMemento {
@@ -33,7 +30,7 @@ export default class CardMemento {
 
   public serialize(card: Card): CardRaw {
     return {
-      id: card.getId().getIdentifier(),
+      id: card.isExists() ? card.getId().getIdentifier() : undefined,
       deck_id: card.getDeck().getId().getIdentifier(),
       question: card.getQuestion().getValue(),
       content: card.getContent().serialize(),
@@ -43,24 +40,16 @@ export default class CardMemento {
       seen_at: card.getSeenAt(),
       updated_at: card.getUpdatedAt(),
       created_at: card.getCreatedAt(),
-      tagIds: card.getTags().map((tag) => tag.getId()?.getIdentifier()), // TODO Store
     };
   }
 
   public async unserialize(raw: CardRaw): Promise<Card> {
-    let tags: Tag[] = [];
     const deck = await this.deckQueryRepository.findById(
       DeckId.of(raw.deck_id),
     );
 
     if (undefined === deck) {
       throw new Error(''); // TODO
-    }
-
-    if ([] !== raw.tagIds) {
-      tags = await this.tagQueryRepository.findByIds(
-        raw.tagIds.map((tagId) => TagId.of(tagId)),
-      );
     }
 
     const templateType = new CardTemplateType(raw.template_type);
@@ -76,7 +65,6 @@ export default class CardMemento {
       raw.seen_at,
       raw.updated_at,
       raw.created_at,
-      tags,
     );
   }
 }

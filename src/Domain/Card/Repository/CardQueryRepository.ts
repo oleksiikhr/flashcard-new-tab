@@ -2,7 +2,7 @@ import Card from '../Card';
 import CardId from '../CardId';
 
 export default interface CardQueryRepository {
-  findById(id: CardId): Promise<Card | undefined>;
+  paginate(fromId: CardId | undefined, limit: number): Promise<Card[]>;
 
-  // findRandomByTagId(tagId: TagId): Promise<CardId[] | undefined>;
+  findById(id: CardId): Promise<Card | undefined>;
 }

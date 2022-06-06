@@ -4,7 +4,10 @@ import CardQueryRepository from '../../../../Domain/Card/Repository/CardQueryRep
 import CardContentFactory from '../../../../Domain/Card/Content/CardContentFactory';
 import CardMemento, { CardRaw } from '../../../../Domain/Card/CardMemento';
 import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
-import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
+import {
+  requestPaginate,
+  requestPromise,
+} from '../../Shared/IndexedDB/Util/idb';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 
 export default class IDBCardQueryRepository implements CardQueryRepository {
@@ -14,13 +17,27 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
     private idb: IndexedDB,
   ) {}
 
+  async paginate(fromId: CardId | undefined, limit: number): Promise<Card[]> {
+    const db = await this.idb.openDB();
+
+    const request = db
+      .transaction(StoreName.CARDS)
+      .objectStore(StoreName.CARDS)
+      .openCursor(
+        undefined !== fromId
+          ? IDBKeyRange.lowerBound(fromId.getIdentifier())
+          : null,
+      );
+
+    return requestPaginate<CardRaw>(request, limit).then((raws) =>
+      Promise.all(raws.map((raw) => this.memento.unserialize(raw))),
+    );
+  }
+
   async findById(id: CardId): Promise<Card | undefined> {
     const db = await this.idb.openDB();
 
-    const transaction = db.transaction(
-      [StoreName.CARDS, StoreName.TAGS],
-      'readonly',
-    );
+    const transaction = db.transaction([StoreName.CARDS], 'readonly');
 
     const request = transaction
       .objectStore(StoreName.CARDS)

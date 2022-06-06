@@ -28,6 +28,8 @@ import DeleteDeckTransactionListener from '../../Infrastructure/Persistence/Deck
 import CreateDeckTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/CreateDeckTransactionListener';
 import CreateTagTransactionListener from '../../Infrastructure/Persistence/Tag/Listener/CreateTagTransactionListener';
 import UpdateDeckTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/UpdateDeckTransactionListener';
+import UpdateTagTransactionListener from '../../Infrastructure/Persistence/Tag/Listener/UpdateTagTransactionListener';
+import DeleteTagTransactionListener from '../../Infrastructure/Persistence/Tag/Listener/DeleteTagTransactionListener';
 
 const { register, make } = (() => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -165,13 +167,7 @@ register(
 
 register(
   IDBCardCommandRepository,
-  () =>
-    new IDBCardCommandRepository(
-      make(TransactionPipeline),
-      make(DeckMemento),
-      make(CardMemento),
-      make(IndexedDB),
-    ),
+  () => new IDBCardCommandRepository(make(TransactionPipeline)),
 );
 
 register(
@@ -208,6 +204,16 @@ register(
 register(
   CreateTagTransactionListener,
   () => new CreateTagTransactionListener(make(TagMemento)),
+);
+
+register(
+  UpdateTagTransactionListener,
+  () => new UpdateTagTransactionListener(make(TagMemento)),
+);
+
+register(
+  DeleteTagTransactionListener,
+  () => new DeleteTagTransactionListener(),
 );
 
 /* ------------------------------------------------------------------------- */

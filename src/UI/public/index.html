@@ -14,18 +14,19 @@
     <div page="home" style="display: none">
       <div>Home page</div>
       <div id="btn-1">Go Settings</div>
-      <div component="card"></div>
+      <br />
+      <hr />
       <br />
       <form id="deck-form-paginate">
         <input id="deck-paginate-from_id" placeholder="Deck From ID" />
         <input id="deck-paginate-limit" placeholder="Deck Limit" value="5" />
         <button type="submit">Paginate Deck</button>
       </form>
+      <br />
       <form id="deck-form-view">
         <input id="deck-view-id" placeholder="Deck ID" />
         <button type="submit">View Deck</button>
       </form>
-      <div id="deck-list"></div>
       <br />
       <form id="deck-form-create">
         Create Deck
@@ -38,7 +39,7 @@
         Edit Deck
         <input id="deck-edit-id" placeholder="Deck ID" />
         <input id="deck-edit-name" placeholder="Deck Name" />
-        <input id="deck-edit-is_active" type="checkbox" />
+        <input id="deck-edit-is_active" type="checkbox" checked />
         <button type="submit">Update Deck</button>
       </form>
       <br />
@@ -50,31 +51,48 @@
       <br />
       <hr />
       <br />
-      <form id="tag-form-create">
-        Create Tag
-        <input id="tag-deck_id" placeholder="Deck ID" value="1" />
-        <input id="tag-name" placeholder="Tag Name" value="Tag Name 1" />
-        <input id="tag-is_active" type="checkbox" checked />
-        <button type="submit">Create Tag</button>
+      <form id="card-form-paginate">
+        <input id="card-paginate-from_id" placeholder="Card From ID" />
+        <input id="card-paginate-limit" placeholder="Card Limit" value="5" />
+        <button type="submit">Paginate Card</button>
+      </form>
+      <br />
+      <form id="card-form-view">
+        <input id="card-view-id" placeholder="Card ID" />
+        <button type="submit">View Card</button>
       </form>
       <br />
       <form id="card-form-create">
         Create Card
-        <input id="card-deck_id" placeholder="Deck ID" value="1" />
-        <input
-          id="card-question"
-          placeholder="Card Question"
-          value="Card Question 1"
-        />
-        <input
-          id="card-answer"
-          placeholder="Card Answer"
-          value="Card Answer 1"
-        />
+        <input id="card-create-deck_id" placeholder="Deck ID" />
+        <input id="card-create-question" placeholder="Card Question" />
+        <input id="card-create-answer" placeholder="Card Answer" />
         <button type="submit">Create Card</button>
       </form>
       <br />
-      <button id="feed-generate">Generate Feed</button>
+      <form id="card-form-edit">
+        Edit Card
+        <input id="card-edit-id" placeholder="Card ID" />
+        <input id="card-edit-question" placeholder="Card Question" />
+        <input id="card-edit-answer" placeholder="Card Answer" />
+        <button type="submit">Update Card</button>
+      </form>
+      <br />
+      <form id="card-form-delete">
+        Delete Card
+        <input id="card-delete-id" placeholder="Card ID" />
+        <button type="submit">Delete Card</button>
+      </form>
+      <br />
+      <hr />
+      <br />
+      <form id="tag-form-create">
+        Create Tag
+        <input id="tag-deck_id" placeholder="Deck ID" />
+        <input id="tag-name" placeholder="Tag Name" />
+        <input id="tag-is_active" type="checkbox" checked />
+        <button type="submit">Create Tag</button>
+      </form>
       <br />
       <hr />
       <br />

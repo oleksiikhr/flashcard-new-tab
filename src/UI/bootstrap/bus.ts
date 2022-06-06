@@ -21,6 +21,9 @@ import DeleteCardHandler from '../../Application/Command/Card/DeleteDeckHandler'
 import IDBTagCommandRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagCommandRepository';
 import FindDeckHandler from '../../Application/Query/Deck/FindDeckHandler';
 import PaginateDeckHandler from '../../Application/Query/Deck/PaginateDeckHandler';
+import PaginateCardHandler from '../../Application/Query/Card/PaginateCardHandler';
+import FindCardHandler from '../../Application/Query/Card/FindCardHandler';
+import UpdateCardHandler from '../../Application/Command/Card/UpdateCardHandler';
 
 /* ------------------------------------------------------------------------- */
 
@@ -36,7 +39,7 @@ export const applyTheme = (selector: string) =>
 
 // Deck
 
-export const paginateDeck = (fromId: number | undefined, limit: number) =>
+export const paginateDecks = (fromId: number | undefined, limit: number) =>
   new PaginateDeckHandler(make(IDBDeckQueryRepository)).invoke(fromId, limit);
 
 export const findDeck = (id: number) =>
@@ -70,19 +73,35 @@ export const deleteDeck = (id: number) =>
 
 // Card
 
+export const paginateCards = (fromId: number | undefined, limit: number) =>
+  new PaginateCardHandler(make(IDBCardQueryRepository)).invoke(fromId, limit);
+
+export const findCard = (id: number) =>
+  new FindCardHandler(make(IDBCardQueryRepository)).invoke(id);
+
 export const createCard = (
   deckId: number,
   question: string,
   content: object,
   templateType: number,
-  tagIds: number[],
 ) =>
   new CreateCardHandler(
     make(IDBCardCommandRepository),
     make(IDBDeckQueryRepository),
-    make(IDBTagQueryRepository),
     make(CardContentFactory),
-  ).invoke(deckId, question, content, templateType, tagIds);
+  ).invoke(deckId, question, content, templateType);
+
+export const updateCard = (
+  id: number,
+  question: string,
+  content: object,
+  templateType: number,
+) =>
+  new UpdateCardHandler(
+    make(IDBCardCommandRepository),
+    make(IDBCardQueryRepository),
+    make(CardContentFactory),
+  ).invoke(id, question, content, templateType);
 
 export const deleteCard = (id: number) =>
   new DeleteCardHandler(

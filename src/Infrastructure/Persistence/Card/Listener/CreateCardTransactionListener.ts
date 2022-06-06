@@ -3,6 +3,7 @@ import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import CardCreateTransactionEvent from '../Event/CardCreateTransactionEvent';
 import CardMemento from '../../../../Domain/Card/CardMemento';
+import CardId from '../../../../Domain/Card/CardId';
 
 export default class CreateCardTransactionListener
   implements TransactionListener<CardCreateTransactionEvent>
@@ -21,12 +22,17 @@ export default class CreateCardTransactionListener
     transaction: IDBTransaction,
     event: CardCreateTransactionEvent,
   ): Promise<unknown>[] {
-    const raw = this.memento.serialize(event.getCard());
+    const card = event.getCard();
+    const raw = this.memento.serialize(card);
     delete raw.id;
 
     const store = transaction.objectStore(StoreName.CARDS);
     const request = store.add(raw);
 
-    return [requestPromise(request)];
+    return [
+      requestPromise(request).then((id) => {
+        card.setId(CardId.of(id as number));
+      }),
+    ];
   }
 }

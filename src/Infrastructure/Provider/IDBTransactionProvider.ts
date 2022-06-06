@@ -11,6 +11,8 @@ import CreateDeckTransactionListener from '../Persistence/Deck/Listener/CreateDe
 import CreateTagTransactionListener from '../Persistence/Tag/Listener/CreateTagTransactionListener';
 import UpdateDeckOnCreateTagTransactionListener from '../Persistence/Deck/Listener/UpdateDeckOnCreateTagTransactionListener';
 import UpdateDeckTransactionListener from '../Persistence/Deck/Listener/UpdateDeckTransactionListener';
+import DeleteFeedOnDeleteCardTransactionListener from '../Persistence/Feed/Listener/DeleteFeedOnDeleteCardTransactionListener';
+import UpdateDeckOnDeleteCardTransactionListener from '../Persistence/Deck/Listener/UpdateDeckOnDeleteCardTransactionListener';
 
 export default class IDBTransactionProvider {
   constructor(private pipeline: TransactionPipeline) {}
@@ -39,6 +41,8 @@ export default class IDBTransactionProvider {
 
     this.pipeline.subscribe(StoreName.CARDS, TransactionAction.DELETE, [
       make(DeleteCardTransactionListener),
+      make(UpdateDeckOnDeleteCardTransactionListener),
+      make(DeleteFeedOnDeleteCardTransactionListener),
     ]);
 
     this.pipeline.subscribe(StoreName.TAGS, TransactionAction.CREATE, [

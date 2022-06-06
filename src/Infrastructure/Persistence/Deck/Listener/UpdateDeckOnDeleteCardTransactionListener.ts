@@ -21,10 +21,8 @@ export default class UpdateDeckOnDeleteCardTransactionListener
     transaction: IDBTransaction,
     event: CardDeleteTransactionEvent,
   ): Promise<unknown>[] {
-    const deck = event.getCard().getDeck();
-    const raw = this.memento.serialize(deck);
-
-    raw.cards_count += 1;
+    const raw = this.memento.serialize(event.getCard().getDeck());
+    raw.cards_count -= 1;
 
     return [requestPromise(transaction.objectStore(StoreName.DECKS).put(raw))];
   }
