@@ -19,6 +19,8 @@ import UpdateDeckHandler from '../../Application/Command/Deck/UpdateDeckHandler'
 import DeleteDeckHandler from '../../Application/Command/Deck/DeleteDeckHandler';
 import DeleteCardHandler from '../../Application/Command/Card/DeleteDeckHandler';
 import IDBTagCommandRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagCommandRepository';
+import FindDeckHandler from '../../Application/Query/Deck/FindDeckHandler';
+import PaginateDeckHandler from '../../Application/Query/Deck/PaginateDeckHandler';
 
 /* ------------------------------------------------------------------------- */
 
@@ -33,6 +35,12 @@ export const applyTheme = (selector: string) =>
 /* ------------------------------------------------------------------------- */
 
 // Deck
+
+export const paginateDeck = (fromId: number | undefined, limit: number) =>
+  new PaginateDeckHandler(make(IDBDeckQueryRepository)).invoke(fromId, limit);
+
+export const findDeck = (id: number) =>
+  new FindDeckHandler(make(IDBDeckQueryRepository)).invoke(id);
 
 export const createDeck = (name: string, isActive: boolean, settings: object) =>
   new CreateDeckHandler(make(IDBDeckCommandRepository)).invoke(

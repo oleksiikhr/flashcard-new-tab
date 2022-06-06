@@ -27,6 +27,7 @@ import DeleteFeedOnDeleteCardTransactionListener from '../../Infrastructure/Pers
 import DeleteDeckTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/DeleteDeckTransactionListener';
 import CreateDeckTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/CreateDeckTransactionListener';
 import CreateTagTransactionListener from '../../Infrastructure/Persistence/Tag/Listener/CreateTagTransactionListener';
+import UpdateDeckTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/UpdateDeckTransactionListener';
 
 const { register, make } = (() => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,11 +85,6 @@ register(
 
 // Deck
 
-register(
-  UpdateDeckOnDeleteCardTransactionListener,
-  () => new UpdateDeckOnDeleteCardTransactionListener(make(DeckMemento)),
-);
-
 register(DeckMemento, () => new DeckMemento());
 
 register(
@@ -102,18 +98,28 @@ register(
 );
 
 register(
-  UpdateDeckOnCreateCardTransactionListener,
-  () => new UpdateDeckOnCreateCardTransactionListener(make(DeckMemento)),
-);
-
-register(
   CreateDeckTransactionListener,
   () => new CreateDeckTransactionListener(make(DeckMemento)),
 );
 
 register(
+  UpdateDeckTransactionListener,
+  () => new UpdateDeckTransactionListener(make(DeckMemento)),
+);
+
+register(
   DeleteDeckTransactionListener,
   () => new DeleteDeckTransactionListener(),
+);
+
+register(
+  UpdateDeckOnCreateCardTransactionListener,
+  () => new UpdateDeckOnCreateCardTransactionListener(make(DeckMemento)),
+);
+
+register(
+  UpdateDeckOnDeleteCardTransactionListener,
+  () => new UpdateDeckOnDeleteCardTransactionListener(make(DeckMemento)),
 );
 
 /* ------------------------------------------------------------------------- */

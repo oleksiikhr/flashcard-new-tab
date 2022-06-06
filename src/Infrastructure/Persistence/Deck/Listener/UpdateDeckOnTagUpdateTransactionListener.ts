@@ -31,8 +31,8 @@ export default class UpdateDeckOnTagDeleteTransactionListener
     oldRaw.tags_count -= 1;
 
     return [
-      requestPromise(transaction.objectStore('decks').put(newRaw)),
-      requestPromise(transaction.objectStore('decks').put(oldRaw)),
+      requestPromise(transaction.objectStore(StoreName.DECKS).put(newRaw)),
+      requestPromise(transaction.objectStore(StoreName.DECKS).put(oldRaw)),
     ];
   }
 }

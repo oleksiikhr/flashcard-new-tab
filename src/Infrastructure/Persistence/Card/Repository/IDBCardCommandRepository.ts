@@ -8,6 +8,7 @@ import DeckMemento from '../../../../Domain/Deck/DeckMemento';
 import DomainDoesNotExistsError from '../../Shared/IndexedDB/Error/DomainDoesNotExistsError';
 import TransactionPipeline from '../../Shared/IndexedDB/TransactionPipeline';
 import CardDeleteTransactionEvent from '../Event/CardDeleteTransactionEvent';
+import StoreName from '../../Shared/IndexedDB/StoreName';
 
 export default class IDBCardCommandRepository implements CardCommandRepository {
   constructor(
@@ -34,9 +35,12 @@ export default class IDBCardCommandRepository implements CardCommandRepository {
     const db = await this.idb.openDB();
     delete cardRaw.id;
 
-    const transaction = db.transaction(['cards', 'decks'], 'readwrite');
-    const cardRequest = transaction.objectStore('cards').add(cardRaw);
-    const deckRequest = transaction.objectStore('decks').put(deckRaw);
+    const transaction = db.transaction(
+      [StoreName.CARDS, StoreName.DECKS],
+      'readwrite',
+    );
+    const cardRequest = transaction.objectStore(StoreName.CARDS).add(cardRaw);
+    const deckRequest = transaction.objectStore(StoreName.DECKS).put(deckRaw);
 
     await Promise.all([
       this.idb
@@ -51,8 +55,8 @@ export default class IDBCardCommandRepository implements CardCommandRepository {
     const db = await this.idb.openDB();
 
     const request = db
-      .transaction('cards', 'readwrite')
-      .objectStore('cards')
+      .transaction(StoreName.CARDS, 'readwrite')
+      .objectStore(StoreName.CARDS)
       .put(raw);
 
     await this.idb.request(request);

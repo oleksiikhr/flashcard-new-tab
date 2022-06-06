@@ -21,7 +21,7 @@ export default class DeleteFeedOnDeleteCardTransactionListener
     const card = event.getCard();
 
     const request = transaction
-      .objectStore('feed')
+      .objectStore(StoreName.FEED)
       .delete(card.getId().getIdentifier());
 
     return [requestPromise(request)];

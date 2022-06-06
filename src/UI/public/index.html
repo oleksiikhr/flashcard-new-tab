@@ -16,12 +16,39 @@
       <div id="btn-1">Go Settings</div>
       <div component="card"></div>
       <br />
+      <form id="deck-form-paginate">
+        <input id="deck-paginate-from_id" placeholder="Deck From ID" />
+        <input id="deck-paginate-limit" placeholder="Deck Limit" value="5" />
+        <button type="submit">Paginate Deck</button>
+      </form>
+      <form id="deck-form-view">
+        <input id="deck-view-id" placeholder="Deck ID" />
+        <button type="submit">View Deck</button>
+      </form>
+      <div id="deck-list"></div>
+      <br />
       <form id="deck-form-create">
         Create Deck
-        <input id="deck-name" placeholder="Deck Name" value="Deck Name 1" />
-        <input id="deck-is_active" type="checkbox" checked />
+        <input id="deck-create-name" placeholder="Deck Name" />
+        <input id="deck-create-is_active" type="checkbox" checked />
         <button type="submit">Create Deck</button>
       </form>
+      <br />
+      <form id="deck-form-edit">
+        Edit Deck
+        <input id="deck-edit-id" placeholder="Deck ID" />
+        <input id="deck-edit-name" placeholder="Deck Name" />
+        <input id="deck-edit-is_active" type="checkbox" />
+        <button type="submit">Update Deck</button>
+      </form>
+      <br />
+      <form id="deck-form-delete">
+        Delete Deck
+        <input id="deck-delete-id" placeholder="Deck ID" />
+        <button type="submit">Delete Deck</button>
+      </form>
+      <br />
+      <hr />
       <br />
       <form id="tag-form-create">
         Create Tag
@@ -48,6 +75,10 @@
       </form>
       <br />
       <button id="feed-generate">Generate Feed</button>
+      <br />
+      <hr />
+      <br />
+      <pre id="console" style="tab-size: 2"></pre>
     </div>
     <div page="settings" style="display: none">
       <div>Settings page</div>

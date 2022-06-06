@@ -2,7 +2,6 @@ import make from '../../UI/bootstrap/services';
 import TransactionPipeline from '../Persistence/Shared/IndexedDB/TransactionPipeline';
 import StoreName from '../Persistence/Shared/IndexedDB/StoreName';
 import DeleteDeckTransactionListener from '../Persistence/Deck/Listener/DeleteDeckTransactionListener';
-import DeleteFeedOnDeleteCardTransactionListener from '../Persistence/Feed/Listener/DeleteFeedOnDeleteCardTransactionListener';
 import CreateCardTransactionListener from '../Persistence/Card/Listener/CreateCardTransactionListener';
 import UpdateDeckOnCreateCardTransactionListener from '../Persistence/Deck/Listener/UpdateDeckOnCreateCardTransactionListener';
 import UpdateCardTransactionListener from '../Persistence/Card/Listener/UpdateCardTransactionListener';
@@ -11,18 +10,22 @@ import TransactionAction from '../Persistence/Shared/IndexedDB/Bus/TransactionAc
 import CreateDeckTransactionListener from '../Persistence/Deck/Listener/CreateDeckTransactionListener';
 import CreateTagTransactionListener from '../Persistence/Tag/Listener/CreateTagTransactionListener';
 import UpdateDeckOnCreateTagTransactionListener from '../Persistence/Deck/Listener/UpdateDeckOnCreateTagTransactionListener';
+import UpdateDeckTransactionListener from '../Persistence/Deck/Listener/UpdateDeckTransactionListener';
 
 export default class IDBTransactionProvider {
   constructor(private pipeline: TransactionPipeline) {}
 
   invoke() {
-    this.pipeline.subscribe(StoreName.DECKS, TransactionAction.DELETE, [
-      make(DeleteFeedOnDeleteCardTransactionListener),
-      make(DeleteDeckTransactionListener),
-    ]);
-
     this.pipeline.subscribe(StoreName.DECKS, TransactionAction.CREATE, [
       make(CreateDeckTransactionListener),
+    ]);
+
+    this.pipeline.subscribe(StoreName.DECKS, TransactionAction.UPDATE, [
+      make(UpdateDeckTransactionListener),
+    ]);
+
+    this.pipeline.subscribe(StoreName.DECKS, TransactionAction.DELETE, [
+      make(DeleteDeckTransactionListener),
     ]);
 
     this.pipeline.subscribe(StoreName.CARDS, TransactionAction.CREATE, [

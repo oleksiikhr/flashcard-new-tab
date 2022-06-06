@@ -5,6 +5,7 @@ import CardContentFactory from '../../../../Domain/Card/Content/CardContentFacto
 import CardMemento, { CardRaw } from '../../../../Domain/Card/CardMemento';
 import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
+import StoreName from '../../Shared/IndexedDB/StoreName';
 
 export default class IDBCardQueryRepository implements CardQueryRepository {
   constructor(
@@ -16,9 +17,14 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
   async findById(id: CardId): Promise<Card | undefined> {
     const db = await this.idb.openDB();
 
-    const transaction = db.transaction(['cards', 'tags'], 'readonly');
+    const transaction = db.transaction(
+      [StoreName.CARDS, StoreName.TAGS],
+      'readonly',
+    );
 
-    const request = transaction.objectStore('cards').get(id.getIdentifier());
+    const request = transaction
+      .objectStore(StoreName.CARDS)
+      .get(id.getIdentifier());
 
     return requestPromise<CardRaw>(request).then((raw) =>
       undefined !== raw ? this.memento.unserialize(raw) : undefined,

@@ -4,6 +4,7 @@ import TagMemento, { TagRaw } from '../../../../Domain/Tag/TagMemento';
 import TagId from '../../../../Domain/Tag/TagId';
 import Tag from '../../../../Domain/Tag/Tag';
 import DeckId from '../../../../Domain/Deck/DeckId';
+import StoreName from '../../Shared/IndexedDB/StoreName';
 
 export default class IDBTagQueryRepository implements TagQueryRepository {
   constructor(private memento: TagMemento, private idb: IndexedDB) {}
@@ -12,8 +13,8 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
     const db = await this.idb.openDB();
 
     const request = db
-      .transaction('tags', 'readonly')
-      .objectStore('tags')
+      .transaction(StoreName.TAGS, 'readonly')
+      .objectStore(StoreName.TAGS)
       .get(id.getIdentifier());
 
     return this.idb
@@ -26,7 +27,9 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
   async findByIds(ids: TagId[]): Promise<Tag[]> {
     const db = await this.idb.openDB();
 
-    const request = db.transaction('tags', 'readonly').objectStore('tags');
+    const request = db
+      .transaction(StoreName.TAGS, 'readonly')
+      .objectStore(StoreName.TAGS);
 
     const promises = ids.map((id) =>
       this.idb
@@ -52,8 +55,8 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
     const db = await this.idb.openDB();
 
     const request = db
-      .transaction('tags', 'readonly')
-      .objectStore('tags')
+      .transaction(StoreName.TAGS, 'readonly')
+      .objectStore(StoreName.TAGS)
       .index('deck_id_and_is_active')
       .getAll([deckId.getIdentifier(), 1]);
 

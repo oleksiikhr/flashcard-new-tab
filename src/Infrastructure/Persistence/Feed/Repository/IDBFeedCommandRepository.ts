@@ -2,6 +2,7 @@ import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 import FeedCommandRepository from '../../../../Domain/Feed/Repository/FeedCommandRepository';
 import CardMemento from '../../../../Domain/Card/CardMemento';
 import Card from '../../../../Domain/Card/Card';
+import StoreName from '../../Shared/IndexedDB/StoreName';
 
 export default class IDBFeedCommandRepository implements FeedCommandRepository {
   constructor(private memento: CardMemento, private idb: IndexedDB) {}
@@ -11,8 +12,8 @@ export default class IDBFeedCommandRepository implements FeedCommandRepository {
 
     const db = await this.idb.openDB();
     const request = db
-      .transaction('feed', 'readwrite')
-      .objectStore('feed')
+      .transaction(StoreName.FEED, 'readwrite')
+      .objectStore(StoreName.FEED)
       .add({
         card_id: cardId.getIdentifier(),
         deck_id: card.getDeck()?.getId()?.getIdentifier(),

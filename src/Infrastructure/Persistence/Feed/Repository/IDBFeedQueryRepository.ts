@@ -2,6 +2,7 @@ import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 import FeedQueryRepository from '../../../../Domain/Feed/Repository/FeedQueryRepository';
 import CardMemento from '../../../../Domain/Card/CardMemento';
 import CardId from '../../../../Domain/Card/CardId';
+import StoreName from '../../Shared/IndexedDB/StoreName';
 
 export default class IDBFeedQueryRepository implements FeedQueryRepository {
   constructor(private memento: CardMemento, private idb: IndexedDB) {}
@@ -9,7 +10,9 @@ export default class IDBFeedQueryRepository implements FeedQueryRepository {
   async findRandom(): Promise<CardId | undefined> {
     const db = await this.idb.openDB();
 
-    const request = db.transaction('feed', 'readonly').objectStore('feed');
+    const request = db
+      .transaction(StoreName.FEED, 'readonly')
+      .objectStore(StoreName.FEED);
 
     const total = (await this.idb.request<number>(request.count())) as number;
 

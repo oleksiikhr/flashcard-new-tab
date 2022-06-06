@@ -1,14 +1,9 @@
 import SettingsPage from './SettingsPage';
 import Page from './Page';
-import {
-  createCard,
-  createDeck,
-  createTag,
-  deleteCard,
-  findFeed,
-} from '../bootstrap/bus';
+import { createCard, createTag, deleteCard, findFeed } from '../bootstrap/bus';
 import { log, error } from '../../Domain/Shared/Util/logger';
 import pageManager from './PageManager';
+import { cardTestHandle } from '../components/card';
 
 export default class HomePage implements Page {
   protected rootElement!: HTMLDivElement;
@@ -28,20 +23,7 @@ export default class HomePage implements Page {
       pageManager.setPage(SettingsPage);
     });
 
-    this.rootElement
-      .querySelector('#deck-form-create')
-      ?.addEventListener('submit', (evt) => {
-        evt.preventDefault();
-
-        const name = this.rootElement.querySelector(
-          '#deck-name',
-        ) as HTMLInputElement;
-        const isActive = this.rootElement.querySelector(
-          '#deck-is_active',
-        ) as HTMLInputElement;
-
-        createDeck(name.value, isActive.checked, {}).then(log).catch(error);
-      });
+    cardTestHandle(this.rootElement);
 
     this.rootElement
       .querySelector('#tag-form-create')
