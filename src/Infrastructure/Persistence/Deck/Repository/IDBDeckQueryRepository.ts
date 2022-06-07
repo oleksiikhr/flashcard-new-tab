@@ -4,7 +4,10 @@ import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 import DeckMemento, { DeckRaw } from '../../../../Domain/Deck/DeckMemento';
 import DeckId from '../../../../Domain/Deck/DeckId';
 import StoreName from '../../Shared/IndexedDB/StoreName';
-import { requestPaginate } from '../../Shared/IndexedDB/Util/idb';
+import {
+  requestPaginate,
+  requestPromise,
+} from '../../Shared/IndexedDB/Util/idb';
 
 export default class IDBDeckQueryRepository implements DeckQueryRepository {
   constructor(private memento: DeckMemento, private idb: IndexedDB) {}
@@ -34,11 +37,9 @@ export default class IDBDeckQueryRepository implements DeckQueryRepository {
       .objectStore(StoreName.DECKS)
       .get(id.getIdentifier());
 
-    return this.idb
-      .request<DeckRaw>(request)
-      .then((raw) =>
-        undefined !== raw ? this.memento.unserialize(raw) : undefined,
-      );
+    return requestPromise<DeckRaw>(request).then((raw) =>
+      undefined !== raw ? this.memento.unserialize(raw) : undefined,
+    );
   }
 
   async findGenerateAtUpperByNow(count: number): Promise<Deck[]> {
@@ -47,17 +48,11 @@ export default class IDBDeckQueryRepository implements DeckQueryRepository {
     const request = db
       .transaction(StoreName.DECKS)
       .objectStore(StoreName.DECKS)
-      .index('generate_at')
+      .index('generate_at_idx')
       .getAll(IDBKeyRange.upperBound(new Date()), count);
 
-    return this.idb.request<DeckRaw[]>(request).then((raws) => {
-      const decks: Deck[] = [];
-
-      (raws as DeckRaw[]).forEach((raw) => {
-        decks.push(this.memento.unserialize(raw));
-      });
-
-      return decks;
-    });
+    return requestPromise<DeckRaw[]>(request).then((raws) =>
+      (raws as DeckRaw[]).map((raw) => this.memento.unserialize(raw)),
+    );
   }
 }

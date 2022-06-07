@@ -31,7 +31,7 @@ export default class CreateCardHandler {
     const cardContent = this.contentFactory.make(content, cardTemplateType);
 
     const card = Card.create(
-      deck,
+      deck.getId(),
       new CardQuestion(question),
       cardContent,
       cardTemplateType,

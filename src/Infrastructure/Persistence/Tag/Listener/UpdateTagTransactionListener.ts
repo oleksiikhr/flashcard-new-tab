@@ -1,4 +1,4 @@
-import TransactionListener from '../../Shared/IndexedDB/Bus/TransactionListener';
+import TransactionListener from '../../Shared/IndexedDB/Transaction/TransactionListener';
 import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import TagMemento from '../../../../Domain/Tag/TagMemento';
@@ -20,13 +20,13 @@ export default class UpdateTagTransactionListener
   public invoke(
     transaction: IDBTransaction,
     event: TagUpdateTransactionEvent,
-  ): Promise<unknown>[] {
+  ): Promise<unknown> {
     const tag = event.getTag();
     const raw = this.memento.serialize(tag);
 
     const store = transaction.objectStore(StoreName.TAGS);
     const request = store.put(raw);
 
-    return [requestPromise<number>(request)];
+    return requestPromise<number>(request);
   }
 }

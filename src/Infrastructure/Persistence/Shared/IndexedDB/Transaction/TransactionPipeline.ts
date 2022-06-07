@@ -1,9 +1,10 @@
-import TransactionEvent from './Bus/TransactionEvent';
-import TransactionListener from './Bus/TransactionListener';
-import TransactionAction from './Bus/TransactionAction';
-import IndexedDB from './IndexedDB';
-import StoreName from './StoreName';
-import { error } from '../../../../Domain/Shared/Util/logger';
+import TransactionEvent from './TransactionEvent';
+import TransactionListener from './TransactionListener';
+import TransactionAction from './TransactionAction';
+import IndexedDB from '../IndexedDB';
+import StoreName from '../StoreName';
+import { error } from '../../../../../Domain/Shared/Util/logger';
+import { toArray } from '../../../../../Domain/Shared/Util/type';
 
 export default class TransactionPipeline {
   private listeners = new Map<
@@ -42,7 +43,9 @@ export default class TransactionPipeline {
 
     try {
       listeners.forEach((listener) => {
-        promises.push(...listener.invoke(transaction, event));
+        const result = listener.invoke(transaction, event);
+
+        promises.push(...toArray(result));
       });
     } catch (e) {
       transaction.abort();

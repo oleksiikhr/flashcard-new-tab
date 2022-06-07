@@ -1,4 +1,4 @@
-import TransactionListener from '../../Shared/IndexedDB/Bus/TransactionListener';
+import TransactionListener from '../../Shared/IndexedDB/Transaction/TransactionListener';
 import CardDeleteTransactionEvent from '../../Card/Event/CardDeleteTransactionEvent';
 import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
 import StoreName from '../../Shared/IndexedDB/StoreName';
@@ -17,13 +17,13 @@ export default class DeleteFeedOnDeleteCardTransactionListener
   public invoke(
     transaction: IDBTransaction,
     event: CardDeleteTransactionEvent,
-  ): Promise<unknown>[] {
+  ): Promise<unknown> {
     const card = event.getCard();
 
     const request = transaction
       .objectStore(StoreName.FEED)
       .delete(card.getId().getIdentifier());
 
-    return [requestPromise(request)];
+    return requestPromise(request);
   }
 }

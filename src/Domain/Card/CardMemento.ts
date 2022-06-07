@@ -5,8 +5,6 @@ import CardTemplateType from './CardTemplateType';
 import CardId from './CardId';
 import DeckId from '../Deck/DeckId';
 import CardQuestion from './CardQuestion';
-import DeckQueryRepository from '../Deck/Repository/DeckQueryRepository';
-import TagQueryRepository from '../Tag/Repository/TagQueryRepository';
 
 export type CardRaw = {
   id: number | undefined;
@@ -22,16 +20,12 @@ export type CardRaw = {
 };
 
 export default class CardMemento {
-  constructor(
-    private deckQueryRepository: DeckQueryRepository,
-    private tagQueryRepository: TagQueryRepository,
-    private contentFactory: CardContentFactory,
-  ) {}
+  constructor(private contentFactory: CardContentFactory) {}
 
   public serialize(card: Card): CardRaw {
     return {
       id: card.isExists() ? card.getId().getIdentifier() : undefined,
-      deck_id: card.getDeck().getId().getIdentifier(),
+      deck_id: card.getDeckId().getIdentifier(),
       question: card.getQuestion().getValue(),
       content: card.getContent().serialize(),
       template_type: card.getTemplateType().getValue(),
@@ -43,20 +37,12 @@ export default class CardMemento {
     };
   }
 
-  public async unserialize(raw: CardRaw): Promise<Card> {
-    const deck = await this.deckQueryRepository.findById(
-      DeckId.of(raw.deck_id),
-    );
-
-    if (undefined === deck) {
-      throw new Error(''); // TODO
-    }
-
+  public unserialize(raw: CardRaw): Card {
     const templateType = new CardTemplateType(raw.template_type);
 
     return new Card(
       undefined !== raw.id ? CardId.of(raw.id) : undefined,
-      deck,
+      DeckId.of(raw.deck_id),
       new CardQuestion(raw.question),
       this.contentFactory.make(raw.content, templateType),
       templateType,

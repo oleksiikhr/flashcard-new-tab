@@ -3,6 +3,7 @@ import FeedQueryRepository from '../../../../Domain/Feed/Repository/FeedQueryRep
 import CardMemento from '../../../../Domain/Card/CardMemento';
 import CardId from '../../../../Domain/Card/CardId';
 import StoreName from '../../Shared/IndexedDB/StoreName';
+import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
 
 export default class IDBFeedQueryRepository implements FeedQueryRepository {
   constructor(private memento: CardMemento, private idb: IndexedDB) {}
@@ -14,7 +15,7 @@ export default class IDBFeedQueryRepository implements FeedQueryRepository {
       .transaction(StoreName.FEED, 'readonly')
       .objectStore(StoreName.FEED);
 
-    const total = (await this.idb.request<number>(request.count())) as number;
+    const total = (await requestPromise<number>(request.count())) as number;
 
     if (0 === total) {
       return undefined;

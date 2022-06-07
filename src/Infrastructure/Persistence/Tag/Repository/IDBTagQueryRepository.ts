@@ -5,6 +5,7 @@ import TagId from '../../../../Domain/Tag/TagId';
 import Tag from '../../../../Domain/Tag/Tag';
 import DeckId from '../../../../Domain/Deck/DeckId';
 import StoreName from '../../Shared/IndexedDB/StoreName';
+import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
 
 export default class IDBTagQueryRepository implements TagQueryRepository {
   constructor(private memento: TagMemento, private idb: IndexedDB) {}
@@ -17,11 +18,9 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
       .objectStore(StoreName.TAGS)
       .get(id.getIdentifier());
 
-    return this.idb
-      .request<TagRaw>(request)
-      .then((raw) =>
-        undefined !== raw ? this.memento.unserialize(raw) : undefined,
-      );
+    return requestPromise<TagRaw>(request).then((raw) =>
+      undefined !== raw ? this.memento.unserialize(raw) : undefined,
+    );
   }
 
   async findByIds(ids: TagId[]): Promise<Tag[]> {
@@ -32,11 +31,9 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
       .objectStore(StoreName.TAGS);
 
     const promises = ids.map((id) =>
-      this.idb
-        .request<TagRaw>(request.get(id.getIdentifier()))
-        .then((raw) =>
-          undefined !== raw ? this.memento.unserialize(raw) : undefined,
-        ),
+      requestPromise<TagRaw>(request.get(id.getIdentifier())).then((raw) =>
+        undefined !== raw ? this.memento.unserialize(raw) : undefined,
+      ),
     );
 
     const tags = await Promise.all<Tag | undefined>(promises);
@@ -57,15 +54,11 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
     const request = db
       .transaction(StoreName.TAGS, 'readonly')
       .objectStore(StoreName.TAGS)
-      .index('deck_id_and_is_active')
+      .index('deck_id_and_is_active_idx')
       .getAll([deckId.getIdentifier(), 1]);
 
-    return this.idb
-      .request<TagRaw[]>(request)
-      .then((raws) =>
-        Promise.all(
-          (raws as TagRaw[]).map((raw) => this.memento.unserialize(raw)),
-        ),
-      );
+    return requestPromise<TagRaw[]>(request).then((raws) =>
+      (raws as TagRaw[]).map((raw) => this.memento.unserialize(raw)),
+    );
   }
 }

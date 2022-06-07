@@ -3,13 +3,13 @@ import CardQuestion from './CardQuestion';
 import CardContent from './Content/CardContent';
 import CardTemplateType from './CardTemplateType';
 import CardStatistics from './CardStatistics';
-import Deck from '../Deck/Deck';
 import DomainNotExistsError from '../../Infrastructure/Persistence/Shared/IndexedDB/Error/DomainNotExistsError';
+import DeckId from '../Deck/DeckId';
 
 export default class Card {
   constructor(
     private id: CardId | undefined,
-    private deck: Deck,
+    private deckId: DeckId,
     private question: CardQuestion,
     private content: CardContent,
     private templateType: CardTemplateType,
@@ -21,14 +21,14 @@ export default class Card {
   ) {}
 
   public static create(
-    deck: Deck,
+    deckId: DeckId,
     question: CardQuestion,
     content: CardContent,
     templateType: CardTemplateType,
   ): Card {
     return new Card(
       undefined,
-      deck,
+      deckId,
       question,
       content,
       templateType,
@@ -70,8 +70,8 @@ export default class Card {
     return this.id;
   }
 
-  public getDeck(): Deck {
-    return this.deck;
+  public getDeckId(): DeckId {
+    return this.deckId;
   }
 
   public getQuestion(): CardQuestion {

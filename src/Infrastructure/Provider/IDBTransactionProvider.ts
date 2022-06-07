@@ -1,12 +1,12 @@
 import make from '../../UI/bootstrap/services';
-import TransactionPipeline from '../Persistence/Shared/IndexedDB/TransactionPipeline';
+import TransactionPipeline from '../Persistence/Shared/IndexedDB/Transaction/TransactionPipeline';
 import StoreName from '../Persistence/Shared/IndexedDB/StoreName';
 import DeleteDeckTransactionListener from '../Persistence/Deck/Listener/DeleteDeckTransactionListener';
 import CreateCardTransactionListener from '../Persistence/Card/Listener/CreateCardTransactionListener';
 import UpdateDeckOnCreateCardTransactionListener from '../Persistence/Deck/Listener/UpdateDeckOnCreateCardTransactionListener';
 import UpdateCardTransactionListener from '../Persistence/Card/Listener/UpdateCardTransactionListener';
 import DeleteCardTransactionListener from '../Persistence/Card/Listener/DeleteCardTransactionListener';
-import TransactionAction from '../Persistence/Shared/IndexedDB/Bus/TransactionAction';
+import TransactionAction from '../Persistence/Shared/IndexedDB/Transaction/TransactionAction';
 import CreateDeckTransactionListener from '../Persistence/Deck/Listener/CreateDeckTransactionListener';
 import CreateTagTransactionListener from '../Persistence/Tag/Listener/CreateTagTransactionListener';
 import UpdateDeckOnCreateTagTransactionListener from '../Persistence/Deck/Listener/UpdateDeckOnCreateTagTransactionListener';
@@ -46,8 +46,8 @@ export default class IDBTransactionProvider {
     ]);
 
     this.pipeline.subscribe(StoreName.TAGS, TransactionAction.CREATE, [
-      make(UpdateDeckOnCreateTagTransactionListener),
       make(CreateTagTransactionListener),
+      make(UpdateDeckOnCreateTagTransactionListener),
     ]);
   }
 }

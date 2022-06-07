@@ -2,7 +2,6 @@ import Tag from './Tag';
 import TagId from './TagId';
 import TagName from './TagName';
 import DeckId from '../Deck/DeckId';
-import DeckQueryRepository from '../Deck/Repository/DeckQueryRepository';
 
 export type TagRaw = {
   id: number | undefined;
@@ -15,12 +14,10 @@ export type TagRaw = {
 };
 
 export default class TagMemento {
-  constructor(private deckQueryRepository: DeckQueryRepository) {}
-
   public serialize(tag: Tag): TagRaw {
     return {
       id: tag.isExists() ? tag.getId().getIdentifier() : undefined,
-      deck_id: tag.getDeck()?.getId()?.getIdentifier(),
+      deck_id: tag.getDeckId().getIdentifier(),
       name: tag.getName().getValue(),
       cards_count: tag.getCardsCount(),
       is_active: +tag.getIsActive(),
@@ -29,18 +26,10 @@ export default class TagMemento {
     };
   }
 
-  public async unserialize(raw: TagRaw): Promise<Tag> {
-    const deck = await this.deckQueryRepository.findById(
-      DeckId.of(raw.deck_id),
-    );
-
-    if (undefined === deck) {
-      throw new Error(''); // TODO
-    }
-
+  public unserialize(raw: TagRaw): Tag {
     return new Tag(
       undefined !== raw.id ? TagId.of(raw.id) : undefined,
-      deck,
+      DeckId.of(raw.deck_id),
       new TagName(raw.name),
       raw.cards_count,
       !!raw.is_active,

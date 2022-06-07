@@ -1,4 +1,4 @@
-import TransactionListener from '../../Shared/IndexedDB/Bus/TransactionListener';
+import TransactionListener from '../../Shared/IndexedDB/Transaction/TransactionListener';
 import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import CardUpdateTransactionEvent from '../Event/CardUpdateTransactionEvent';
@@ -20,10 +20,10 @@ export default class UpdateCardTransactionListener
   public invoke(
     transaction: IDBTransaction,
     event: CardUpdateTransactionEvent,
-  ): Promise<unknown>[] {
+  ): Promise<unknown> {
     const store = transaction.objectStore(StoreName.CARDS);
     const request = store.put(this.memento.serialize(event.getCard()));
 
-    return [requestPromise(request)];
+    return requestPromise(request);
   }
 }

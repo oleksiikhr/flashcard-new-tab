@@ -1,14 +1,13 @@
-import TransactionListener from '../../Shared/IndexedDB/Bus/TransactionListener';
+import TransactionListener from '../../Shared/IndexedDB/Transaction/TransactionListener';
 import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import CardCreateTransactionEvent from '../../Card/Event/CardCreateTransactionEvent';
-import DeckMemento from '../../../../Domain/Deck/DeckMemento';
+import { DeckRaw } from '../../../../Domain/Deck/DeckMemento';
+import DomainNotExistsError from '../../Shared/IndexedDB/Error/DomainNotExistsError';
 
 export default class UpdateDeckOnCreateCardTransactionListener
   implements TransactionListener<CardCreateTransactionEvent>
 {
-  constructor(private memento: DeckMemento) {}
-
   isNeedHandle(): boolean {
     return true;
   }
@@ -17,16 +16,22 @@ export default class UpdateDeckOnCreateCardTransactionListener
     return StoreName.DECKS;
   }
 
-  public invoke(
+  public async invoke(
     transaction: IDBTransaction,
     event: CardCreateTransactionEvent,
-  ): Promise<unknown>[] {
-    const raw = this.memento.serialize(event.getCard().getDeck());
+  ): Promise<unknown> {
+    const request = transaction
+      .objectStore(StoreName.DECKS)
+      .get(event.getCard().getDeckId().getIdentifier());
+
+    const raw = await requestPromise<DeckRaw>(request);
+
+    if (undefined === raw) {
+      throw new DomainNotExistsError();
+    }
+
     raw.cards_count += 1;
 
-    const store = transaction.objectStore(StoreName.DECKS);
-    const request = store.put(raw);
-
-    return [requestPromise(request)];
+    return requestPromise(transaction.objectStore(StoreName.DECKS).put(raw));
   }
 }

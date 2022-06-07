@@ -1,6 +1,6 @@
-import TransactionEvent from '../../Shared/IndexedDB/Bus/TransactionEvent';
+import TransactionEvent from '../../Shared/IndexedDB/Transaction/TransactionEvent';
 import Card from '../../../../Domain/Card/Card';
-import TransactionAction from '../../Shared/IndexedDB/Bus/TransactionAction';
+import TransactionAction from '../../Shared/IndexedDB/Transaction/TransactionAction';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 
 export default class CardCreateTransactionEvent implements TransactionEvent {

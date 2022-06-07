@@ -1,6 +1,5 @@
 import CreateCardHandler from '../../Application/Command/Card/CreateCardHandler';
 import IDBDeckQueryRepository from '../../Infrastructure/Persistence/Deck/Repository/IDBDeckQueryRepository';
-import IDBTagQueryRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagQueryRepository';
 import CardContentFactory from '../../Domain/Card/Content/CardContentFactory';
 import ApplyThemeHandler from '../../Application/Command/Theme/ApplyThemeHandler';
 import LSSettingsQueryRepository from '../../Infrastructure/Persistence/Settings/Repository/LSSettingsQueryRepository';
@@ -10,7 +9,7 @@ import GenerateFeedHandler from '../../Application/Command/Feed/GenerateFeedHand
 import IDBDeckCommandRepository from '../../Infrastructure/Persistence/Deck/Repository/IDBDeckCommandRepository';
 import IDBFeedCommandRepository from '../../Infrastructure/Persistence/Feed/Repository/IDBFeedCommandRepository';
 import IDBCardQueryRepository from '../../Infrastructure/Persistence/Card/Repository/IDBCardQueryRepository';
-import FindFeedHandler from '../../Application/Query/Feed/FindFeedHandler';
+import FindRandomFeedHandler from '../../Application/Query/Feed/FindFeedHandler';
 import IDBCardCommandRepository from '../../Infrastructure/Persistence/Card/Repository/IDBCardCommandRepository';
 import IDBFeedQueryRepository from '../../Infrastructure/Persistence/Feed/Repository/IDBFeedQueryRepository';
 import CreateDeckHandler from '../../Application/Command/Deck/CreateDeckHandler';
@@ -129,11 +128,10 @@ export const generateFeed = (limit: number) =>
     make(IDBFeedCommandRepository),
     make(IDBDeckQueryRepository),
     make(IDBCardQueryRepository),
-    make(IDBTagQueryRepository),
   ).invoke(limit);
 
-export const findFeed = () =>
-  new FindFeedHandler(
+export const findRandomFeed = () =>
+  new FindRandomFeedHandler(
     make(IDBCardCommandRepository),
     make(IDBCardQueryRepository),
     make(IDBFeedQueryRepository),

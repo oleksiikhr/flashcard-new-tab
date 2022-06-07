@@ -1,6 +1,6 @@
 import Card from '../../../../Domain/Card/Card';
 import CardCommandRepository from '../../../../Domain/Card/Repository/CardCommandRepository';
-import TransactionPipeline from '../../Shared/IndexedDB/TransactionPipeline';
+import TransactionPipeline from '../../Shared/IndexedDB/Transaction/TransactionPipeline';
 import CardDeleteTransactionEvent from '../Event/CardDeleteTransactionEvent';
 import CardCreateTransactionEvent from '../Event/CardCreateTransactionEvent';
 import CardUpdateTransactionEvent from '../Event/CardUpdateTransactionEvent';

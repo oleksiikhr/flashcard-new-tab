@@ -1,6 +1,6 @@
 import Tag from '../../../../Domain/Tag/Tag';
 import TagCommandRepository from '../../../../Domain/Tag/Repository/TagCommandRepository';
-import TransactionPipeline from '../../Shared/IndexedDB/TransactionPipeline';
+import TransactionPipeline from '../../Shared/IndexedDB/Transaction/TransactionPipeline';
 import TagCreateTransactionEvent from '../Event/TagCreateTransactionEvent';
 import TagUpdateTransactionEvent from '../Event/TagUpdateTransactionEvent';
 import TagDeleteTransactionEvent from '../Event/TagDeleteTransactionEvent';

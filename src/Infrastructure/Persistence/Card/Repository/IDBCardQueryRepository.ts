@@ -21,7 +21,7 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
     const db = await this.idb.openDB();
 
     const request = db
-      .transaction(StoreName.CARDS)
+      .transaction(StoreName.CARDS, 'readonly')
       .objectStore(StoreName.CARDS)
       .openCursor(
         undefined !== fromId
@@ -30,14 +30,14 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
       );
 
     return requestPaginate<CardRaw>(request, limit).then((raws) =>
-      Promise.all(raws.map((raw) => this.memento.unserialize(raw))),
+      raws.map((raw) => this.memento.unserialize(raw)),
     );
   }
 
   async findById(id: CardId): Promise<Card | undefined> {
     const db = await this.idb.openDB();
 
-    const transaction = db.transaction([StoreName.CARDS], 'readonly');
+    const transaction = db.transaction(StoreName.CARDS, 'readonly');
 
     const request = transaction
       .objectStore(StoreName.CARDS)

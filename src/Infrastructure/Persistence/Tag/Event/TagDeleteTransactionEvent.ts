@@ -1,6 +1,6 @@
-import TransactionEvent from '../../Shared/IndexedDB/Bus/TransactionEvent';
+import TransactionEvent from '../../Shared/IndexedDB/Transaction/TransactionEvent';
 import Tag from '../../../../Domain/Tag/Tag';
-import TransactionAction from '../../Shared/IndexedDB/Bus/TransactionAction';
+import TransactionAction from '../../Shared/IndexedDB/Transaction/TransactionAction';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 
 export default class TagDeleteTransactionEvent implements TransactionEvent {

@@ -36,22 +36,6 @@ $ make up
 > RefreshFeedOnDeckUpdateListener: remove/add all feed table [2]
 
 
-
-# Удаление словаря [DECK = 2]
-
-- Удаление карточки [CARD = n]
-- Удалить словарь
-
-# Удаление карточки [CARD_ID = 2]
-
-- Найти все записи из `Card - Tag` и удалить по `card_id=2` (Пагинация)
-- Уменьшить `tags.cards_count - 1`
-- И удалить запись из `Card - Tag`
-- Найти все записи из `Feed` и удалить по `card_id=2`
-- Уменьшить `decks.cards_count - 1`
-- Удалить карточку `id=2`
-
-
 # DATABASE
 
 > global
@@ -62,6 +46,7 @@ $ make up
 - name
 - is_active
 - cards_count
+- active_cards_count
 - tags_count
 - settings ({ count: 1000, recalculate: 'day/week/month', algorithm: 'random/sm2/leitner' })
 - generate_at
@@ -75,6 +60,7 @@ $ make up
 - content ({ answer: '' })
 - template_type (question-answer, select, multi-select, etc)
 - statistics ({ views: 0 })
+- is_active
 - next_at
 - seen_at
 - updated_at
@@ -91,8 +77,10 @@ $ make up
 > card_tag
 - card_id
 - tag_id
+- deck_id
 
 > feed
 - card_id
+- deck_id
 
 https://www.gettyimages.com/

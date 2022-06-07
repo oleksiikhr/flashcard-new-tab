@@ -17,7 +17,7 @@ import list from '../../Infrastructure/Persistence/Shared/IndexedDB/Migration/li
 import TagMemento from '../../Domain/Tag/TagMemento';
 import IDBTagCommandRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagCommandRepository';
 import UpdateDeckOnDeleteCardTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/UpdateDeckOnDeleteCardTransactionListener';
-import TransactionPipeline from '../../Infrastructure/Persistence/Shared/IndexedDB/TransactionPipeline';
+import TransactionPipeline from '../../Infrastructure/Persistence/Shared/IndexedDB/Transaction/TransactionPipeline';
 import UpdateDeckOnCreateTagTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/UpdateDeckOnCreateTagTransactionListener';
 import CreateCardTransactionListener from '../../Infrastructure/Persistence/Card/Listener/CreateCardTransactionListener';
 import UpdateDeckOnCreateCardTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/UpdateDeckOnCreateCardTransactionListener';
@@ -116,12 +116,12 @@ register(
 
 register(
   UpdateDeckOnCreateCardTransactionListener,
-  () => new UpdateDeckOnCreateCardTransactionListener(make(DeckMemento)),
+  () => new UpdateDeckOnCreateCardTransactionListener(),
 );
 
 register(
   UpdateDeckOnDeleteCardTransactionListener,
-  () => new UpdateDeckOnDeleteCardTransactionListener(make(DeckMemento)),
+  () => new UpdateDeckOnDeleteCardTransactionListener(),
 );
 
 /* ------------------------------------------------------------------------- */
@@ -135,25 +135,9 @@ register(
   () => new CreateCardTransactionListener(make(CardMemento)),
 );
 
-register(
-  CardMemento,
-  () =>
-    new CardMemento(
-      make(IDBDeckQueryRepository),
-      make(IDBTagQueryRepository),
-      make(CardContentFactory),
-    ),
-);
+register(CardMemento, () => new CardMemento(make(CardContentFactory)));
 
-register(
-  CardMemento,
-  () =>
-    new CardMemento(
-      make(IDBDeckQueryRepository),
-      make(IDBTagQueryRepository),
-      make(CardContentFactory),
-    ),
-);
+register(CardMemento, () => new CardMemento(make(CardContentFactory)));
 
 register(
   IDBCardQueryRepository,
@@ -186,10 +170,10 @@ register(
 
 register(
   UpdateDeckOnCreateTagTransactionListener,
-  () => new UpdateDeckOnCreateTagTransactionListener(make(DeckMemento)),
+  () => new UpdateDeckOnCreateTagTransactionListener(),
 );
 
-register(TagMemento, () => new TagMemento(make(IDBDeckQueryRepository)));
+register(TagMemento, () => new TagMemento());
 
 register(
   IDBTagQueryRepository,

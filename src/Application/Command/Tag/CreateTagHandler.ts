@@ -22,7 +22,7 @@ export default class CreateTagHandler {
       throw new DomainNotFoundError();
     }
 
-    const tag = Tag.create(deck, new TagName(name), isActive);
+    const tag = Tag.create(deck.getId(), new TagName(name), isActive);
 
     await this.tagCommandRepository.create(tag);
 

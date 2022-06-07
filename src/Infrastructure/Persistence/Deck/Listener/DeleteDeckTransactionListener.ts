@@ -1,4 +1,4 @@
-import TransactionListener from '../../Shared/IndexedDB/Bus/TransactionListener';
+import TransactionListener from '../../Shared/IndexedDB/Transaction/TransactionListener';
 import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import DeckDeleteTransactionEvent from '../Event/DeckDeleteTransactionEvent';
@@ -17,10 +17,10 @@ export default class DeleteDeckTransactionListener
   public invoke(
     transaction: IDBTransaction,
     event: DeckDeleteTransactionEvent,
-  ): Promise<unknown>[] {
+  ): Promise<unknown> {
     const store = transaction.objectStore(StoreName.DECKS);
     const request = store.delete(event.getDeck().getId().getIdentifier());
 
-    return [requestPromise(request)];
+    return requestPromise(request);
   }
 }

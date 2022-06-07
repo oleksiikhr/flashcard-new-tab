@@ -1,4 +1,4 @@
-import TransactionListener from '../../Shared/IndexedDB/Bus/TransactionListener';
+import TransactionListener from '../../Shared/IndexedDB/Transaction/TransactionListener';
 import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import DeckMemento from '../../../../Domain/Deck/DeckMemento';
@@ -20,13 +20,13 @@ export default class UpdateDeckTransactionListener
   public invoke(
     transaction: IDBTransaction,
     event: DeckUpdateTransactionEvent,
-  ): Promise<unknown>[] {
+  ): Promise<unknown> {
     const deck = event.getDeck();
     const raw = this.memento.serialize(deck);
 
     const store = transaction.objectStore(StoreName.DECKS);
     const request = store.put(raw);
 
-    return [requestPromise<number>(request)];
+    return requestPromise<number>(request);
   }
 }

@@ -1,6 +1,6 @@
 import Deck from '../../../../Domain/Deck/Deck';
 import DeckCommandRepository from '../../../../Domain/Deck/Repository/DeckCommandRepository';
-import TransactionPipeline from '../../Shared/IndexedDB/TransactionPipeline';
+import TransactionPipeline from '../../Shared/IndexedDB/Transaction/TransactionPipeline';
 import DeckDeleteTransactionEvent from '../Event/DeckDeleteTransactionEvent';
 import DeckCreateTransactionEvent from '../Event/DeckCreateTransactionEvent';
 import DeckUpdateTransactionEvent from '../Event/DeckUpdateTransactionEvent';

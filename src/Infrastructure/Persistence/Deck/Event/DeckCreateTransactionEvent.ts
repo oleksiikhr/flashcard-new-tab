@@ -1,7 +1,7 @@
-import TransactionEvent from '../../Shared/IndexedDB/Bus/TransactionEvent';
+import TransactionEvent from '../../Shared/IndexedDB/Transaction/TransactionEvent';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import Deck from '../../../../Domain/Deck/Deck';
-import TransactionAction from '../../Shared/IndexedDB/Bus/TransactionAction';
+import TransactionAction from '../../Shared/IndexedDB/Transaction/TransactionAction';
 
 export default class DeckCreateTransactionEvent implements TransactionEvent {
   constructor(private deck: Deck) {}

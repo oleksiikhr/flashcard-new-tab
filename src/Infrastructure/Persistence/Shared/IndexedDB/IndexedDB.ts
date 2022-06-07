@@ -62,22 +62,6 @@ export default class IndexedDB {
   //   });
   // }
 
-  public request<T>(request: IDBRequest): Promise<T | undefined> {
-    return new Promise((resolve, reject) => {
-      request.onsuccess = (event) => {
-        const result = (event.target as IDBRequest).result as T;
-
-        try {
-          resolve(result);
-        } catch (e) {
-          reject(e);
-        }
-      };
-
-      request.onerror = reject;
-    });
-  }
-
   public openDB(): Promise<IDBDatabase> {
     if (null !== this.db) {
       return Promise.resolve(this.db);
