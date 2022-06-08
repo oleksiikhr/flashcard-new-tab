@@ -12,7 +12,7 @@ export function deckTestHandle(root: HTMLElement): void {
   ) as HTMLElement;
 
   setInterval(() => {
-    paginateDecks(undefined, 15)
+    paginateDecks(undefined, 10)
       .then((decks) => {
         let output = '';
         decks.forEach((deck) => {

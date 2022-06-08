@@ -39,7 +39,6 @@ $ make up
 - template_type (question-answer, select, multi-select, etc)
 - statistics ({ views: 0 })
 - is_active
-- next_at
 - seen_at
 - updated_at
 - created_at

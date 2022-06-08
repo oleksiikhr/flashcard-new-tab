@@ -23,7 +23,7 @@ export default class FindFeedHandler {
       return undefined;
     }
 
-    card.updateLastView();
+    card.getStatistics().increaseViews();
 
     await this.cardCommandRepository.update(card);
 

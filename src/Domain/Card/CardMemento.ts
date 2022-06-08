@@ -13,7 +13,7 @@ export type CardRaw = {
   content: object;
   template_type: number;
   statistics: CardStatisticsRaw;
-  next_at: Date;
+  is_active: number;
   seen_at: Date;
   updated_at: Date;
   created_at: Date;
@@ -30,7 +30,7 @@ export default class CardMemento {
       content: card.getContent().serialize(),
       template_type: card.getTemplateType().getValue(),
       statistics: card.getStatistics().serialize(),
-      next_at: card.getNextAt(),
+      is_active: +card.getIsActive(),
       seen_at: card.getSeenAt(),
       updated_at: card.getUpdatedAt(),
       created_at: card.getCreatedAt(),
@@ -47,7 +47,7 @@ export default class CardMemento {
       this.contentFactory.make(raw.content, templateType),
       templateType,
       new CardStatistics(raw.statistics),
-      raw.next_at,
+      !!raw.is_active,
       raw.seen_at,
       raw.updated_at,
       raw.created_at,

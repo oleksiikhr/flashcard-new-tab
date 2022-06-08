@@ -37,15 +37,8 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
     );
 
     const tags = await Promise.all<Tag | undefined>(promises);
-    const filtered: Tag[] = [];
 
-    tags.forEach((tag) => {
-      if (undefined !== tag) {
-        filtered.push(tag);
-      }
-    });
-
-    return filtered;
+    return tags.filter((tag) => undefined !== tag) as Tag[];
   }
 
   async findActiveByDeckId(deckId: DeckId): Promise<Tag[]> {

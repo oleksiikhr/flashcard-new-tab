@@ -1,8 +1,8 @@
 import TransactionEvent from '../../Shared/IndexedDB/Transaction/TransactionEvent';
-import Card from '../../../../Domain/Card/Card';
 import StoreName from '../../Shared/IndexedDB/StoreName';
+import Card from '../../../../Domain/Card/Card';
 
-export default class CardUpdateTransactionEvent implements TransactionEvent {
+export default class FeedCreateTransactionEvent implements TransactionEvent {
   constructor(private card: Card) {}
 
   public getCard() {
@@ -10,6 +10,6 @@ export default class CardUpdateTransactionEvent implements TransactionEvent {
   }
 
   getStoreName(): StoreName {
-    return StoreName.CARDS;
+    return StoreName.FEED;
   }
 }

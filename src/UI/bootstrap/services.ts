@@ -25,12 +25,16 @@ const { register, make } = (() => {
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     register: <T>(c: { new (...args: any[]): T }, cb: () => T): void => {
-      state.set(c, { cb, resolved: undefined });
+      if (state.has(c.name)) {
+        throw new Error(`${c.name} already registered!`);
+      }
+
+      state.set(c.name, { cb, resolved: undefined });
     },
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     make: <T>(c: { new (...args: any[]): T }): T => {
-      const item = state.get(c) as
+      const item = state.get(c.name) as
         | { cb: () => T; resolved: undefined | T }
         | undefined;
 
@@ -94,8 +98,6 @@ register(CardContentFactory, () => new CardContentFactory());
 
 register(CardMemento, () => new CardMemento(make(CardContentFactory)));
 
-register(CardMemento, () => new CardMemento(make(CardContentFactory)));
-
 register(
   IDBCardQueryRepository,
   () =>
@@ -138,7 +140,7 @@ register(
 
 register(
   IDBFeedCommandRepository,
-  () => new IDBFeedCommandRepository(make(CardMemento), make(IndexedDB)),
+  () => new IDBFeedCommandRepository(make(TransactionPipeline)),
 );
 
 /* ------------------------------------------------------------------------- */

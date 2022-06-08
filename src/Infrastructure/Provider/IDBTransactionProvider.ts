@@ -1,12 +1,10 @@
 import make from '../../UI/bootstrap/services';
 import TransactionPipeline from '../Persistence/Shared/IndexedDB/Transaction/TransactionPipeline';
-import StoreName from '../Persistence/Shared/IndexedDB/StoreName';
 import DeleteDeckTransactionListener from '../Persistence/Deck/Listener/DeleteDeckTransactionListener';
 import CreateCardTransactionListener from '../Persistence/Card/Listener/CreateCardTransactionListener';
 import UpdateDeckOnCreateCardTransactionListener from '../Persistence/Deck/Listener/UpdateDeckOnCreateCardTransactionListener';
 import UpdateCardTransactionListener from '../Persistence/Card/Listener/UpdateCardTransactionListener';
 import DeleteCardTransactionListener from '../Persistence/Card/Listener/DeleteCardTransactionListener';
-import TransactionAction from '../Persistence/Shared/IndexedDB/Transaction/TransactionAction';
 import CreateDeckTransactionListener from '../Persistence/Deck/Listener/CreateDeckTransactionListener';
 import CreateTagTransactionListener from '../Persistence/Tag/Listener/CreateTagTransactionListener';
 import UpdateDeckOnCreateTagTransactionListener from '../Persistence/Deck/Listener/UpdateDeckOnCreateTagTransactionListener';
@@ -20,54 +18,76 @@ import DeleteCardsOnDeleteDeckTransactionListener from '../Persistence/Card/List
 import UpdateTagTransactionListener from '../Persistence/Tag/Listener/UpdateTagTransactionListener';
 import DeleteTagTransactionListener from '../Persistence/Tag/Listener/DeleteTagTransactionListener';
 import UpdateDeckOnDeleteTagTransactionListener from '../Persistence/Deck/Listener/UpdateDeckOnDeleteTagTransactionListener';
+import DeleteFeedOnDeleteDeckTransactionListener from '../Persistence/Feed/Listener/DeleteFeedOnDeleteDeckTransactionListener';
+import DeckCreateTransactionEvent from '../Persistence/Deck/Event/DeckCreateTransactionEvent';
+import DeckUpdateTransactionEvent from '../Persistence/Deck/Event/DeckUpdateTransactionEvent';
+import DeckDeleteTransactionEvent from '../Persistence/Deck/Event/DeckDeleteTransactionEvent';
+import CardCreateTransactionEvent from '../Persistence/Card/Event/CardCreateTransactionEvent';
+import CardUpdateTransactionEvent from '../Persistence/Card/Event/CardUpdateTransactionEvent';
+import CardDeleteTransactionEvent from '../Persistence/Card/Event/CardDeleteTransactionEvent';
+import TagCreateTransactionEvent from '../Persistence/Tag/Event/TagCreateTransactionEvent';
+import TagUpdateTransactionEvent from '../Persistence/Tag/Event/TagUpdateTransactionEvent';
+import TagDeleteTransactionEvent from '../Persistence/Tag/Event/TagDeleteTransactionEvent';
+import FeedCreateTransactionEvent from '../Persistence/Feed/Event/FeedCreateTransactionEvent';
+import CreateFeedTransactionListener from '../Persistence/Feed/Listener/CreateFeedTransactionListener';
+import FeedDeleteByIdDeckTransactionEvent from '../Persistence/Feed/Event/FeedDeleteByIdDeckTransactionEvent';
+import DeleteFeedByDeckIdTransactionListener from '../Persistence/Feed/Listener/DeleteFeedByDeckIdTransactionListener';
 
 export default class IDBTransactionProvider {
   constructor(private pipeline: TransactionPipeline) {}
 
   invoke() {
-    this.pipeline.subscribe(StoreName.DECKS, TransactionAction.CREATE, [
+    this.pipeline.subscribe(DeckCreateTransactionEvent, [
       new CreateDeckTransactionListener(make(DeckMemento)),
     ]);
 
-    this.pipeline.subscribe(StoreName.DECKS, TransactionAction.UPDATE, [
+    this.pipeline.subscribe(DeckUpdateTransactionEvent, [
       new UpdateDeckTransactionListener(make(DeckMemento)),
     ]);
 
-    this.pipeline.subscribe(StoreName.DECKS, TransactionAction.DELETE, [
-      new DeleteDeckTransactionListener(),
+    this.pipeline.subscribe(DeckDeleteTransactionEvent, [
       new DeleteCardsOnDeleteDeckTransactionListener(),
+      new DeleteFeedOnDeleteDeckTransactionListener(),
+      new DeleteDeckTransactionListener(),
       // TODO delete card_tag
-      // TODO delete feed
       // TODO delete tags
     ]);
 
-    this.pipeline.subscribe(StoreName.CARDS, TransactionAction.CREATE, [
+    this.pipeline.subscribe(CardCreateTransactionEvent, [
       new CreateCardTransactionListener(make(CardMemento)),
       new UpdateDeckOnCreateCardTransactionListener(),
     ]);
 
-    this.pipeline.subscribe(StoreName.CARDS, TransactionAction.UPDATE, [
+    this.pipeline.subscribe(CardUpdateTransactionEvent, [
       new UpdateCardTransactionListener(make(CardMemento)),
     ]);
 
-    this.pipeline.subscribe(StoreName.CARDS, TransactionAction.DELETE, [
-      new DeleteCardTransactionListener(),
+    this.pipeline.subscribe(CardDeleteTransactionEvent, [
       new UpdateDeckOnDeleteCardTransactionListener(),
       new DeleteFeedOnDeleteCardTransactionListener(),
+      new DeleteCardTransactionListener(),
     ]);
 
-    this.pipeline.subscribe(StoreName.TAGS, TransactionAction.CREATE, [
+    this.pipeline.subscribe(TagCreateTransactionEvent, [
       new CreateTagTransactionListener(make(TagMemento)),
       new UpdateDeckOnCreateTagTransactionListener(),
     ]);
 
-    this.pipeline.subscribe(StoreName.TAGS, TransactionAction.UPDATE, [
+    this.pipeline.subscribe(TagUpdateTransactionEvent, [
       new UpdateTagTransactionListener(make(TagMemento)),
     ]);
 
-    this.pipeline.subscribe(StoreName.TAGS, TransactionAction.DELETE, [
-      new DeleteTagTransactionListener(),
+    this.pipeline.subscribe(TagDeleteTransactionEvent, [
       new UpdateDeckOnDeleteTagTransactionListener(),
+      new DeleteTagTransactionListener(),
+    ]);
+
+    this.pipeline.subscribe(FeedCreateTransactionEvent, [
+      new CreateFeedTransactionListener(),
+    ]);
+
+    this.pipeline.subscribe(FeedDeleteByIdDeckTransactionEvent, [
+      new DeleteFeedByDeckIdTransactionListener(),
     ]);
   }
 }

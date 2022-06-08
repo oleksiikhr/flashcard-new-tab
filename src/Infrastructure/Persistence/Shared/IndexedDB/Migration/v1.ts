@@ -19,8 +19,8 @@ export default (event: IDBVersionChangeEvent): Promise<void> =>
     });
 
     cards.createIndex('deck_id_idx', 'deck_id');
+    cards.createIndex('deck_id_and_is_active_idx', ['deck_id', 'is_active']);
     cards.createIndex('question_idx', 'question');
-    cards.createIndex('next_at_idx', 'next_at');
 
     const tags = db.createObjectStore('tags', {
       keyPath: 'id',

@@ -1,6 +1,5 @@
 import TransactionEvent from '../../Shared/IndexedDB/Transaction/TransactionEvent';
 import Tag from '../../../../Domain/Tag/Tag';
-import TransactionAction from '../../Shared/IndexedDB/Transaction/TransactionAction';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 
 export default class TagCreateTransactionEvent implements TransactionEvent {
@@ -12,9 +11,5 @@ export default class TagCreateTransactionEvent implements TransactionEvent {
 
   getStoreName(): StoreName {
     return StoreName.TAGS;
-  }
-
-  getAction(): TransactionAction {
-    return TransactionAction.CREATE;
   }
 }

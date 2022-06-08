@@ -3,7 +3,7 @@ import FeedQueryRepository from '../../../../Domain/Feed/Repository/FeedQueryRep
 import CardMemento from '../../../../Domain/Card/CardMemento';
 import CardId from '../../../../Domain/Card/CardId';
 import StoreName from '../../Shared/IndexedDB/StoreName';
-import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
+import { requestPromise, requestRandom } from '../../Shared/IndexedDB/Util/idb';
 
 export default class IDBFeedQueryRepository implements FeedQueryRepository {
   constructor(private memento: CardMemento, private idb: IndexedDB) {}
@@ -21,10 +21,8 @@ export default class IDBFeedQueryRepository implements FeedQueryRepository {
       return undefined;
     }
 
-    return this.idb
-      .random<{ card_id: number }>(request.openCursor(), total)
-      .then((data) =>
-        undefined !== data ? CardId.of(data.card_id) : undefined,
-      );
+    return requestRandom<{ card_id: number }>(request.openCursor(), total).then(
+      (data) => (undefined !== data ? CardId.of(data.card_id) : undefined),
+    );
   }
 }

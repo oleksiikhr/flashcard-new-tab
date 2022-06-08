@@ -1,6 +1,5 @@
 import TransactionEvent from '../../Shared/IndexedDB/Transaction/TransactionEvent';
 import Card from '../../../../Domain/Card/Card';
-import TransactionAction from '../../Shared/IndexedDB/Transaction/TransactionAction';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 
 export default class CardDeleteTransactionEvent implements TransactionEvent {
@@ -12,9 +11,5 @@ export default class CardDeleteTransactionEvent implements TransactionEvent {
 
   getStoreName(): StoreName {
     return StoreName.CARDS;
-  }
-
-  getAction(): TransactionAction {
-    return TransactionAction.DELETE;
   }
 }

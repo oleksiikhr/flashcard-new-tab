@@ -1,3 +1,5 @@
+import { random } from '../../../../../Domain/Shared/Util/number';
+
 export function requestPaginate<T>(
   request: IDBRequest,
   limit: number,
@@ -23,6 +25,29 @@ export function requestPaginate<T>(
         resolve(data);
       }
     };
+  });
+}
+
+export function requestRandom<T>(
+  request: IDBRequest<IDBCursorWithValue | null>,
+  totalRecords: number,
+): Promise<T | undefined> {
+  return new Promise((resolve, reject) => {
+    let searching = true;
+
+    request.onsuccess = (event) => {
+      const cursor = (event.target as IDBRequest).result as IDBCursorWithValue;
+      const value = random(0, totalRecords - 1);
+
+      if (searching && 0 !== value) {
+        searching = false;
+        cursor.advance(value);
+      } else {
+        resolve(cursor.value as T);
+      }
+    };
+
+    request.onerror = reject;
   });
 }
 
@@ -73,9 +98,9 @@ export function requestKeyCursor(
   });
 }
 
-export function requestCursor<T>(
+export function requestCursor(
   request: IDBRequest,
-  callback: (result: T) => boolean | void,
+  callback: (result: IDBCursorWithValue) => boolean | void,
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     request.onsuccess = (event) => {
@@ -89,12 +114,9 @@ export function requestCursor<T>(
       }
 
       try {
-        if (false === callback(cursor.value as T)) {
+        if (false === callback(cursor)) {
           resolve();
-          return;
         }
-
-        cursor.continue();
       } catch (e) {
         reject(e);
       }

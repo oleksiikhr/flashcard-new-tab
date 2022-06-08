@@ -14,7 +14,7 @@ export function cardTestHandle(root: HTMLElement): void {
   ) as HTMLElement;
 
   setInterval(() => {
-    paginateCards(undefined, 15)
+    paginateCards(undefined, 10)
       .then((cards) => {
         let output = '';
         cards.forEach((card) => {

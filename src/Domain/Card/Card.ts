@@ -14,7 +14,7 @@ export default class Card {
     private content: CardContent,
     private templateType: CardTemplateType,
     private statistics: CardStatistics,
-    private nextAt: Date,
+    private isActive: boolean,
     private seenAt: Date,
     private updatedAt: Date,
     private createdAt: Date,
@@ -33,7 +33,7 @@ export default class Card {
       content,
       templateType,
       CardStatistics.create(),
-      new Date(),
+      true,
       new Date(),
       new Date(),
       new Date(),
@@ -44,10 +44,12 @@ export default class Card {
     question: CardQuestion,
     content: CardContent,
     templateType: CardTemplateType,
+    isActive: boolean,
   ): void {
     this.question = question;
     this.content = content;
     this.templateType = templateType;
+    this.isActive = isActive;
   }
 
   public isExists(): boolean {
@@ -90,8 +92,8 @@ export default class Card {
     return this.statistics;
   }
 
-  public getNextAt(): Date {
-    return this.nextAt;
+  public getIsActive(): boolean {
+    return this.isActive;
   }
 
   public getSeenAt(): Date {
@@ -104,11 +106,5 @@ export default class Card {
 
   public getCreatedAt(): Date {
     return this.createdAt;
-  }
-
-  public updateLastView(): void {
-    this.nextAt = new Date();
-
-    this.statistics.increaseViews();
   }
 }

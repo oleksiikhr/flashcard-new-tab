@@ -1,23 +1,20 @@
-import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 import FeedCommandRepository from '../../../../Domain/Feed/Repository/FeedCommandRepository';
-import CardMemento from '../../../../Domain/Card/CardMemento';
 import Card from '../../../../Domain/Card/Card';
-import StoreName from '../../Shared/IndexedDB/StoreName';
-import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
+import DeckId from '../../../../Domain/Deck/DeckId';
+import TransactionPipeline from '../../Shared/IndexedDB/Transaction/TransactionPipeline';
+import FeedDeleteByIdDeckTransactionEvent from '../Event/FeedDeleteByIdDeckTransactionEvent';
+import FeedCreateTransactionEvent from '../Event/FeedCreateTransactionEvent';
 
 export default class IDBFeedCommandRepository implements FeedCommandRepository {
-  constructor(private memento: CardMemento, private idb: IndexedDB) {}
+  constructor(private pipeline: TransactionPipeline) {}
 
   async create(card: Card): Promise<void> {
-    const db = await this.idb.openDB();
-    const request = db
-      .transaction(StoreName.FEED, 'readwrite')
-      .objectStore(StoreName.FEED)
-      .add({
-        card_id: card.getId().getIdentifier(),
-        deck_id: card.getDeckId().getIdentifier(),
-      });
+    return this.pipeline.trigger(new FeedCreateTransactionEvent(card));
+  }
 
-    await requestPromise(request);
+  async deleteByDeckId(deckId: DeckId): Promise<void> {
+    return this.pipeline.trigger(
+      new FeedDeleteByIdDeckTransactionEvent(deckId),
+    );
   }
 }

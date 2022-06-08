@@ -80,7 +80,7 @@ export default class Deck {
     return this.settings;
   }
 
-  public updateGenerateAt(): void {
+  public nextGenerateAt(): void {
     this.generateAt = new Date();
   }
 

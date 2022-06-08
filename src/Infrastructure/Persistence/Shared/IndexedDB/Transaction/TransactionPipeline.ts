@@ -1,8 +1,6 @@
 import TransactionEvent from './TransactionEvent';
 import TransactionListener from './TransactionListener';
-import TransactionAction from './TransactionAction';
 import IndexedDB from '../IndexedDB';
-import StoreName from '../StoreName';
 import { error } from '../../../../../Domain/Shared/Util/logger';
 import { toArray } from '../../../../../Domain/Shared/Util/type';
 
@@ -15,20 +13,19 @@ export default class TransactionPipeline {
   constructor(private idb: IndexedDB) {}
 
   public subscribe(
-    storeName: StoreName,
-    action: TransactionAction,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    event: { new (...args: any[]): TransactionEvent },
     listeners: TransactionListener<TransactionEvent>[],
   ) {
-    const state = this.listeners.get(storeName + action) || [];
+    const state = this.listeners.get(event.name) || [];
 
     state.push(...listeners);
 
-    this.listeners.set(storeName + action, listeners);
+    this.listeners.set(event.name, listeners);
   }
 
   async trigger(event: TransactionEvent): Promise<void> {
-    const listeners =
-      this.listeners.get(event.getStoreName() + event.getAction()) || [];
+    const listeners = this.listeners.get(event.constructor.name) || [];
     const storeNames: Set<string> = new Set();
 
     listeners
