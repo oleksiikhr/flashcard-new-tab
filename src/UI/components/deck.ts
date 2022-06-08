@@ -1,47 +1,34 @@
 import {
   createDeck,
   deleteDeck,
-  findDeck,
   paginateDecks,
   updateDeck,
 } from '../bootstrap/bus';
 import { error, log } from '../../Domain/Shared/Util/logger';
 
 export function deckTestHandle(root: HTMLElement): void {
-  const consoleElement = document.querySelector('#console') as HTMLElement;
+  const consoleElement = document.querySelector(
+    '#deck-paginate',
+  ) as HTMLElement;
 
-  root
-    .querySelector('#deck-form-paginate')
-    ?.addEventListener('submit', (evt) => {
-      evt.preventDefault();
+  setInterval(() => {
+    paginateDecks(undefined, 15)
+      .then((decks) => {
+        let output = '';
+        decks.forEach((deck) => {
+          output += `${JSON.stringify({
+            id: deck.getId().getIdentifier(),
+            name: deck.getName().getValue(),
+            cards_count: deck.getCardsCount(),
+            tags_count: deck.getTagsCount(),
+            is_active: deck.getIsActive(),
+          })}\n`;
+        });
 
-      const fromId = root.querySelector(
-        '#deck-paginate-from_id',
-      ) as HTMLInputElement;
-      const limit = root.querySelector(
-        '#deck-paginate-limit',
-      ) as HTMLInputElement;
-
-      paginateDecks(+fromId.value || undefined, +limit.value)
-        .then((decks) => {
-          log(decks);
-          consoleElement.innerHTML = JSON.stringify(decks, null, '\t');
-        })
-        .catch(error);
-    });
-
-  root.querySelector('#deck-form-view')?.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    const id = root.querySelector('#deck-view-id') as HTMLInputElement;
-
-    findDeck(+id.value)
-      .then((deck) => {
-        log(deck);
-        consoleElement.innerHTML = JSON.stringify(deck, null, '\t');
+        consoleElement.innerHTML = output.trimEnd();
       })
       .catch(error);
-  });
+  }, 1000);
 
   root.querySelector('#deck-form-create')?.addEventListener('submit', (evt) => {
     evt.preventDefault();

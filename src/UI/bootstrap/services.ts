@@ -16,20 +16,7 @@ import { indexedDB as idbConfig } from '../config/database';
 import list from '../../Infrastructure/Persistence/Shared/IndexedDB/Migration/list';
 import TagMemento from '../../Domain/Tag/TagMemento';
 import IDBTagCommandRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagCommandRepository';
-import UpdateDeckOnDeleteCardTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/UpdateDeckOnDeleteCardTransactionListener';
 import TransactionPipeline from '../../Infrastructure/Persistence/Shared/IndexedDB/Transaction/TransactionPipeline';
-import UpdateDeckOnCreateTagTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/UpdateDeckOnCreateTagTransactionListener';
-import CreateCardTransactionListener from '../../Infrastructure/Persistence/Card/Listener/CreateCardTransactionListener';
-import UpdateDeckOnCreateCardTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/UpdateDeckOnCreateCardTransactionListener';
-import UpdateCardTransactionListener from '../../Infrastructure/Persistence/Card/Listener/UpdateCardTransactionListener';
-import DeleteCardTransactionListener from '../../Infrastructure/Persistence/Card/Listener/DeleteCardTransactionListener';
-import DeleteFeedOnDeleteCardTransactionListener from '../../Infrastructure/Persistence/Feed/Listener/DeleteFeedOnDeleteCardTransactionListener';
-import DeleteDeckTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/DeleteDeckTransactionListener';
-import CreateDeckTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/CreateDeckTransactionListener';
-import CreateTagTransactionListener from '../../Infrastructure/Persistence/Tag/Listener/CreateTagTransactionListener';
-import UpdateDeckTransactionListener from '../../Infrastructure/Persistence/Deck/Listener/UpdateDeckTransactionListener';
-import UpdateTagTransactionListener from '../../Infrastructure/Persistence/Tag/Listener/UpdateTagTransactionListener';
-import DeleteTagTransactionListener from '../../Infrastructure/Persistence/Tag/Listener/DeleteTagTransactionListener';
 
 const { register, make } = (() => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -99,41 +86,11 @@ register(
   () => new IDBDeckCommandRepository(make(TransactionPipeline)),
 );
 
-register(
-  CreateDeckTransactionListener,
-  () => new CreateDeckTransactionListener(make(DeckMemento)),
-);
-
-register(
-  UpdateDeckTransactionListener,
-  () => new UpdateDeckTransactionListener(make(DeckMemento)),
-);
-
-register(
-  DeleteDeckTransactionListener,
-  () => new DeleteDeckTransactionListener(),
-);
-
-register(
-  UpdateDeckOnCreateCardTransactionListener,
-  () => new UpdateDeckOnCreateCardTransactionListener(),
-);
-
-register(
-  UpdateDeckOnDeleteCardTransactionListener,
-  () => new UpdateDeckOnDeleteCardTransactionListener(),
-);
-
 /* ------------------------------------------------------------------------- */
 
 // Card
 
 register(CardContentFactory, () => new CardContentFactory());
-
-register(
-  CreateCardTransactionListener,
-  () => new CreateCardTransactionListener(make(CardMemento)),
-);
 
 register(CardMemento, () => new CardMemento(make(CardContentFactory)));
 
@@ -154,24 +111,9 @@ register(
   () => new IDBCardCommandRepository(make(TransactionPipeline)),
 );
 
-register(
-  UpdateCardTransactionListener,
-  () => new UpdateCardTransactionListener(make(CardMemento)),
-);
-
-register(
-  DeleteCardTransactionListener,
-  () => new DeleteCardTransactionListener(),
-);
-
 /* ------------------------------------------------------------------------- */
 
 // Tag
-
-register(
-  UpdateDeckOnCreateTagTransactionListener,
-  () => new UpdateDeckOnCreateTagTransactionListener(),
-);
 
 register(TagMemento, () => new TagMemento());
 
@@ -183,21 +125,6 @@ register(
 register(
   IDBTagCommandRepository,
   () => new IDBTagCommandRepository(make(TransactionPipeline)),
-);
-
-register(
-  CreateTagTransactionListener,
-  () => new CreateTagTransactionListener(make(TagMemento)),
-);
-
-register(
-  UpdateTagTransactionListener,
-  () => new UpdateTagTransactionListener(make(TagMemento)),
-);
-
-register(
-  DeleteTagTransactionListener,
-  () => new DeleteTagTransactionListener(),
 );
 
 /* ------------------------------------------------------------------------- */
@@ -212,11 +139,6 @@ register(
 register(
   IDBFeedCommandRepository,
   () => new IDBFeedCommandRepository(make(CardMemento), make(IndexedDB)),
-);
-
-register(
-  DeleteFeedOnDeleteCardTransactionListener,
-  () => new DeleteFeedOnDeleteCardTransactionListener(),
 );
 
 /* ------------------------------------------------------------------------- */

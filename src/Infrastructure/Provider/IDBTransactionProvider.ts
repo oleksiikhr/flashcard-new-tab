@@ -13,41 +13,61 @@ import UpdateDeckOnCreateTagTransactionListener from '../Persistence/Deck/Listen
 import UpdateDeckTransactionListener from '../Persistence/Deck/Listener/UpdateDeckTransactionListener';
 import DeleteFeedOnDeleteCardTransactionListener from '../Persistence/Feed/Listener/DeleteFeedOnDeleteCardTransactionListener';
 import UpdateDeckOnDeleteCardTransactionListener from '../Persistence/Deck/Listener/UpdateDeckOnDeleteCardTransactionListener';
+import DeckMemento from '../../Domain/Deck/DeckMemento';
+import CardMemento from '../../Domain/Card/CardMemento';
+import TagMemento from '../../Domain/Tag/TagMemento';
+import DeleteCardsOnDeleteDeckTransactionListener from '../Persistence/Card/Listener/DeleteCardsOnDeleteDeckTransactionListener';
+import UpdateTagTransactionListener from '../Persistence/Tag/Listener/UpdateTagTransactionListener';
+import DeleteTagTransactionListener from '../Persistence/Tag/Listener/DeleteTagTransactionListener';
+import UpdateDeckOnDeleteTagTransactionListener from '../Persistence/Deck/Listener/UpdateDeckOnDeleteTagTransactionListener';
 
 export default class IDBTransactionProvider {
   constructor(private pipeline: TransactionPipeline) {}
 
   invoke() {
     this.pipeline.subscribe(StoreName.DECKS, TransactionAction.CREATE, [
-      make(CreateDeckTransactionListener),
+      new CreateDeckTransactionListener(make(DeckMemento)),
     ]);
 
     this.pipeline.subscribe(StoreName.DECKS, TransactionAction.UPDATE, [
-      make(UpdateDeckTransactionListener),
+      new UpdateDeckTransactionListener(make(DeckMemento)),
     ]);
 
     this.pipeline.subscribe(StoreName.DECKS, TransactionAction.DELETE, [
-      make(DeleteDeckTransactionListener),
+      new DeleteDeckTransactionListener(),
+      new DeleteCardsOnDeleteDeckTransactionListener(),
+      // TODO delete card_tag
+      // TODO delete feed
+      // TODO delete tags
     ]);
 
     this.pipeline.subscribe(StoreName.CARDS, TransactionAction.CREATE, [
-      make(CreateCardTransactionListener),
-      make(UpdateDeckOnCreateCardTransactionListener),
+      new CreateCardTransactionListener(make(CardMemento)),
+      new UpdateDeckOnCreateCardTransactionListener(),
     ]);
 
     this.pipeline.subscribe(StoreName.CARDS, TransactionAction.UPDATE, [
-      make(UpdateCardTransactionListener),
+      new UpdateCardTransactionListener(make(CardMemento)),
     ]);
 
     this.pipeline.subscribe(StoreName.CARDS, TransactionAction.DELETE, [
-      make(DeleteCardTransactionListener),
-      make(UpdateDeckOnDeleteCardTransactionListener),
-      make(DeleteFeedOnDeleteCardTransactionListener),
+      new DeleteCardTransactionListener(),
+      new UpdateDeckOnDeleteCardTransactionListener(),
+      new DeleteFeedOnDeleteCardTransactionListener(),
     ]);
 
     this.pipeline.subscribe(StoreName.TAGS, TransactionAction.CREATE, [
-      make(CreateTagTransactionListener),
-      make(UpdateDeckOnCreateTagTransactionListener),
+      new CreateTagTransactionListener(make(TagMemento)),
+      new UpdateDeckOnCreateTagTransactionListener(),
+    ]);
+
+    this.pipeline.subscribe(StoreName.TAGS, TransactionAction.UPDATE, [
+      new UpdateTagTransactionListener(make(TagMemento)),
+    ]);
+
+    this.pipeline.subscribe(StoreName.TAGS, TransactionAction.DELETE, [
+      new DeleteTagTransactionListener(),
+      new UpdateDeckOnDeleteTagTransactionListener(),
     ]);
   }
 }

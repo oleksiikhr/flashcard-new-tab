@@ -32,36 +32,6 @@ export default class IndexedDB {
     });
   }
 
-  // public cursor<T>(
-  //   request: IDBRequest,
-  //   callback: (result: T) => boolean,
-  // ): Promise<void> {
-  //   return new Promise((resolve, reject) => {
-  //     request.onsuccess = (event) => {
-  //       const cursor = (event.target as IDBRequest)
-  //         .result as IDBCursorWithValue | undefined;
-  //
-  //       if (!cursor) {
-  //         resolve();
-  //         return;
-  //       }
-  //
-  //       try {
-  //         if (!callback(cursor.value as T)) {
-  //           resolve();
-  //           return;
-  //         }
-  //
-  //         cursor.continue();
-  //       } catch (e) {
-  //         reject(e);
-  //       }
-  //     };
-  //
-  //     request.onerror = reject;
-  //   });
-  // }
-
   public openDB(): Promise<IDBDatabase> {
     if (null !== this.db) {
       return Promise.resolve(this.db);

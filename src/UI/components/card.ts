@@ -3,47 +3,34 @@ import { h } from '../../Domain/Shared/Util/dom';
 import {
   createCard,
   deleteCard,
-  findCard,
   paginateCards,
   updateCard,
 } from '../bootstrap/bus';
 import { error, log } from '../../Domain/Shared/Util/logger';
 
 export function cardTestHandle(root: HTMLElement): void {
-  const consoleElement = document.querySelector('#console') as HTMLElement;
+  const consoleElement = document.querySelector(
+    '#card-paginate',
+  ) as HTMLElement;
 
-  root
-    .querySelector('#card-form-paginate')
-    ?.addEventListener('submit', (evt) => {
-      evt.preventDefault();
+  setInterval(() => {
+    paginateCards(undefined, 15)
+      .then((cards) => {
+        let output = '';
+        cards.forEach((card) => {
+          output += `${JSON.stringify({
+            id: card.getId().getIdentifier(),
+            deck_id: card.getDeckId().getIdentifier(),
+            question: card.getQuestion().getValue(),
+            content: card.getContent().serialize(),
+            statistics: card.getStatistics().serialize(),
+          })}\n`;
+        });
 
-      const fromId = root.querySelector(
-        '#card-paginate-from_id',
-      ) as HTMLInputElement;
-      const limit = root.querySelector(
-        '#card-paginate-limit',
-      ) as HTMLInputElement;
-
-      paginateCards(+fromId.value || undefined, +limit.value)
-        .then((cards) => {
-          log(cards);
-          consoleElement.innerHTML = JSON.stringify(cards, null, '\t');
-        })
-        .catch(error);
-    });
-
-  root.querySelector('#card-form-view')?.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    const id = root.querySelector('#card-view-id') as HTMLInputElement;
-
-    findCard(+id.value)
-      .then((deck) => {
-        log(deck);
-        consoleElement.innerHTML = JSON.stringify(deck, null, '\t');
+        consoleElement.innerHTML = output.trimEnd();
       })
       .catch(error);
-  });
+  }, 1000);
 
   root.querySelector('#card-form-create')?.addEventListener('submit', (evt) => {
     evt.preventDefault();

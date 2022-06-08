@@ -14,28 +14,6 @@ $ make up
 - statistics
 - global settings
 
-# ___
-
-- CREATE DECK: -
-- CREATE TAG:  decks.decks_count [inc]
-- CREATE CARD: decks.cards_count [inc] | assign tag
-
-- DELETE DECK: cards.deck_id [del] | tags.deck_id [del]
-- DELETE TAG:  card_tag.tag_id [del] | decks.tags_count [sub]
-- DELETE CARD: feed.card_id [del] | card_tag.card_id [del] | decks.cards_count [sub]
-
--------------------
--------------------
--------------------
-
-
-> Delete card ID = 2 [1]
-> BUS: cards.delete=2 [1]
-> UpdateDeckOnCardDeleteListener: decks.cards_count-- [1]
-> BUS: decks.update=2 [2]
-> RefreshFeedOnDeckUpdateListener: remove/add all feed table [2]
-
-
 # DATABASE
 
 > global

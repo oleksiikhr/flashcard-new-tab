@@ -17,72 +17,60 @@
       <br />
       <hr />
       <br />
-      <form id="deck-form-paginate">
-        <input id="deck-paginate-from_id" placeholder="Deck From ID" />
-        <input id="deck-paginate-limit" placeholder="Deck Limit" value="5" />
-        <button type="submit">Paginate Deck</button>
-      </form>
-      <br />
-      <form id="deck-form-view">
-        <input id="deck-view-id" placeholder="Deck ID" />
-        <button type="submit">View Deck</button>
-      </form>
-      <br />
-      <form id="deck-form-create">
-        Create Deck
-        <input id="deck-create-name" placeholder="Deck Name" />
-        <input id="deck-create-is_active" type="checkbox" checked />
-        <button type="submit">Create Deck</button>
-      </form>
-      <br />
-      <form id="deck-form-edit">
-        Edit Deck
-        <input id="deck-edit-id" placeholder="Deck ID" />
-        <input id="deck-edit-name" placeholder="Deck Name" />
-        <input id="deck-edit-is_active" type="checkbox" checked />
-        <button type="submit">Update Deck</button>
-      </form>
-      <br />
-      <form id="deck-form-delete">
-        Delete Deck
-        <input id="deck-delete-id" placeholder="Deck ID" />
-        <button type="submit">Delete Deck</button>
-      </form>
+      <div style="display: flex">
+        <div style="width: 400px; min-width: 400px">
+          <form id="deck-form-create">
+            Create Deck
+            <input id="deck-create-name" placeholder="Deck Name" />
+            <input id="deck-create-is_active" type="checkbox" checked />
+            <button type="submit">Create Deck</button>
+          </form>
+          <br />
+          <form id="deck-form-edit">
+            Edit Deck
+            <input id="deck-edit-id" placeholder="Deck ID" />
+            <input id="deck-edit-name" placeholder="Deck Name" />
+            <input id="deck-edit-is_active" type="checkbox" checked />
+            <button type="submit">Update Deck</button>
+          </form>
+          <br />
+          <form id="deck-form-delete">
+            Delete Deck
+            <input id="deck-delete-id" placeholder="Deck ID" />
+            <button type="submit">Delete Deck</button>
+          </form>
+        </div>
+        <pre id="deck-paginate" style="margin: 0 0 0 10px; tab-size: 2"></pre>
+      </div>
       <br />
       <hr />
       <br />
-      <form id="card-form-paginate">
-        <input id="card-paginate-from_id" placeholder="Card From ID" />
-        <input id="card-paginate-limit" placeholder="Card Limit" value="5" />
-        <button type="submit">Paginate Card</button>
-      </form>
-      <br />
-      <form id="card-form-view">
-        <input id="card-view-id" placeholder="Card ID" />
-        <button type="submit">View Card</button>
-      </form>
-      <br />
-      <form id="card-form-create">
-        Create Card
-        <input id="card-create-deck_id" placeholder="Deck ID" />
-        <input id="card-create-question" placeholder="Card Question" />
-        <input id="card-create-answer" placeholder="Card Answer" />
-        <button type="submit">Create Card</button>
-      </form>
-      <br />
-      <form id="card-form-edit">
-        Edit Card
-        <input id="card-edit-id" placeholder="Card ID" />
-        <input id="card-edit-question" placeholder="Card Question" />
-        <input id="card-edit-answer" placeholder="Card Answer" />
-        <button type="submit">Update Card</button>
-      </form>
-      <br />
-      <form id="card-form-delete">
-        Delete Card
-        <input id="card-delete-id" placeholder="Card ID" />
-        <button type="submit">Delete Card</button>
-      </form>
+      <div style="display: flex">
+        <div style="width: 400px; min-width: 400px">
+          <form id="card-form-create">
+            Create Card
+            <input id="card-create-deck_id" placeholder="Deck ID" />
+            <input id="card-create-question" placeholder="Card Question" />
+            <input id="card-create-answer" placeholder="Card Answer" />
+            <button type="submit">Create Card</button>
+          </form>
+          <br />
+          <form id="card-form-edit">
+            Edit Card
+            <input id="card-edit-id" placeholder="Card ID" />
+            <input id="card-edit-question" placeholder="Card Question" />
+            <input id="card-edit-answer" placeholder="Card Answer" />
+            <button type="submit">Update Card</button>
+          </form>
+          <br />
+          <form id="card-form-delete">
+            Delete Card
+            <input id="card-delete-id" placeholder="Card ID" />
+            <button type="submit">Delete Card</button>
+          </form>
+        </div>
+        <pre id="card-paginate" style="margin: 0 0 0 10px; tab-size: 2"></pre>
+      </div>
       <br />
       <hr />
       <br />

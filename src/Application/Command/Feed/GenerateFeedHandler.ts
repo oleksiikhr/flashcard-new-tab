@@ -15,7 +15,7 @@ export default class GenerateFeedHandler {
     const decks = await this.deckQueryRepository.findGenerateAtUpperByNow(
       limit,
     );
-    console.log('GenerateFeedHandler', decks);
+    // console.log('GenerateFeedHandler', decks);
 
     const promises = decks.map((deck) => {
       deck.updateGenerateAt();

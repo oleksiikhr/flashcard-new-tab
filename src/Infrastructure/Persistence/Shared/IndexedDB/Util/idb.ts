@@ -42,6 +42,71 @@ export function requestPromise<T>(request: IDBRequest): Promise<T | undefined> {
   });
 }
 
+export function requestKeyCursor(
+  request: IDBRequest,
+  callback: (primaryKey: number) => boolean | void,
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    request.onsuccess = (event) => {
+      const cursor = (event.target as IDBRequest).result as
+        | IDBCursorWithValue
+        | undefined;
+
+      if (!cursor) {
+        resolve();
+        return;
+      }
+
+      try {
+        if (false === callback(cursor.primaryKey as number)) {
+          resolve();
+          return;
+        }
+
+        cursor.continue();
+      } catch (e) {
+        reject(e);
+      }
+    };
+
+    request.onerror = reject;
+  });
+}
+
+export function requestCursor<T>(
+  request: IDBRequest,
+  callback: (result: T) => boolean | void,
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    request.onsuccess = (event) => {
+      const cursor = (event.target as IDBRequest).result as
+        | IDBCursorWithValue
+        | undefined;
+
+      if (!cursor) {
+        resolve();
+        return;
+      }
+
+      try {
+        if (false === callback(cursor.value as T)) {
+          resolve();
+          return;
+        }
+
+        cursor.continue();
+      } catch (e) {
+        reject(e);
+      }
+    };
+
+    request.onerror = reject;
+  });
+}
+
 export default {
+  requestKeyCursor,
+  requestPaginate,
   requestPromise,
+  requestCursor,
 };

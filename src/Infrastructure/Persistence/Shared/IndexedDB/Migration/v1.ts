@@ -18,6 +18,7 @@ export default (event: IDBVersionChangeEvent): Promise<void> =>
       autoIncrement: true,
     });
 
+    cards.createIndex('deck_id_idx', 'deck_id');
     cards.createIndex('question_idx', 'question');
     cards.createIndex('next_at_idx', 'next_at');
 
