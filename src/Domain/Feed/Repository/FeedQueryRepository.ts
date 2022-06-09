@@ -1,5 +1,5 @@
-import CardId from '../../Card/CardId';
+import Feed from '../Feed';
 
 export default interface FeedQueryRepository {
-  findRandom(): Promise<CardId | undefined>;
+  findRandom(): Promise<Feed | undefined>;
 }

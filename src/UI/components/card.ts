@@ -4,6 +4,7 @@ import {
   createCard,
   deleteCard,
   paginateCards,
+  syncTagsToCard,
   updateCard,
 } from '../bootstrap/bus';
 import { error, log } from '../../Domain/Shared/Util/logger';
@@ -68,6 +69,20 @@ export function cardTestHandle(root: HTMLElement): void {
     const id = root.querySelector('#card-delete-id') as HTMLInputElement;
 
     deleteCard(+id.value)
+      .then(log)
+      .catch(error);
+  });
+
+  root.querySelector('#card-tags-sync')?.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const id = root.querySelector('#card-sync-id') as HTMLInputElement;
+    const tagIds = root.querySelector('#card-sync-tag-ids') as HTMLInputElement;
+
+    syncTagsToCard(
+      +id.value,
+      tagIds.value.split(' ').map((tagId) => +tagId),
+    )
       .then(log)
       .catch(error);
   });

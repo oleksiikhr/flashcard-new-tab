@@ -19,6 +19,12 @@ export type CardRaw = {
   created_at: Date;
 };
 
+export type CardTagRaw = {
+  card_id: number;
+  tag_id: number;
+  deck_id: number;
+};
+
 export default class CardMemento {
   constructor(private contentFactory: CardContentFactory) {}
 

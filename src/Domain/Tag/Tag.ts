@@ -7,13 +7,12 @@ export default class Tag {
     private id: TagId | undefined,
     private deckId: DeckId,
     private name: TagName,
-    private cardsCount: number,
     private updatedAt: Date,
     private createdAt: Date,
   ) {}
 
   public static create(deckId: DeckId, name: TagName): Tag {
-    return new Tag(undefined, deckId, name, 0, new Date(), new Date());
+    return new Tag(undefined, deckId, name, new Date(), new Date());
   }
 
   public from(name: TagName): void {
@@ -47,10 +46,6 @@ export default class Tag {
 
   public getName(): TagName {
     return this.name;
-  }
-
-  public getCardsCount(): number {
-    return this.cardsCount;
   }
 
   public getUpdatedAt(): Date {

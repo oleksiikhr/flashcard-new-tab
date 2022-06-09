@@ -24,7 +24,7 @@ export default class TransactionPipeline {
     this.listeners.set(event.name, listeners);
   }
 
-  async trigger(event: TransactionEvent): Promise<void> {
+  public async trigger(event: TransactionEvent): Promise<void> {
     const listeners = this.listeners.get(event.constructor.name) || [];
     const storeNames: Set<string> = new Set();
 

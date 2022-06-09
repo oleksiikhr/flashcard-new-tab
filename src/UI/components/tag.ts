@@ -13,12 +13,10 @@ export function tagTestHandle(root: HTMLElement): void {
     .then((tags) => {
       let output = '';
       tags.forEach((tag) => {
-        tag.getCardsCount();
         output += `${JSON.stringify({
           id: tag.getId().getIdentifier(),
           deck_id: tag.getDeckId().getIdentifier(),
           name: tag.getName().getValue(),
-          cards_count: tag.getCardsCount(),
         })}\n`;
       });
 

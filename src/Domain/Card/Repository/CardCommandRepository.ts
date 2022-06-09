@@ -1,4 +1,5 @@
 import Card from '../Card';
+import Tag from '../../Tag/Tag';
 
 export default interface CardCommandRepository {
   create(card: Card): Promise<void>;
@@ -6,4 +7,6 @@ export default interface CardCommandRepository {
   update(card: Card): Promise<void>;
 
   delete(card: Card): Promise<void>;
+
+  syncTags(card: Card, tags: Tag[]): Promise<void>;
 }

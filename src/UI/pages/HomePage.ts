@@ -5,6 +5,7 @@ import {
   createDeck,
   createTag,
   findRandomFeed,
+  syncTagsToCard,
 } from '../bootstrap/bus';
 import { log, error } from '../../Domain/Shared/Util/logger';
 import pageManager from './PageManager';
@@ -45,7 +46,7 @@ export default class HomePage implements Page {
 
         let promises = [];
 
-        for (let i = 1; 100 >= i; i += 1) {
+        for (let i = 1; 50 >= i; i += 1) {
           promises.push(createDeck(`Deck: ${i}`, !!random(0, 1), {}));
         }
 
@@ -56,7 +57,7 @@ export default class HomePage implements Page {
         for (let i = 1; 1000 >= i; i += 1) {
           promises.push(
             createCard(
-              random(1, 100),
+              random(1, 50),
               `Question: ${i}`,
               { answer: `Answer: ${i}` },
               0,
@@ -69,12 +70,25 @@ export default class HomePage implements Page {
         log('Cards created');
 
         for (let i = 1; 300 >= i; i += 1) {
-          promises.push(createTag(random(1, 100), `Tag: ${i}`));
+          promises.push(createTag(random(1, 50), `Tag: ${i}`));
         }
 
         await Promise.all(promises);
         promises = [];
         log('Tags created');
+
+        for (let i = 1; 300 >= i; i += random(1, 10)) {
+          const tagIds = [
+            ...new Set(
+              [...Array(random(1, 10)).keys()].map(() => random(1, 300)),
+            ),
+          ];
+
+          promises.push(syncTagsToCard(i, tagIds));
+        }
+
+        await Promise.all(promises);
+        log('CardTag created');
       });
   }
 
@@ -82,9 +96,10 @@ export default class HomePage implements Page {
     const consoleElement = document.querySelector('#console') as HTMLElement;
 
     findRandomFeed()
-      .then((card) => {
+      .then((feed) => {
+        log('findRandomFeed', feed);
         consoleElement.innerHTML =
-          card?.getId().getIdentifier().toString() || 'not found';
+          feed?.getCard()?.getId().getIdentifier().toString() || 'not found';
       })
       .catch(error);
 

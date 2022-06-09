@@ -13,7 +13,10 @@ import {
 export default class IDBTagQueryRepository implements TagQueryRepository {
   constructor(private memento: TagMemento, private idb: IndexedDB) {}
 
-  async paginate(fromId: TagId | undefined, limit: number): Promise<Tag[]> {
+  public async paginate(
+    fromId: TagId | undefined,
+    limit: number,
+  ): Promise<Tag[]> {
     const db = await this.idb.openDB();
 
     const request = db
@@ -30,7 +33,7 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
     );
   }
 
-  async findById(id: TagId): Promise<Tag | undefined> {
+  public async findById(id: TagId): Promise<Tag | undefined> {
     const db = await this.idb.openDB();
 
     const request = db
@@ -43,7 +46,7 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
     );
   }
 
-  async findByIds(ids: TagId[]): Promise<Tag[]> {
+  public async findByIds(ids: TagId[]): Promise<Tag[]> {
     const db = await this.idb.openDB();
 
     const request = db
@@ -61,7 +64,7 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
     return tags.filter((tag) => undefined !== tag) as Tag[];
   }
 
-  async findActiveByDeckId(deckId: DeckId): Promise<Tag[]> {
+  public async findActiveByDeckId(deckId: DeckId): Promise<Tag[]> {
     const db = await this.idb.openDB();
 
     const request = db

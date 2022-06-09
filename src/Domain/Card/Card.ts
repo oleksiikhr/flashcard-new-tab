@@ -44,12 +44,11 @@ export default class Card {
     question: CardQuestion,
     content: CardContent,
     templateType: CardTemplateType,
-    isActive: boolean,
   ): void {
     this.question = question;
     this.content = content;
     this.templateType = templateType;
-    this.isActive = isActive;
+    this.updatedAt = new Date();
   }
 
   public isExists(): boolean {

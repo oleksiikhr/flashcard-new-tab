@@ -77,6 +77,13 @@
             <input id="card-delete-id" placeholder="Card ID" />
             <button type="submit">Delete Card</button>
           </form>
+          <br />
+          <form id="card-tags-sync">
+            Sync Tags to Card
+            <input id="card-sync-id" placeholder="Card ID" />
+            <input id="card-sync-tag-ids" placeholder="Tag IDS" />
+            <button type="submit">Sync Tags</button>
+          </form>
         </div>
         <pre id="card-paginate" style="margin: 0 0 0 10px; tab-size: 2"></pre>
       </div>
@@ -87,8 +94,8 @@
         <div style="width: 400px; min-width: 400px">
           <form id="tag-form-create">
             Create Tag
-            <input id="tag-deck_id" placeholder="Deck ID" />
-            <input id="tag-name" placeholder="Tag Name" />
+            <input id="tag-create-deck_id" placeholder="Deck ID" />
+            <input id="tag-create-name" placeholder="Tag Name" />
             <button type="submit">Create Tag</button>
           </form>
           <br />

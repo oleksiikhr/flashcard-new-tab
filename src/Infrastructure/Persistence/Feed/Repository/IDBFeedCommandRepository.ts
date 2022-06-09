@@ -8,11 +8,11 @@ import FeedCreateTransactionEvent from '../Event/FeedCreateTransactionEvent';
 export default class IDBFeedCommandRepository implements FeedCommandRepository {
   constructor(private pipeline: TransactionPipeline) {}
 
-  async create(card: Card): Promise<void> {
+  public async create(card: Card): Promise<void> {
     return this.pipeline.trigger(new FeedCreateTransactionEvent(card));
   }
 
-  async deleteByDeckId(deckId: DeckId): Promise<void> {
+  public async deleteByDeckId(deckId: DeckId): Promise<void> {
     return this.pipeline.trigger(
       new FeedDeleteByIdDeckTransactionEvent(deckId),
     );

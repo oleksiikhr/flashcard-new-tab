@@ -12,7 +12,10 @@ import {
 export default class IDBDeckQueryRepository implements DeckQueryRepository {
   constructor(private memento: DeckMemento, private idb: IndexedDB) {}
 
-  async paginate(fromId: DeckId | undefined, limit: number): Promise<Deck[]> {
+  public async paginate(
+    fromId: DeckId | undefined,
+    limit: number,
+  ): Promise<Deck[]> {
     const db = await this.idb.openDB();
 
     const request = db
@@ -29,7 +32,7 @@ export default class IDBDeckQueryRepository implements DeckQueryRepository {
     );
   }
 
-  async findById(id: DeckId): Promise<Deck | undefined> {
+  public async findById(id: DeckId): Promise<Deck | undefined> {
     const db = await this.idb.openDB();
 
     const request = db
@@ -42,7 +45,7 @@ export default class IDBDeckQueryRepository implements DeckQueryRepository {
     );
   }
 
-  async findGenerateAtUpperByNow(count: number): Promise<Deck[]> {
+  public async findGenerateAtUpperByNow(count: number): Promise<Deck[]> {
     const db = await this.idb.openDB();
 
     const request = db

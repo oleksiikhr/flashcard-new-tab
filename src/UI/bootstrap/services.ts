@@ -135,7 +135,13 @@ register(
 
 register(
   IDBFeedQueryRepository,
-  () => new IDBFeedQueryRepository(make(CardMemento), make(IndexedDB)),
+  () =>
+    new IDBFeedQueryRepository(
+      make(DeckMemento),
+      make(CardMemento),
+      make(TagMemento),
+      make(IndexedDB),
+    ),
 );
 
 register(

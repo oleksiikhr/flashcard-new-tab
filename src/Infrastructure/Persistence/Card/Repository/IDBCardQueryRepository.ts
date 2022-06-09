@@ -20,7 +20,10 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
     private idb: IndexedDB,
   ) {}
 
-  async paginate(fromId: CardId | undefined, limit: number): Promise<Card[]> {
+  public async paginate(
+    fromId: CardId | undefined,
+    limit: number,
+  ): Promise<Card[]> {
     const db = await this.idb.openDB();
 
     const request = db
@@ -37,7 +40,7 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
     );
   }
 
-  async findById(id: CardId): Promise<Card | undefined> {
+  public async findById(id: CardId): Promise<Card | undefined> {
     const db = await this.idb.openDB();
 
     const transaction = db.transaction(StoreName.CARDS, 'readonly');
@@ -51,7 +54,7 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
     );
   }
 
-  async findRandomActiveByDeckId(
+  public async findRandomActiveByDeckId(
     deckId: DeckId,
     count: number,
   ): Promise<Card[]> {
@@ -63,6 +66,7 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
       .index('deck_id_and_is_active_idx');
 
     const query = IDBKeyRange.only([deckId.getIdentifier(), 1]);
+    // TODO cache
     const total = (await requestPromise<number>(
       request.count(query),
     )) as number;

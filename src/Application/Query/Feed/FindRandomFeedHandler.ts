@@ -1,32 +1,28 @@
 import FeedQueryRepository from '../../../Domain/Feed/Repository/FeedQueryRepository';
 import CardCommandRepository from '../../../Domain/Card/Repository/CardCommandRepository';
-import Card from '../../../Domain/Card/Card';
 import CardQueryRepository from '../../../Domain/Card/Repository/CardQueryRepository';
+import DeckQueryRepository from '../../../Domain/Deck/Repository/DeckQueryRepository';
+import Feed from '../../../Domain/Feed/Feed';
 
 export default class FindRandomFeedHandler {
   constructor(
     private cardCommandRepository: CardCommandRepository,
     private cardQueryRepository: CardQueryRepository,
+    private deckQueryRepository: DeckQueryRepository,
     private queryRepository: FeedQueryRepository,
   ) {}
 
-  public async invoke(): Promise<Card | undefined> {
-    const cardId = await this.queryRepository.findRandom();
+  public async invoke(): Promise<Feed | undefined> {
+    const feed = await this.queryRepository.findRandom();
 
-    if (undefined === cardId) {
+    if (undefined === feed) {
       return undefined;
     }
 
-    const card = await this.cardQueryRepository.findById(cardId);
-
-    if (undefined === card) {
-      return undefined;
-    }
-
+    const card = feed.getCard();
     card.getStatistics().increaseViews();
-
     await this.cardCommandRepository.update(card);
 
-    return card;
+    return feed;
   }
 }

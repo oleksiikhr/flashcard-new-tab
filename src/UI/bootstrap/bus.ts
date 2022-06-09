@@ -28,6 +28,7 @@ import IDBTagQueryRepository from '../../Infrastructure/Persistence/Tag/Reposito
 import PaginateTagHandler from '../../Application/Query/Tag/PaginateTagHandler';
 import FindTagHandler from '../../Application/Query/Tag/FindTagHandler';
 import DeleteTagHandler from '../../Application/Command/Tag/DeleteTagHandler';
+import SyncTagsToCardHandler from '../../Application/Command/Card/SyncTagsToCardHandler';
 
 /* ------------------------------------------------------------------------- */
 
@@ -113,6 +114,13 @@ export const deleteCard = (id: number) =>
     make(IDBCardQueryRepository),
   ).invoke(id);
 
+export const syncTagsToCard = (cardId: number, tagIds: number[]) =>
+  new SyncTagsToCardHandler(
+    make(IDBCardCommandRepository),
+    make(IDBCardQueryRepository),
+    make(IDBTagQueryRepository),
+  ).invoke(cardId, tagIds);
+
 /* ------------------------------------------------------------------------- */
 
 // Tag
@@ -157,6 +165,7 @@ export const findRandomFeed = () =>
   new FindRandomFeedHandler(
     make(IDBCardCommandRepository),
     make(IDBCardQueryRepository),
+    make(IDBDeckQueryRepository),
     make(IDBFeedQueryRepository),
   ).invoke();
 

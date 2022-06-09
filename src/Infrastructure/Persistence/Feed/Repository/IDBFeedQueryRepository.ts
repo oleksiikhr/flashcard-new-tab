@@ -1,28 +1,95 @@
 import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 import FeedQueryRepository from '../../../../Domain/Feed/Repository/FeedQueryRepository';
-import CardMemento from '../../../../Domain/Card/CardMemento';
-import CardId from '../../../../Domain/Card/CardId';
+import CardMemento, {
+  CardRaw,
+  CardTagRaw,
+} from '../../../../Domain/Card/CardMemento';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import { requestPromise, requestRandom } from '../../Shared/IndexedDB/Util/idb';
+import Feed from '../../../../Domain/Feed/Feed';
+import { FeedRaw } from '../../../../Domain/Feed/FeedMemento';
+import DeckMemento, { DeckRaw } from '../../../../Domain/Deck/DeckMemento';
+import TagMemento, { TagRaw } from '../../../../Domain/Tag/TagMemento';
+import Tag from '../../../../Domain/Tag/Tag';
+import DomainNotFoundError from '../../Shared/IndexedDB/Error/DomainNotFoundError';
 
 export default class IDBFeedQueryRepository implements FeedQueryRepository {
-  constructor(private memento: CardMemento, private idb: IndexedDB) {}
+  constructor(
+    private deckMemento: DeckMemento,
+    private cardMemento: CardMemento,
+    private tagMemento: TagMemento,
+    private idb: IndexedDB,
+  ) {}
 
-  async findRandom(): Promise<CardId | undefined> {
+  public async findRandom(): Promise<Feed | undefined> {
     const db = await this.idb.openDB();
 
-    const request = db
-      .transaction(StoreName.FEED, 'readonly')
-      .objectStore(StoreName.FEED);
+    const transaction = db.transaction(
+      [
+        StoreName.DECKS,
+        StoreName.FEED,
+        StoreName.CARDS,
+        StoreName.CARD_TAG,
+        StoreName.TAGS,
+      ],
+      'readonly',
+    );
 
-    const total = (await requestPromise<number>(request.count())) as number;
+    const feedStore = transaction.objectStore(StoreName.FEED);
+    const cardStore = transaction.objectStore(StoreName.CARDS);
+    const tagStore = transaction.objectStore(StoreName.TAGS);
+    const deckStore = transaction.objectStore(StoreName.DECKS);
+    const cardTagStore = transaction
+      .objectStore(StoreName.CARD_TAG)
+      .index('card_id_idx');
 
-    if (0 === total) {
+    // TODO Cache result
+    const feedTotal = (await requestPromise<number>(
+      feedStore.count(),
+    )) as number;
+
+    if (0 === feedTotal) {
       return undefined;
     }
 
-    return requestRandom<{ card_id: number }>(request.openCursor(), total).then(
-      (data) => (undefined !== data ? CardId.of(data.card_id) : undefined),
+    const feed = await requestRandom<FeedRaw>(
+      feedStore.openCursor(),
+      feedTotal,
+    );
+
+    if (undefined === feed) {
+      return undefined;
+    }
+
+    const [card, deck, tags] = await Promise.all([
+      requestPromise<CardRaw>(cardStore.get(feed.card_id)).then((raw) =>
+        undefined !== raw ? this.cardMemento.unserialize(raw) : undefined,
+      ),
+      requestPromise<DeckRaw>(deckStore.get(feed.deck_id)).then((raw) =>
+        undefined !== raw ? this.deckMemento.unserialize(raw) : undefined,
+      ),
+      requestPromise<CardTagRaw[]>(cardTagStore.getAll(feed.card_id)).then(
+        (raws) =>
+          Promise.all(
+            (raws as CardTagRaw[]).map((raw) =>
+              requestPromise<TagRaw>(tagStore.get(raw.tag_id)).then((subRaw) =>
+                undefined !== subRaw
+                  ? this.tagMemento.unserialize(subRaw)
+                  : undefined,
+              ),
+            ),
+          ),
+      ),
+    ]);
+
+    if (undefined === card || undefined === deck) {
+      throw new DomainNotFoundError();
+    }
+
+    return new Feed(
+      card,
+      deck,
+      tags.filter((tag) => undefined !== tag) as Tag[],
     );
   }
 }

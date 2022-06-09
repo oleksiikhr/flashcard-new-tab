@@ -32,6 +32,8 @@ import FeedCreateTransactionEvent from '../Persistence/Feed/Event/FeedCreateTran
 import CreateFeedTransactionListener from '../Persistence/Feed/Listener/CreateFeedTransactionListener';
 import FeedDeleteByIdDeckTransactionEvent from '../Persistence/Feed/Event/FeedDeleteByIdDeckTransactionEvent';
 import DeleteFeedByDeckIdTransactionListener from '../Persistence/Feed/Listener/DeleteFeedByDeckIdTransactionListener';
+import CardSyncTagsTransactionEvent from '../Persistence/Card/Event/CardSyncTagsTransactionEvent';
+import SyncCardToTagsTransactionListener from '../Persistence/Card/Listener/SyncCardToTagsTransactionListener';
 
 export default class IDBTransactionProvider {
   constructor(private pipeline: TransactionPipeline) {}
@@ -66,6 +68,10 @@ export default class IDBTransactionProvider {
       new UpdateDeckOnDeleteCardTransactionListener(),
       new DeleteFeedOnDeleteCardTransactionListener(),
       new DeleteCardTransactionListener(),
+    ]);
+
+    this.pipeline.subscribe(CardSyncTagsTransactionEvent, [
+      new SyncCardToTagsTransactionListener(),
     ]);
 
     this.pipeline.subscribe(TagCreateTransactionEvent, [
