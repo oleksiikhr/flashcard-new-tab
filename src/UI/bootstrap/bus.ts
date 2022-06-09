@@ -9,7 +9,7 @@ import GenerateFeedHandler from '../../Application/Command/Feed/GenerateFeedHand
 import IDBDeckCommandRepository from '../../Infrastructure/Persistence/Deck/Repository/IDBDeckCommandRepository';
 import IDBFeedCommandRepository from '../../Infrastructure/Persistence/Feed/Repository/IDBFeedCommandRepository';
 import IDBCardQueryRepository from '../../Infrastructure/Persistence/Card/Repository/IDBCardQueryRepository';
-import FindRandomFeedHandler from '../../Application/Query/Feed/FindFeedHandler';
+import FindRandomFeedHandler from '../../Application/Query/Feed/FindRandomFeedHandler';
 import IDBCardCommandRepository from '../../Infrastructure/Persistence/Card/Repository/IDBCardCommandRepository';
 import IDBFeedQueryRepository from '../../Infrastructure/Persistence/Feed/Repository/IDBFeedQueryRepository';
 import CreateDeckHandler from '../../Application/Command/Deck/CreateDeckHandler';
@@ -23,6 +23,11 @@ import PaginateDeckHandler from '../../Application/Query/Deck/PaginateDeckHandle
 import PaginateCardHandler from '../../Application/Query/Card/PaginateCardHandler';
 import FindCardHandler from '../../Application/Query/Card/FindCardHandler';
 import UpdateCardHandler from '../../Application/Command/Card/UpdateCardHandler';
+import UpdateTagHandler from '../../Application/Command/Tag/UpdateTagHandler';
+import IDBTagQueryRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagQueryRepository';
+import PaginateTagHandler from '../../Application/Query/Tag/PaginateTagHandler';
+import FindTagHandler from '../../Application/Query/Tag/FindTagHandler';
+import DeleteTagHandler from '../../Application/Command/Tag/DeleteTagHandler';
 
 /* ------------------------------------------------------------------------- */
 
@@ -112,11 +117,29 @@ export const deleteCard = (id: number) =>
 
 // Tag
 
-export const createTag = (deckId: number, name: string, isActive: boolean) =>
+export const paginateTags = (fromId: number | undefined, limit: number) =>
+  new PaginateTagHandler(make(IDBTagQueryRepository)).invoke(fromId, limit);
+
+export const findTag = (id: number) =>
+  new FindTagHandler(make(IDBTagQueryRepository)).invoke(id);
+
+export const createTag = (deckId: number, name: string) =>
   new CreateTagHandler(
     make(IDBTagCommandRepository),
     make(IDBDeckQueryRepository),
-  ).invoke(deckId, name, isActive);
+  ).invoke(deckId, name);
+
+export const updateTag = (id: number, name: string) =>
+  new UpdateTagHandler(
+    make(IDBTagCommandRepository),
+    make(IDBTagQueryRepository),
+  ).invoke(id, name);
+
+export const deleteTag = (id: number) =>
+  new DeleteTagHandler(
+    make(IDBTagCommandRepository),
+    make(IDBTagQueryRepository),
+  ).invoke(id);
 
 /* ------------------------------------------------------------------------- */
 

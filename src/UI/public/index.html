@@ -14,7 +14,16 @@
     <div page="home" style="display: none">
       <div>Home page</div>
       <div id="btn-1">Go Settings</div>
+      Feed: <span id="console" style="tab-size: 2"></span>
       <br />
+      <hr />
+      <form id="generate-data">
+        <button type="submit">Generate Sample Data</button>
+      </form>
+      <br />
+      <form id="feed-form-generate">
+        <button type="submit">Generate Feed</button>
+      </form>
       <hr />
       <br />
       <div style="display: flex">
@@ -74,23 +83,30 @@
       <br />
       <hr />
       <br />
-      <form id="tag-form-create">
-        Create Tag
-        <input id="tag-deck_id" placeholder="Deck ID" />
-        <input id="tag-name" placeholder="Tag Name" />
-        <input id="tag-is_active" type="checkbox" checked />
-        <button type="submit">Create Tag</button>
-      </form>
-      <br />
-      <hr />
-      <br />
-      <form id="feed-form-generate">
-        <button type="submit">Generate Feed</button>
-      </form>
-      <br />
-      <hr />
-      <br />
-      <pre id="console" style="tab-size: 2"></pre>
+      <div style="display: flex">
+        <div style="width: 400px; min-width: 400px">
+          <form id="tag-form-create">
+            Create Tag
+            <input id="tag-deck_id" placeholder="Deck ID" />
+            <input id="tag-name" placeholder="Tag Name" />
+            <button type="submit">Create Tag</button>
+          </form>
+          <br />
+          <form id="tag-form-edit">
+            Edit Tag
+            <input id="tag-edit-id" placeholder="Tag ID" />
+            <input id="tag-edit-name" placeholder="Tag Name" />
+            <button type="submit">Update Tag</button>
+          </form>
+          <br />
+          <form id="tag-form-delete">
+            Delete Tag
+            <input id="tag-delete-id" placeholder="Tag ID" />
+            <button type="submit">Delete Tag</button>
+          </form>
+        </div>
+        <pre id="tag-paginate" style="margin: 0 0 0 10px; tab-size: 2"></pre>
+      </div>
     </div>
     <div page="settings" style="display: none">
       <div>Settings page</div>

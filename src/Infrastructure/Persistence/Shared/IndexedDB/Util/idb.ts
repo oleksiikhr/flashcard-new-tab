@@ -131,4 +131,5 @@ export default {
   requestPaginate,
   requestPromise,
   requestCursor,
+  requestRandom,
 };

@@ -9,8 +9,6 @@ export default (event: IDBVersionChangeEvent): Promise<void> =>
       autoIncrement: true,
     });
 
-    decks.createIndex('name_idx', 'name');
-    decks.createIndex('is_active_idx', 'is_active');
     decks.createIndex('generate_at_idx', 'generate_at');
 
     const cards = db.createObjectStore('cards', {
@@ -18,7 +16,6 @@ export default (event: IDBVersionChangeEvent): Promise<void> =>
       autoIncrement: true,
     });
 
-    cards.createIndex('deck_id_idx', 'deck_id');
     cards.createIndex('deck_id_and_is_active_idx', ['deck_id', 'is_active']);
     cards.createIndex('question_idx', 'question');
 
@@ -27,11 +24,13 @@ export default (event: IDBVersionChangeEvent): Promise<void> =>
       autoIncrement: true,
     });
 
-    tags.createIndex('deck_id_and_is_active_idx', ['deck_id', 'is_active']);
+    tags.createIndex('deck_id_idx', 'deck_id');
 
-    db.createObjectStore('card_tag', {
+    const cardTag = db.createObjectStore('card_tag', {
       keyPath: ['card_id', 'tag_id'],
     });
+
+    cardTag.createIndex('deck_id_idx', 'deck_id');
 
     const feed = db.createObjectStore('feed', {
       keyPath: 'card_id',

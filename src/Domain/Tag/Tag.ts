@@ -8,26 +8,16 @@ export default class Tag {
     private deckId: DeckId,
     private name: TagName,
     private cardsCount: number,
-    private isActive: boolean,
     private updatedAt: Date,
     private createdAt: Date,
   ) {}
 
-  public static create(deckId: DeckId, name: TagName, isActive: boolean): Tag {
-    return new Tag(
-      undefined,
-      deckId,
-      name,
-      0,
-      isActive,
-      new Date(),
-      new Date(),
-    );
+  public static create(deckId: DeckId, name: TagName): Tag {
+    return new Tag(undefined, deckId, name, 0, new Date(), new Date());
   }
 
-  public from(name: TagName, isActive: boolean): void {
+  public from(name: TagName): void {
     this.name = name;
-    this.isActive = isActive;
     this.updatedAt = new Date();
   }
 
@@ -61,10 +51,6 @@ export default class Tag {
 
   public getCardsCount(): number {
     return this.cardsCount;
-  }
-
-  public getIsActive(): boolean {
-    return this.isActive;
   }
 
   public getUpdatedAt(): Date {

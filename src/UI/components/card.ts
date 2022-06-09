@@ -13,24 +13,22 @@ export function cardTestHandle(root: HTMLElement): void {
     '#card-paginate',
   ) as HTMLElement;
 
-  setInterval(() => {
-    paginateCards(undefined, 10)
-      .then((cards) => {
-        let output = '';
-        cards.forEach((card) => {
-          output += `${JSON.stringify({
-            id: card.getId().getIdentifier(),
-            deck_id: card.getDeckId().getIdentifier(),
-            question: card.getQuestion().getValue(),
-            content: card.getContent().serialize(),
-            statistics: card.getStatistics().serialize(),
-          })}\n`;
-        });
+  paginateCards(undefined, 10)
+    .then((cards) => {
+      let output = '';
+      cards.forEach((card) => {
+        output += `${JSON.stringify({
+          id: card.getId().getIdentifier(),
+          deck_id: card.getDeckId().getIdentifier(),
+          question: card.getQuestion().getValue(),
+          content: card.getContent().serialize(),
+          statistics: card.getStatistics().serialize(),
+        })}\n`;
+      });
 
-        consoleElement.innerHTML = output.trimEnd();
-      })
-      .catch(error);
-  }, 1000);
+      consoleElement.innerHTML = output.trimEnd();
+    })
+    .catch(error);
 
   root.querySelector('#card-form-create')?.addEventListener('submit', (evt) => {
     evt.preventDefault();

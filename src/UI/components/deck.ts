@@ -11,24 +11,22 @@ export function deckTestHandle(root: HTMLElement): void {
     '#deck-paginate',
   ) as HTMLElement;
 
-  setInterval(() => {
-    paginateDecks(undefined, 10)
-      .then((decks) => {
-        let output = '';
-        decks.forEach((deck) => {
-          output += `${JSON.stringify({
-            id: deck.getId().getIdentifier(),
-            name: deck.getName().getValue(),
-            cards_count: deck.getCardsCount(),
-            tags_count: deck.getTagsCount(),
-            is_active: deck.getIsActive(),
-          })}\n`;
-        });
+  paginateDecks(undefined, 10)
+    .then((decks) => {
+      let output = '';
+      decks.forEach((deck) => {
+        output += `${JSON.stringify({
+          id: deck.getId().getIdentifier(),
+          name: deck.getName().getValue(),
+          cards_count: deck.getCardsCount(),
+          tags_count: deck.getTagsCount(),
+          is_active: deck.getIsActive(),
+        })}\n`;
+      });
 
-        consoleElement.innerHTML = output.trimEnd();
-      })
-      .catch(error);
-  }, 1000);
+      consoleElement.innerHTML = output.trimEnd();
+    })
+    .catch(error);
 
   root.querySelector('#deck-form-create')?.addEventListener('submit', (evt) => {
     evt.preventDefault();

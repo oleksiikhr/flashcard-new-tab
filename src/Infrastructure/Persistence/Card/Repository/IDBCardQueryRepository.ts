@@ -80,7 +80,7 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
         return cursor.advance(numbers[0] - 1);
       }
 
-      if (cards.push(card) === count) {
+      if (cards.push(card) === numbers.length) {
         return false;
       }
 

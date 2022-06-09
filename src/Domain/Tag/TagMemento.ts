@@ -8,7 +8,6 @@ export type TagRaw = {
   deck_id: number;
   name: string;
   cards_count: number;
-  is_active: number;
   updated_at: Date;
   created_at: Date;
 };
@@ -20,7 +19,6 @@ export default class TagMemento {
       deck_id: tag.getDeckId().getIdentifier(),
       name: tag.getName().getValue(),
       cards_count: tag.getCardsCount(),
-      is_active: +tag.getIsActive(),
       updated_at: tag.getUpdatedAt(),
       created_at: tag.getCreatedAt(),
     };
@@ -32,7 +30,6 @@ export default class TagMemento {
       DeckId.of(raw.deck_id),
       new TagName(raw.name),
       raw.cards_count,
-      !!raw.is_active,
       raw.updated_at,
       raw.created_at,
     );

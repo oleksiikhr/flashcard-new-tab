@@ -47,7 +47,6 @@ $ make up
 - id
 - deck_id
 - name
-- is_active
 - updated_at
 - created_at
 

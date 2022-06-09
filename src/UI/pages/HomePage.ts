@@ -1,11 +1,18 @@
 import SettingsPage from './SettingsPage';
 import Page from './Page';
-import { createTag, findRandomFeed } from '../bootstrap/bus';
+import {
+  createCard,
+  createDeck,
+  createTag,
+  findRandomFeed,
+} from '../bootstrap/bus';
 import { log, error } from '../../Domain/Shared/Util/logger';
 import pageManager from './PageManager';
 import { cardTestHandle } from '../components/card';
 import { deckTestHandle } from '../components/deck';
 import { feedTestHandle } from '../components/feed';
+import { random } from '../../Domain/Shared/Util/number';
+import { tagTestHandle } from '../components/tag';
 
 export default class HomePage implements Page {
   protected rootElement!: HTMLDivElement;
@@ -28,25 +35,46 @@ export default class HomePage implements Page {
     deckTestHandle(this.rootElement);
     cardTestHandle(this.rootElement);
     feedTestHandle(this.rootElement);
+    tagTestHandle(this.rootElement);
 
+    /* eslint-disable @typescript-eslint/no-misused-promises */
     this.rootElement
-      .querySelector('#tag-form-create')
-      ?.addEventListener('submit', (evt) => {
+      ?.querySelector('#generate-data')
+      ?.addEventListener('submit', async (evt) => {
         evt.preventDefault();
 
-        const name = this.rootElement.querySelector(
-          '#tag-name',
-        ) as HTMLInputElement;
-        const deckId = this.rootElement.querySelector(
-          '#tag-deck_id',
-        ) as HTMLInputElement;
-        const isActive = this.rootElement.querySelector(
-          '#tag-is_active',
-        ) as HTMLInputElement;
+        let promises = [];
 
-        createTag(+deckId.value, name.value, isActive.checked)
-          .then(log)
-          .catch(error);
+        for (let i = 1; 100 >= i; i += 1) {
+          promises.push(createDeck(`Deck: ${i}`, !!random(0, 1), {}));
+        }
+
+        await Promise.all(promises);
+        promises = [];
+        log('Decks created');
+
+        for (let i = 1; 1000 >= i; i += 1) {
+          promises.push(
+            createCard(
+              random(1, 100),
+              `Question: ${i}`,
+              { answer: `Answer: ${i}` },
+              0,
+            ),
+          );
+        }
+
+        await Promise.all(promises);
+        promises = [];
+        log('Cards created');
+
+        for (let i = 1; 300 >= i; i += 1) {
+          promises.push(createTag(random(1, 100), `Tag: ${i}`));
+        }
+
+        await Promise.all(promises);
+        promises = [];
+        log('Tags created');
       });
   }
 
@@ -55,8 +83,8 @@ export default class HomePage implements Page {
 
     findRandomFeed()
       .then((card) => {
-        log('findFeed', card);
-        consoleElement.innerHTML = JSON.stringify(card, null, '\t');
+        consoleElement.innerHTML =
+          card?.getId().getIdentifier().toString() || 'not found';
       })
       .catch(error);
 

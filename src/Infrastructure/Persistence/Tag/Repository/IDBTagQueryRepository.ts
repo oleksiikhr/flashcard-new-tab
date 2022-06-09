@@ -5,10 +5,30 @@ import TagId from '../../../../Domain/Tag/TagId';
 import Tag from '../../../../Domain/Tag/Tag';
 import DeckId from '../../../../Domain/Deck/DeckId';
 import StoreName from '../../Shared/IndexedDB/StoreName';
-import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
+import {
+  requestPaginate,
+  requestPromise,
+} from '../../Shared/IndexedDB/Util/idb';
 
 export default class IDBTagQueryRepository implements TagQueryRepository {
   constructor(private memento: TagMemento, private idb: IndexedDB) {}
+
+  async paginate(fromId: TagId | undefined, limit: number): Promise<Tag[]> {
+    const db = await this.idb.openDB();
+
+    const request = db
+      .transaction(StoreName.TAGS, 'readonly')
+      .objectStore(StoreName.TAGS)
+      .openCursor(
+        undefined !== fromId
+          ? IDBKeyRange.lowerBound(fromId.getIdentifier())
+          : null,
+      );
+
+    return requestPaginate<TagRaw>(request, limit).then((raws) =>
+      raws.map((raw) => this.memento.unserialize(raw)),
+    );
+  }
 
   async findById(id: TagId): Promise<Tag | undefined> {
     const db = await this.idb.openDB();

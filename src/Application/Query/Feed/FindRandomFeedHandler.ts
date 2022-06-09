@@ -3,7 +3,7 @@ import CardCommandRepository from '../../../Domain/Card/Repository/CardCommandRe
 import Card from '../../../Domain/Card/Card';
 import CardQueryRepository from '../../../Domain/Card/Repository/CardQueryRepository';
 
-export default class FindFeedHandler {
+export default class FindRandomFeedHandler {
   constructor(
     private cardCommandRepository: CardCommandRepository,
     private cardQueryRepository: CardQueryRepository,

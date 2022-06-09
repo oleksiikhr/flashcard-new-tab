@@ -17,14 +17,24 @@ export default class DeleteCardsOnDeleteDeckTransactionListener
   public invoke(
     transaction: IDBTransaction,
     event: DeckDeleteTransactionEvent,
-  ): Promise<unknown> {
+  ): Promise<unknown>[] {
     const store = transaction.objectStore(StoreName.CARDS);
-    const request = store
-      .index('deck_id_idx')
-      .openKeyCursor(event.getDeck().getId().getIdentifier());
+    const id = event.getDeck().getId().getIdentifier();
+    const index = store.index('deck_id_and_is_active_idx');
 
-    return requestKeyCursor(request, (primaryKey) => {
-      store.delete(primaryKey);
-    });
+    return [
+      requestKeyCursor(
+        index.openKeyCursor(IDBKeyRange.only([id, 0])),
+        (primaryKey) => {
+          store.delete(primaryKey);
+        },
+      ),
+      requestKeyCursor(
+        index.openKeyCursor(IDBKeyRange.only([id, 1])),
+        (primaryKey) => {
+          store.delete(primaryKey);
+        },
+      ),
+    ];
   }
 }

@@ -11,18 +11,14 @@ export default class CreateTagHandler {
     private deckQueryRepository: DeckQueryRepository,
   ) {}
 
-  public async invoke(
-    deckId: number,
-    name: string,
-    isActive: boolean,
-  ): Promise<Tag> {
+  public async invoke(deckId: number, name: string): Promise<Tag> {
     const deck = await this.deckQueryRepository.findById(DeckId.of(deckId));
 
     if (undefined === deck) {
       throw new DomainNotFoundError();
     }
 
-    const tag = Tag.create(deck.getId(), new TagName(name), isActive);
+    const tag = Tag.create(deck.getId(), new TagName(name));
 
     await this.tagCommandRepository.create(tag);
 
