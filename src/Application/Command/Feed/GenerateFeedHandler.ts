@@ -28,7 +28,7 @@ export default class GenerateFeedHandler {
         .then(() =>
           this.cardQueryRepository.findRandomActiveByDeckId(
             deck.getId(),
-            7, // TODO deck.settings
+            1000, // TODO deck.settings
           ),
         )
         .then((cards) =>

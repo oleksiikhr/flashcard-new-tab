@@ -1,7 +1,7 @@
 export function h(
   type: string,
   props: { [key: string]: string | EventListenerOrEventListenerObject } = {},
-) {
+): HTMLElement {
   const element = document.createElement(type);
 
   Object.entries(props).forEach(([key, val]) => {
@@ -24,7 +24,7 @@ export function styles(data: {
     css += `${selector}{`;
 
     Object.entries(properties).forEach(([k, v]) => {
-      css += `${k}: ${v};`;
+      css += `${k}:${v};`;
     });
 
     css += '}';
