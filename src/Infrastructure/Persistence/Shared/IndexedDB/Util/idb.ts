@@ -1,5 +1,3 @@
-import { random } from '../../../../../Domain/Shared/Util/number';
-
 export function requestPaginate<T>(
   request: IDBRequest,
   limit: number,
@@ -30,18 +28,17 @@ export function requestPaginate<T>(
 
 export function requestRandom<T>(
   request: IDBRequest<IDBCursorWithValue | null>,
-  totalRecords: number,
+  offset: number,
 ): Promise<T | undefined> {
   return new Promise((resolve, reject) => {
     let searching = true;
 
     request.onsuccess = (event) => {
       const cursor = (event.target as IDBRequest).result as IDBCursorWithValue;
-      const value = random(0, totalRecords - 1);
 
-      if (searching && 0 !== value) {
+      if (searching && 0 !== offset) {
         searching = false;
-        cursor.advance(value);
+        cursor.advance(offset);
       } else {
         resolve(cursor.value as T);
       }

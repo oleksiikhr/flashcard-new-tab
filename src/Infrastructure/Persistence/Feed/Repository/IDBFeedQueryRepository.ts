@@ -12,6 +12,7 @@ import DeckMemento, { DeckRaw } from '../../../../Domain/Deck/DeckMemento';
 import TagMemento, { TagRaw } from '../../../../Domain/Tag/TagMemento';
 import Tag from '../../../../Domain/Tag/Tag';
 import DomainNotFoundError from '../../Shared/IndexedDB/Error/DomainNotFoundError';
+import { random } from '../../../../Domain/Shared/Util/number';
 
 export default class IDBFeedQueryRepository implements FeedQueryRepository {
   constructor(
@@ -52,10 +53,8 @@ export default class IDBFeedQueryRepository implements FeedQueryRepository {
       return undefined;
     }
 
-    const feed = await requestRandom<FeedRaw>(
-      feedStore.openCursor(),
-      feedTotal,
-    );
+    const position = random(0, feedTotal - 1);
+    const feed = await requestRandom<FeedRaw>(feedStore.openCursor(), position);
 
     if (undefined === feed) {
       return undefined;
@@ -90,6 +89,8 @@ export default class IDBFeedQueryRepository implements FeedQueryRepository {
       card,
       deck,
       tags.filter((tag) => undefined !== tag) as Tag[],
+      feedTotal,
+      position,
     );
   }
 }

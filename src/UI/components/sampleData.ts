@@ -1,5 +1,5 @@
 import {
-  createCard,
+  createVocabularyCard,
   createDeck,
   createTag,
   syncTagsToCard,
@@ -24,11 +24,11 @@ export default async () => {
 
   for (let i = 1; cardsCount >= i; i += 1) {
     promises.push(
-      createCard(
+      createVocabularyCard(
         random(1, decksCount),
         `Question: ${i}`,
-        { answer: `Answer: ${i}` },
-        0,
+        `Answer: ${i}`,
+        '/transcription/',
       ),
     );
   }

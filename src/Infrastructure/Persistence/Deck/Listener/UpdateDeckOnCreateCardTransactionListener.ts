@@ -32,6 +32,10 @@ export default class UpdateDeckOnCreateCardTransactionListener
 
     raw.cards_count += 1;
 
+    if (event.getCard().getIsActive()) {
+      raw.active_cards_count += 1;
+    }
+
     return requestPromise(transaction.objectStore(StoreName.DECKS).put(raw));
   }
 }

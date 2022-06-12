@@ -8,6 +8,7 @@ export default class Deck {
     private name: DeckName,
     private isActive: boolean,
     private cardsCount: number,
+    private activeCardsCount: number,
     private tagsCount: number,
     private settings: DeckSettings,
     private generateAt: Date,
@@ -24,6 +25,7 @@ export default class Deck {
       undefined,
       name,
       isActive,
+      0,
       0,
       0,
       settings,
@@ -70,6 +72,10 @@ export default class Deck {
 
   public getCardsCount(): number {
     return this.cardsCount;
+  }
+
+  public getActiveCardsCount(): number {
+    return this.activeCardsCount;
   }
 
   public getTagsCount(): number {

@@ -1,17 +1,25 @@
-function shuffle(numbers: number[]): void {
-  numbers.sort(() => Math.random() - 0.5);
+function shuffle(numbers: number[]): number[] {
+  return numbers.sort(() => Math.random() - 0.5);
 }
 
-export function randomUniqueRange(size: number, count: number, startAt = 0) {
+export function sort(numbers: number[]): number[] {
+  return numbers.sort((a, b) => a - b);
+}
+
+export function randomUniqueRange(
+  size: number,
+  count: number,
+  startAt = 0,
+): number[] {
   // TODO Better algorithm
   const numbers = [...Array(size).keys()].map((i) => i + startAt);
 
   shuffle(numbers);
 
-  return numbers.slice(0, count);
+  return sort(numbers.slice(0, count));
 }
 
-export function random(min: number, max: number) {
+export function random(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -19,4 +27,5 @@ export default {
   randomUniqueRange,
   shuffle,
   random,
+  sort,
 };

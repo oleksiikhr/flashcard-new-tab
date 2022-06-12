@@ -71,7 +71,7 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
       request.count(query),
     )) as number;
 
-    const numbers = randomUniqueRange(total, count, 1).sort((a, b) => a - b);
+    const numbers = randomUniqueRange(total, count, 1);
     const cards: Card[] = [];
     let init = true;
 

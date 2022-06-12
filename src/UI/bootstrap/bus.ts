@@ -1,10 +1,7 @@
-import CreateCardHandler from '../../Application/Command/Card/CreateCardHandler';
-import IDBDeckQueryRepository from '../../Infrastructure/Persistence/Deck/Repository/IDBDeckQueryRepository';
-import CardContentFactory from '../../Domain/Card/Content/CardContentFactory';
-import ApplyThemeHandler from '../../Application/Command/Theme/ApplyThemeHandler';
-import LSSettingsQueryRepository from '../../Infrastructure/Persistence/Settings/Repository/LSSettingsQueryRepository';
-import ThemeInjector from '../../Domain/Settings/Theme/Service/ThemeInjector';
 import make from './services';
+import CreateVocabularyCardHandler from '../../Application/Command/Card/CreateVocabularyCardHandler';
+import IDBDeckQueryRepository from '../../Infrastructure/Persistence/Deck/Repository/IDBDeckQueryRepository';
+import LSSettingsQueryRepository from '../../Infrastructure/Persistence/Settings/Repository/LSSettingsQueryRepository';
 import GenerateFeedHandler from '../../Application/Command/Feed/GenerateFeedHandler';
 import IDBDeckCommandRepository from '../../Infrastructure/Persistence/Deck/Repository/IDBDeckCommandRepository';
 import IDBFeedCommandRepository from '../../Infrastructure/Persistence/Feed/Repository/IDBFeedCommandRepository';
@@ -22,23 +19,21 @@ import FindDeckHandler from '../../Application/Query/Deck/FindDeckHandler';
 import PaginateDeckHandler from '../../Application/Query/Deck/PaginateDeckHandler';
 import PaginateCardHandler from '../../Application/Query/Card/PaginateCardHandler';
 import FindCardHandler from '../../Application/Query/Card/FindCardHandler';
-import UpdateCardHandler from '../../Application/Command/Card/UpdateCardHandler';
+import UpdateVocabularyCardHandler from '../../Application/Command/Card/UpdateVocabularyCardHandler';
 import UpdateTagHandler from '../../Application/Command/Tag/UpdateTagHandler';
 import IDBTagQueryRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagQueryRepository';
 import PaginateTagHandler from '../../Application/Query/Tag/PaginateTagHandler';
 import FindTagHandler from '../../Application/Query/Tag/FindTagHandler';
 import DeleteTagHandler from '../../Application/Command/Tag/DeleteTagHandler';
 import SyncTagsToCardHandler from '../../Application/Command/Card/SyncTagsToCardHandler';
+import FindThemeHandler from '../../Application/Query/Theme/FindThemeHandler';
 
 /* ------------------------------------------------------------------------- */
 
 // Settings
 
-export const applyTheme = (selector: string) =>
-  new ApplyThemeHandler(
-    make(LSSettingsQueryRepository),
-    make(ThemeInjector),
-  ).invoke(selector);
+export const findTheme = () =>
+  new FindThemeHandler(make(LSSettingsQueryRepository)).invoke();
 
 /* ------------------------------------------------------------------------- */
 
@@ -84,29 +79,27 @@ export const paginateCards = (fromId: number | undefined, limit: number) =>
 export const findCard = (id: number) =>
   new FindCardHandler(make(IDBCardQueryRepository)).invoke(id);
 
-export const createCard = (
+export const createVocabularyCard = (
   deckId: number,
   question: string,
-  content: object,
-  templateType: number,
+  answer: string,
+  transcription: string,
 ) =>
-  new CreateCardHandler(
+  new CreateVocabularyCardHandler(
     make(IDBCardCommandRepository),
     make(IDBDeckQueryRepository),
-    make(CardContentFactory),
-  ).invoke(deckId, question, content, templateType);
+  ).invoke(deckId, question, answer, transcription);
 
-export const updateCard = (
+export const updateVocabularyCard = (
   id: number,
   question: string,
-  content: object,
-  templateType: number,
+  answer: string,
+  transcription: string,
 ) =>
-  new UpdateCardHandler(
+  new UpdateVocabularyCardHandler(
     make(IDBCardCommandRepository),
     make(IDBCardQueryRepository),
-    make(CardContentFactory),
-  ).invoke(id, question, content, templateType);
+  ).invoke(id, question, answer, transcription);
 
 export const deleteCard = (id: number) =>
   new DeleteCardHandler(

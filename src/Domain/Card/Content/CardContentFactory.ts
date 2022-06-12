@@ -1,14 +1,14 @@
 import CardTemplateType from '../CardTemplateType';
-import CardDefaultContent from './CardDefaultContent';
+import CardVocabularyContent from './CardVocabularyContent';
 import CardContent from './CardContent';
-import CardCreateContentError from './CardCreateContentError';
+import ContentNotSupportedByTemplateType from './ContentNotSupportedByTemplateType';
 
 export default class CardContentFactory {
   public make(data: object, templateType: CardTemplateType): CardContent {
-    if (templateType.isQuestion()) {
-      return new CardDefaultContent(data);
+    if (templateType.isVocabulary()) {
+      return new CardVocabularyContent(data);
     }
 
-    throw new CardCreateContentError();
+    throw new ContentNotSupportedByTemplateType();
   }
 }

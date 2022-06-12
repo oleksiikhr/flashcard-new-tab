@@ -4,6 +4,7 @@ specifiers:
   '@babel/core': ^7.18.0
   '@babel/preset-env': ^7.18.0
   '@babel/preset-typescript': ^7.17.12
+  '@types/chrome': ^0.0.190
   '@types/jest': ^27.5.1
   '@types/node': ^17.0.35
   '@typescript-eslint/eslint-plugin': ^5.26.0
@@ -33,6 +34,7 @@ devDependencies:
   '@babel/core': 7.18.0
   '@babel/preset-env': 7.18.0_@babel+core@7.18.0
   '@babel/preset-typescript': 7.17.12_@babel+core@7.18.0
+  '@types/chrome': 0.0.190
   '@types/jest': 27.5.1
   '@types/node': 17.0.35
   '@typescript-eslint/eslint-plugin': 5.26.0_gu4clceiw6ditaem5r577qrdpi
@@ -1654,10 +1656,31 @@ packages:
       '@babel/types': 7.18.0
     dev: true
 
+  /@types/chrome/0.0.190:
+    resolution: {integrity: sha512-lCwwIBfaD+PhG62qFB46mIBpD+xBIa+PedNB24KR9YnmJ0Zn9h0OwP1NQBhI8Cbu1rKwTQHTxhs7GhWGyUvinw==}
+    dependencies:
+      '@types/filesystem': 0.0.32
+      '@types/har-format': 1.2.8
+    dev: true
+
+  /@types/filesystem/0.0.32:
+    resolution: {integrity: sha512-Yuf4jR5YYMR2DVgwuCiP11s0xuVRyPKmz8vo6HBY3CGdeMj8af93CFZX+T82+VD1+UqHOxTq31lO7MI7lepBtQ==}
+    dependencies:
+      '@types/filewriter': 0.0.29
+    dev: true
+
+  /@types/filewriter/0.0.29:
+    resolution: {integrity: sha512-BsPXH/irW0ht0Ji6iw/jJaK8Lj3FJemon2gvEqHKpCdDCeemHa+rI3WBGq5z7cDMZgoLjY40oninGxqk+8NzNQ==}
+    dev: true
+
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
     dependencies:
       '@types/node': 17.0.35
+    dev: true
+
+  /@types/har-format/1.2.8:
+    resolution: {integrity: sha512-OP6L9VuZNdskgNN3zFQQ54ceYD8OLq5IbqO4VK91ORLfOm7WdT/CiT/pHEBSQEqCInJ2y3O6iCm/zGtPElpgJQ==}
     dev: true
 
   /@types/istanbul-lib-coverage/2.0.4:

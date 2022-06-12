@@ -1,13 +1,13 @@
 import HomePage from '../pages/HomePage';
-import { theme } from '../config/settings';
 import '../styles/index.scss';
 import pageManager from '../pages/PageManager';
-import { applyTheme } from './bus';
 import initProviders from './providers';
+import { findTheme } from './bus';
+import { log } from '../../Domain/Shared/Util/logger';
 
 initProviders();
 
-applyTheme(theme.selectorId);
+log('theme', findTheme());
 
 window.addEventListener('DOMContentLoaded', () => {
   pageManager.setPage(HomePage);

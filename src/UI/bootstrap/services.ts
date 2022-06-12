@@ -7,7 +7,6 @@ import CardMemento from '../../Domain/Card/CardMemento';
 import IDBTagQueryRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagQueryRepository';
 import IDBCardQueryRepository from '../../Infrastructure/Persistence/Card/Repository/IDBCardQueryRepository';
 import IDBCardCommandRepository from '../../Infrastructure/Persistence/Card/Repository/IDBCardCommandRepository';
-import ThemeInjector from '../../Domain/Settings/Theme/Service/ThemeInjector';
 import LSSettingsQueryRepository from '../../Infrastructure/Persistence/Settings/Repository/LSSettingsQueryRepository';
 import LocalStorage from '../../Infrastructure/Persistence/Shared/LocalStorage/LocalStorage';
 import IDBFeedQueryRepository from '../../Infrastructure/Persistence/Feed/Repository/IDBFeedQueryRepository';
@@ -66,8 +65,6 @@ register(TransactionPipeline, () => new TransactionPipeline(make(IndexedDB)));
 /* ------------------------------------------------------------------------- */
 
 // Settings
-
-register(ThemeInjector, () => new ThemeInjector());
 
 register(
   LSSettingsQueryRepository,

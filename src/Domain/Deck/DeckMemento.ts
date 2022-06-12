@@ -8,6 +8,7 @@ export type DeckRaw = {
   name: string;
   is_active: number;
   cards_count: number;
+  active_cards_count: number;
   tags_count: number;
   settings: object;
   generate_at: Date;
@@ -22,6 +23,7 @@ export default class DeckMemento {
       name: deck.getName().getValue(),
       is_active: +deck.getIsActive(),
       cards_count: deck.getCardsCount(),
+      active_cards_count: deck.getActiveCardsCount(),
       tags_count: deck.getTagsCount(),
       settings: deck.getSettings().serialize(),
       generate_at: deck.getGeneratedAt(),
@@ -36,6 +38,7 @@ export default class DeckMemento {
       new DeckName(raw.name),
       !!raw.is_active,
       raw.cards_count,
+      raw.active_cards_count,
       raw.tags_count,
       new DeckSettings(raw.settings),
       raw.generate_at,

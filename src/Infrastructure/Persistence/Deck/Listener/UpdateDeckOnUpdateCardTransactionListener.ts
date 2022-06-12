@@ -1,15 +1,15 @@
-import CardDeleteTransactionEvent from '../../Card/Event/CardDeleteTransactionEvent';
 import TransactionListener from '../../Shared/IndexedDB/Transaction/TransactionListener';
 import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import DomainNotExistsError from '../../Shared/IndexedDB/Error/DomainNotExistsError';
 import { DeckRaw } from '../../../../Domain/Deck/DeckMemento';
+import CardUpdateTransactionEvent from '../../Card/Event/CardUpdateTransactionEvent';
 
-export default class UpdateDeckOnDeleteCardTransactionListener
-  implements TransactionListener<CardDeleteTransactionEvent>
+export default class UpdateDeckOnUpdateCardTransactionListener
+  implements TransactionListener<CardUpdateTransactionEvent>
 {
-  public isNeedHandle(): boolean {
-    return true;
+  public isNeedHandle(event: CardUpdateTransactionEvent): boolean {
+    return event.getCard().isChangedIsActive();
   }
 
   public getStoreName(): StoreName {
@@ -18,7 +18,7 @@ export default class UpdateDeckOnDeleteCardTransactionListener
 
   public async invoke(
     transaction: IDBTransaction,
-    event: CardDeleteTransactionEvent,
+    event: CardUpdateTransactionEvent,
   ): Promise<unknown> {
     const card = event.getCard();
     const store = transaction.objectStore(StoreName.DECKS);
@@ -30,9 +30,9 @@ export default class UpdateDeckOnDeleteCardTransactionListener
       throw new DomainNotExistsError();
     }
 
-    raw.cards_count -= 1;
-
     if (event.getCard().getIsActive()) {
+      raw.active_cards_count += 1;
+    } else {
       raw.active_cards_count -= 1;
     }
 

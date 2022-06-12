@@ -17,7 +17,7 @@ $ make up
 # DATABASE
 
 > global
-- theme (dark, light, blue)
+- theme (dark / light)
 
 > decks
 - id
@@ -36,7 +36,7 @@ $ make up
 - deck_id
 - question
 - content ({ answer: '' })
-- template_type (question-answer, select, multi-select, etc)
+- template_type (default, select, multiSelect, vocabulary)
 - statistics ({ views: 0 })
 - is_active
 - seen_at

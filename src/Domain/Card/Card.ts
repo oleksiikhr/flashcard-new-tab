@@ -7,6 +7,8 @@ import DomainNotExistsError from '../../Infrastructure/Persistence/Shared/Indexe
 import DeckId from '../Deck/DeckId';
 
 export default class Card {
+  private readonly initIsActive: boolean;
+
   constructor(
     private id: CardId | undefined,
     private deckId: DeckId,
@@ -18,7 +20,9 @@ export default class Card {
     private seenAt: Date,
     private updatedAt: Date,
     private createdAt: Date,
-  ) {}
+  ) {
+    this.initIsActive = this.isActive;
+  }
 
   public static create(
     deckId: DeckId,
@@ -32,7 +36,7 @@ export default class Card {
       question,
       content,
       templateType,
-      CardStatistics.create(),
+      CardStatistics.createEmpty(),
       true,
       new Date(),
       new Date(),
@@ -40,14 +44,9 @@ export default class Card {
     );
   }
 
-  public from(
-    question: CardQuestion,
-    content: CardContent,
-    templateType: CardTemplateType,
-  ): void {
+  public from(question: CardQuestion, content: CardContent): void {
     this.question = question;
     this.content = content;
-    this.templateType = templateType;
     this.updatedAt = new Date();
   }
 
@@ -93,6 +92,10 @@ export default class Card {
 
   public getIsActive(): boolean {
     return this.isActive;
+  }
+
+  public isChangedIsActive(): boolean {
+    return this.isActive === this.initIsActive;
   }
 
   public getSeenAt(): Date {
