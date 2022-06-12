@@ -8,8 +8,8 @@ export default class ThemeInjector {
     // TODO Theme apply
     element.textContent = styles({
       body: {
-        background: 'black',
-        color: 'white',
+        // background: '#282627',
+        // color: 'white',
         something: theme.getType().getValue().toString(),
       },
     });

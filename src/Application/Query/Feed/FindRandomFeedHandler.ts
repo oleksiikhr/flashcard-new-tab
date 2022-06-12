@@ -20,7 +20,8 @@ export default class FindRandomFeedHandler {
     }
 
     const card = feed.getCard();
-    card.getStatistics().increaseViews();
+    card.updateLastSeen();
+
     await this.cardCommandRepository.update(card);
 
     return feed;
