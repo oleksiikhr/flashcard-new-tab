@@ -4,8 +4,6 @@ Set up the project
 $ make up
 ```
 
-- repeat push notification
-
 # PAGES
 
 - home page

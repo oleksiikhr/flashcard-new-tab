@@ -1,4 +1,3 @@
-import HomePage from '../pages/HomePage';
 import '../styles/index.scss';
 import pageManager from '../pages/PageManager';
 import initProviders from './providers';
@@ -10,5 +9,11 @@ initProviders();
 log('theme', findTheme());
 
 window.addEventListener('DOMContentLoaded', () => {
-  pageManager.setPage(HomePage);
+  document.querySelectorAll(`[to]`).forEach((element) => {
+    element.addEventListener('click', () => {
+      pageManager.render(element.getAttribute('to') as string);
+    });
+  });
+
+  pageManager.render('home');
 });

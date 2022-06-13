@@ -6,15 +6,9 @@ import { feedTestHandle } from '../components/feed';
 export default class HomePage implements Page {
   protected rootElement!: HTMLDivElement;
 
-  protected cardElement!: HTMLDivElement;
-
   onFirstMount() {
     this.rootElement = document.querySelector(
       `[page="home"]`,
-    ) as HTMLDivElement;
-
-    this.cardElement = document.querySelector(
-      `[component="card"]`,
     ) as HTMLDivElement;
 
     feedTestHandle(this.rootElement);

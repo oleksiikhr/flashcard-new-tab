@@ -12,7 +12,7 @@ export default class Theme {
   }
 
   public static unserialize(raw: ThemeRaw): Theme {
-    return new Theme(ThemeType.of(raw.type ?? ThemeType.LIGHT));
+    return new Theme(ThemeType.of(raw.type));
   }
 
   public serialize(): ThemeRaw {
