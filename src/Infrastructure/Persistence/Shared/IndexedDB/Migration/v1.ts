@@ -40,5 +40,13 @@ export default (event: IDBVersionChangeEvent): Promise<void> =>
 
     feed.createIndex('deck_id_idx', 'deck_id');
 
+    const logs = db.createObjectStore('logs', {
+      keyPath: 'id',
+      autoIncrement: true,
+    });
+
+    logs.createIndex('deck_id_idx', 'deck_id');
+    logs.createIndex('card_id_idx', 'card_id');
+
     resolve();
   });

@@ -7,12 +7,22 @@ export type ThemeRaw = {
 export default class Theme {
   constructor(private type: ThemeType) {}
 
-  public static create(): Theme {
-    return new Theme(ThemeType.of(ThemeType.LIGHT));
+  public static createLight(): Theme {
+    return new Theme(ThemeType.light());
   }
 
-  public static unserialize(raw: ThemeRaw): Theme {
-    return new Theme(ThemeType.of(raw.type));
+  public static createDark(): Theme {
+    return new Theme(ThemeType.dark());
+  }
+
+  public static unserialize(raw: ThemeRaw): Theme | undefined {
+    const type = ThemeType.of(raw.type);
+
+    if (undefined === type) {
+      return undefined;
+    }
+
+    return new Theme(type);
   }
 
   public serialize(): ThemeRaw {

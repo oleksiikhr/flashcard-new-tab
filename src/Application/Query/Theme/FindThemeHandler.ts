@@ -1,10 +1,23 @@
 import SettingsQueryRepository from '../../../Domain/Settings/Repository/SettingsQueryRepository';
 import Theme from '../../../Domain/Settings/Theme/Theme';
+import IdentifyColorScheme from '../../../Domain/Settings/Service/IdentifyColorScheme';
 
 export default class FindThemeHandler {
-  constructor(private queryRepository: SettingsQueryRepository) {}
+  constructor(
+    private identifyColorScheme: IdentifyColorScheme,
+    private queryRepository: SettingsQueryRepository,
+  ) {}
 
   public invoke() {
-    return this.queryRepository.findTheme() ?? Theme.create();
+    const theme = this.queryRepository.findTheme();
+    if (undefined !== theme) {
+      return theme;
+    }
+
+    if (this.identifyColorScheme.isDark()) {
+      return Theme.createDark();
+    }
+
+    return Theme.createLight();
   }
 }

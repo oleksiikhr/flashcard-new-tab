@@ -7,11 +7,11 @@ export default class LSSettingsQueryRepository
 {
   constructor(private storage: LocalStorage) {}
 
-  public findTheme(): Theme | null {
+  public findTheme(): Theme | undefined {
     const theme = this.storage.getObject<ThemeRaw>('theme');
 
-    if (null === theme) {
-      return null;
+    if (undefined === theme) {
+      return undefined;
     }
 
     return Theme.unserialize(theme);

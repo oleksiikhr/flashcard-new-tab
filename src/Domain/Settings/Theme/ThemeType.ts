@@ -5,8 +5,20 @@ export default class ThemeType extends NumberValueObject {
 
   public static DARK = 1;
 
-  public static of(type: number): ThemeType {
+  public static of(type: number): ThemeType | undefined {
+    if (!ThemeType.isSupport(type)) {
+      return undefined;
+    }
+
     return new ThemeType(type);
+  }
+
+  public static light() {
+    return new ThemeType(ThemeType.LIGHT);
+  }
+
+  public static dark() {
+    return new ThemeType(ThemeType.DARK);
   }
 
   public isLight(): boolean {
@@ -15,5 +27,9 @@ export default class ThemeType extends NumberValueObject {
 
   public isDark(): boolean {
     return ThemeType.DARK === this.getValue();
+  }
+
+  private static isSupport(type: number): boolean {
+    return ThemeType.LIGHT === type || ThemeType.DARK === type;
   }
 }

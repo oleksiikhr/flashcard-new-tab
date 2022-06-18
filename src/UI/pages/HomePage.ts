@@ -8,7 +8,7 @@ export default class HomePage implements Page {
 
   onFirstMount() {
     this.rootElement = document.querySelector(
-      `[page="home"]`,
+      '[page="home"]',
     ) as HTMLDivElement;
 
     feedTestHandle(this.rootElement);

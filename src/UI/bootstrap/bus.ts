@@ -27,13 +27,22 @@ import FindTagHandler from '../../Application/Query/Tag/FindTagHandler';
 import DeleteTagHandler from '../../Application/Command/Tag/DeleteTagHandler';
 import SyncTagsToCardHandler from '../../Application/Command/Card/SyncTagsToCardHandler';
 import FindThemeHandler from '../../Application/Query/Theme/FindThemeHandler';
+import WindowIdentifyColorScheme from '../../Infrastructure/Service/Settings/WindowIdentifyColorScheme';
+import UpdateThemeHandler from '../../Application/Command/Theme/UpdateThemeHandler';
+import LSSettingsCommandRepository from '../../Infrastructure/Persistence/Settings/Repository/LSSettingsCommandRepository';
 
 /* ------------------------------------------------------------------------- */
 
 // Settings
 
 export const findTheme = () =>
-  new FindThemeHandler(make(LSSettingsQueryRepository)).invoke();
+  new FindThemeHandler(
+    make(WindowIdentifyColorScheme),
+    make(LSSettingsQueryRepository),
+  ).invoke();
+
+export const updateTheme = (type: number) =>
+  new UpdateThemeHandler(make(LSSettingsCommandRepository)).invoke(type);
 
 /* ------------------------------------------------------------------------- */
 

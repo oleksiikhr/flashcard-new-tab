@@ -1,0 +1,59 @@
+:root {
+  --background: #282627;
+  --background-second: #313131;
+  --text: #e0e0e0;
+  --text-second: #464445;
+  --accent: #ff633c;
+  --line: #7f7d7e;
+}
+
+::-webkit-scrollbar {
+  background: var(--background);
+  display: block;
+  height: 5px;
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--background-second);
+  border-radius: 4px;
+}
+
+* {
+  appearance: none;
+  border-radius: 0;
+  -webkit-tap-highlight-color: transparent;
+
+  &,
+  &::before,
+  &::after {
+    box-sizing: border-box;
+  }
+}
+
+html {
+  text-size-adjust: 100%;
+}
+
+html,
+body,
+section {
+  height: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  line-height: 1.15;
+  margin: 0;
+  overflow-y: scroll;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+}

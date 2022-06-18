@@ -4,6 +4,11 @@ Set up the project
 $ make up
 ```
 
+- import/export
+- list of decks
+- list of cards
+- list of tags
+
 # PAGES
 
 - home page
@@ -56,5 +61,11 @@ $ make up
 > feed
 - card_id
 - deck_id
+
+> logs
+- id
+- deck_id
+- card_id
+- action
 
 https://www.gettyimages.com/

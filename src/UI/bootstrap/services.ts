@@ -16,6 +16,8 @@ import list from '../../Infrastructure/Persistence/Shared/IndexedDB/Migration/li
 import TagMemento from '../../Domain/Tag/TagMemento';
 import IDBTagCommandRepository from '../../Infrastructure/Persistence/Tag/Repository/IDBTagCommandRepository';
 import TransactionPipeline from '../../Infrastructure/Persistence/Shared/IndexedDB/Transaction/TransactionPipeline';
+import WindowIdentifyColorScheme from '../../Infrastructure/Service/Settings/WindowIdentifyColorScheme';
+import LSSettingsCommandRepository from '../../Infrastructure/Persistence/Settings/Repository/LSSettingsCommandRepository';
 
 const { register, make } = (() => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,6 +72,13 @@ register(
   LSSettingsQueryRepository,
   () => new LSSettingsQueryRepository(make(LocalStorage)),
 );
+
+register(
+  LSSettingsCommandRepository,
+  () => new LSSettingsCommandRepository(make(LocalStorage)),
+);
+
+register(WindowIdentifyColorScheme, () => new WindowIdentifyColorScheme());
 
 /* ------------------------------------------------------------------------- */
 
