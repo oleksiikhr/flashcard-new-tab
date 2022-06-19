@@ -1,4 +1,4 @@
-import Page from './Page';
+import Page from '../Page';
 
 export default class SettingsPage implements Page {
   protected root!: HTMLDivElement;

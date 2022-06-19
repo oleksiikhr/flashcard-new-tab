@@ -4,19 +4,6 @@ Set up the project
 $ make up
 ```
 
-- import/export
-- list of decks
-- list of cards
-- list of tags
-
-# PAGES
-
-- home page
-- create card
-- decks with cards
-- statistics
-- global settings
-
 # DATABASE
 
 > global
@@ -62,10 +49,11 @@ $ make up
 - card_id
 - deck_id
 
-> logs
+> statistics
 - id
 - deck_id
 - card_id
 - action
+- created_at
 
 https://www.gettyimages.com/

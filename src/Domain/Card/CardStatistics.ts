@@ -20,6 +20,14 @@ export default class CardStatistics {
     });
   }
 
+  public getViews(): number {
+    return this.views;
+  }
+
+  public getClicks(): number {
+    return this.clicks;
+  }
+
   public increaseViews(value = 1): void {
     this.views += value;
   }

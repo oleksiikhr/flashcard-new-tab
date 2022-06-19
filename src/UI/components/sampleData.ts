@@ -9,8 +9,8 @@ import { log } from '../../Domain/Shared/Util/logger';
 
 export default async () => {
   const decksCount = 50;
-  const cardsCount = 10000;
-  const tagsCount = 1000;
+  const cardsCount = 1000;
+  const tagsCount = 300;
 
   let promises = [];
 

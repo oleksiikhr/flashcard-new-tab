@@ -1,0 +1,107 @@
+@import "cardVocabulary";
+
+.card {
+  align-items: center;
+  background: var(--background-second);
+  border-radius: 50px;
+  box-shadow: var(--background) 0 0 0 3px inset, var(--background-second) 10px -10px 0 -3px, var(--background) 10px -10px, var(--background-second) 20px -20px 0 -3px, var(--background) 20px -20px, var(--background-second) 30px -30px 0 -3px;
+  display: flex;
+  flex-direction: column;
+  height: 650px;
+  justify-content: center;
+  margin: 40px 40px 20px 10px;
+  padding: 20px;
+  position: relative;
+}
+
+.card__header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  left: 30px;
+  position: absolute;
+  right: 40px;
+  top: 30px;
+}
+
+.card-deck-name {
+  background: rgb(133 154 184 / 10%);
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 10px 30px;
+}
+
+.card-icons {
+  align-items: center;
+  display: flex;
+
+  > div {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-left: 20px;
+  }
+
+  svg {
+    height: 18px;
+  }
+
+  span {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-left: 5px;
+  }
+}
+
+.card-icons__edit {
+  cursor: pointer;
+}
+
+.card__footer {
+  align-items: center;
+  bottom: 25px;
+  color: #848484;
+  display: flex;
+  justify-content: space-between;
+  left: 30px;
+  position: absolute;
+  width: calc(100% - 60px);
+}
+
+.card-tags {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  svg {
+    height: 16px;
+    min-width: 16px;
+  }
+}
+
+.card-tag-values {
+  margin-left: 10px;
+  margin-right: 10px;
+  max-height: 2.4em;
+  overflow: hidden;
+}
+
+.card-tag-value {
+  display: inline-block;
+  font-weight: bold;
+  margin-right: 5px;
+
+  &:not(:last-child)::after {
+    content: ",";
+  }
+}
+
+.card-dot {
+  background: var(--accent);
+  border: 6px solid var(--background);
+  border-radius: 50%;
+  height: 30px;
+  min-width: 30px;
+}

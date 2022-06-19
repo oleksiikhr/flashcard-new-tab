@@ -1,6 +1,6 @@
 import Page from './Page';
-import HomePage from './HomePage';
-import SettingsPage from './SettingsPage';
+import HomePage from './home/HomePage';
+import SettingsPage from './settings/SettingsPage';
 
 export class PageManager {
   private pages: Map<string, { new (): Page }> = new Map();

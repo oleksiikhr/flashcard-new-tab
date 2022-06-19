@@ -1,6 +1,7 @@
 export function h(
   type: string,
   props: { [key: string]: string | EventListenerOrEventListenerObject } = {},
+  ...children: (Node | string)[]
 ): HTMLElement {
   const element = document.createElement(type);
 
@@ -10,6 +11,10 @@ export function h(
     } else {
       element.addEventListener(key, val);
     }
+  });
+
+  children.forEach((child) => {
+    element.append(child);
   });
 
   return element;

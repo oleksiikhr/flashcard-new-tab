@@ -21,6 +21,14 @@ export default class ThemeType extends NumberValueObject {
     return new ThemeType(ThemeType.DARK);
   }
 
+  public color(): string {
+    if (this.isDark()) {
+      return 'dark';
+    }
+
+    return 'light';
+  }
+
   public isLight(): boolean {
     return ThemeType.LIGHT === this.getValue();
   }

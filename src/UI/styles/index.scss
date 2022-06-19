@@ -1,3 +1,9 @@
+// Common
+@import "theme";
 @import "global";
-@import "page";
-@import "settings";
+
+// Pages
+@import "../pages/home/styles";
+
+// Components
+@import "../components/theme/toggler";

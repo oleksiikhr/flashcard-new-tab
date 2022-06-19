@@ -1,12 +1,3 @@
-:root {
-  --background: #282627;
-  --background-second: #313131;
-  --text: #e0e0e0;
-  --text-second: #464445;
-  --accent: #ff633c;
-  --line: #7f7d7e;
-}
-
 ::-webkit-scrollbar {
   background: var(--background);
   display: block;
@@ -32,7 +23,13 @@
 }
 
 html {
+  color-scheme: light;
   text-size-adjust: 100%;
+
+  /* stylelint-disable selector-no-qualifying-type */
+  &[data-theme="dark"] {
+    color-scheme: dark;
+  }
 }
 
 html,
