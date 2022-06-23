@@ -35,18 +35,27 @@ const renderVocabulary = (
       ),
     );
 
-    // TODO svg
+    // TODO svg + on click tts
   }
 
-  contentElement.append(
-    h(
-      'div',
-      {
-        class: 'card-vocabulary-helper',
-      },
-      'Show answer',
-    ),
+  const helperElement = h(
+    'div',
+    {
+      class: 'card-vocabulary-helper',
+    },
+    'Show answer',
   );
+
+  helperElement.innerText = content.getAnswer();
+  helperElement.classList.add('card-vocabulary-helper_clicked');
+  // helperElement.addEventListener('click', () => {
+  //   increaseCardClicks(card.getId().getIdentifier(), 1).then((card) => {
+  //     (element.querySelector('.card-clicks-value') as HTMLElement).innerText =
+  //       card.getStatistics().getClicks().toString();
+  //   });
+  // });
+
+  contentElement.append(helperElement);
 };
 
 export default (card: Card, deck: Deck, tags: Tag[]) => {

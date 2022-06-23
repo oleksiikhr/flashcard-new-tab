@@ -3,6 +3,9 @@ import InvalidIdentifierError from '../Error/InvalidIdentifierError';
 export default abstract class Identifier {
   private readonly identifier: number;
 
+  /**
+   * @throws{InvalidIdentifierError}
+   */
   constructor(id: number) {
     if (1 > id) {
       throw new InvalidIdentifierError();

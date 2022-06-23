@@ -1,20 +1,25 @@
 import Deck from '../../../Domain/Deck/Deck';
 import DeckName from '../../../Domain/Deck/DeckName';
-import DeckSettings from '../../../Domain/Deck/DeckSettings';
+import DeckSettings, {
+  DeckSettingsRaw,
+} from '../../../Domain/Deck/DeckSettings';
 import DeckCommandRepository from '../../../Domain/Deck/Repository/DeckCommandRepository';
 
 export default class CreateDeckHandler {
   constructor(private commandRepository: DeckCommandRepository) {}
 
+  /**
+   * @throws {ObjectValueValidation}
+   */
   public async invoke(
     name: string,
     isActive: boolean,
-    settings: object,
+    recalculate: DeckSettingsRaw,
   ): Promise<Deck> {
     const deck = Deck.create(
       new DeckName(name),
       isActive,
-      new DeckSettings(settings),
+      new DeckSettings(recalculate),
     );
 
     await this.commandRepository.create(deck);

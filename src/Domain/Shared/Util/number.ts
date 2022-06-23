@@ -11,7 +11,6 @@ export function randomUniqueRange(
   count: number,
   startAt = 0,
 ): number[] {
-  // TODO Better algorithm
   const numbers = [...Array(size).keys()].map((i) => i + startAt);
 
   shuffle(numbers);
@@ -22,10 +21,3 @@ export function randomUniqueRange(
 export function random(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
-export default {
-  randomUniqueRange,
-  shuffle,
-  random,
-  sort,
-};

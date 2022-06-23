@@ -10,6 +10,7 @@ export default class FindThemeHandler {
 
   public invoke() {
     const theme = this.queryRepository.findTheme();
+
     if (undefined !== theme) {
       return theme;
     }

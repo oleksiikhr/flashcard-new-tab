@@ -25,10 +25,18 @@
   align-items: center;
   border-radius: 20px;
   color: #848484;
+  cursor: pointer;
   display: flex;
   font-size: 0.9em;
   justify-content: center;
   letter-spacing: 5px;
-  margin-top: 50px;
+  padding: 50px;
   text-transform: uppercase;
+}
+
+.card-vocabulary-helper_clicked {
+  color: var(--text);
+  cursor: auto;
+  font-size: 3em;
+  font-weight: bold;
 }

@@ -1,6 +1,8 @@
 import Deck from '../../../Domain/Deck/Deck';
 import DeckName from '../../../Domain/Deck/DeckName';
-import DeckSettings from '../../../Domain/Deck/DeckSettings';
+import DeckSettings, {
+  DeckSettingsRaw,
+} from '../../../Domain/Deck/DeckSettings';
 import DeckId from '../../../Domain/Deck/DeckId';
 import DeckCommandRepository from '../../../Domain/Deck/Repository/DeckCommandRepository';
 import DeckQueryRepository from '../../../Domain/Deck/Repository/DeckQueryRepository';
@@ -12,19 +14,24 @@ export default class UpdateDeckHandler {
     private queryRepository: DeckQueryRepository,
   ) {}
 
+  /**
+   * @throws {DomainNotExistsError}
+   * @throws {ObjectValueValidation}
+   * @throws {InvalidIdentifierError}
+   */
   public async invoke(
     id: number,
     name: string,
     isActive: boolean,
-    settings: object,
+    recalculate: DeckSettingsRaw,
   ): Promise<Deck> {
     const deck = await this.queryRepository.findById(DeckId.of(id));
 
     if (undefined === deck) {
-      throw new DomainNotExistsError();
+      throw new DomainNotExistsError(DeckId.of(id));
     }
 
-    deck.from(new DeckName(name), isActive, new DeckSettings(settings));
+    deck.from(new DeckName(name), isActive, new DeckSettings(recalculate));
 
     await this.commandRepository.update(deck);
 

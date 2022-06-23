@@ -1,1 +1,11 @@
-export default class DomainNotExistsError extends Error {}
+import Identifier from '../../../../../Domain/Shared/ValueObject/Identifier';
+
+export default class DomainNotExistsError extends Error {
+  constructor(private identifier: Identifier) {
+    super();
+  }
+
+  public getIdentifier() {
+    return this.identifier;
+  }
+}

@@ -4,6 +4,7 @@ enum StoreName {
   TAGS = 'tags',
   CARD_TAG = 'card_tag',
   FEED = 'feed',
+  STATISTICS = 'statistics',
 }
 
 export default StoreName;

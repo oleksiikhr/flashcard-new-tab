@@ -56,7 +56,7 @@ export default class Deck {
 
   public getId(): DeckId {
     if (undefined === this.id) {
-      throw new Error(''); // TODO
+      throw new Error('The ID already exists');
     }
 
     return this.id;
@@ -87,7 +87,10 @@ export default class Deck {
   }
 
   public nextGenerateAt(): void {
-    this.generateAt = new Date();
+    const date = new Date();
+    date.setHours(date.getHours() + this.getSettings().getRecalculate().hours);
+
+    this.generateAt = date;
   }
 
   public getGeneratedAt(): Date {

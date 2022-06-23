@@ -30,6 +30,13 @@ import FindThemeHandler from '../../Application/Query/Theme/FindThemeHandler';
 import WindowIdentifyColorScheme from '../../Infrastructure/Service/Settings/WindowIdentifyColorScheme';
 import UpdateThemeHandler from '../../Application/Command/Theme/UpdateThemeHandler';
 import LSSettingsCommandRepository from '../../Infrastructure/Persistence/Settings/Repository/LSSettingsCommandRepository';
+import ImportDeckDataHandler, {
+  ImportRaw,
+} from '../../Application/Command/Deck/ImportDeckDataHandler';
+import IncreaseCardClicksHandler from '../../Application/Command/Card/IncreaseCardClicksHandler';
+import { DeckSettingsRaw } from '../../Domain/Deck/DeckSettings';
+import TagUniqueGate from '../../Domain/Tag/Gate/TagUniqueGate';
+import CardContentFactory from '../../Domain/Card/Content/CardContentFactory';
 
 /* ------------------------------------------------------------------------- */
 
@@ -54,7 +61,11 @@ export const paginateDecks = (fromId: number | undefined, limit: number) =>
 export const findDeck = (id: number) =>
   new FindDeckHandler(make(IDBDeckQueryRepository)).invoke(id);
 
-export const createDeck = (name: string, isActive: boolean, settings: object) =>
+export const createDeck = (
+  name: string,
+  isActive: boolean,
+  settings: DeckSettingsRaw,
+) =>
   new CreateDeckHandler(make(IDBDeckCommandRepository)).invoke(
     name,
     isActive,
@@ -65,7 +76,7 @@ export const updateDeck = (
   id: number,
   name: string,
   isActive: boolean,
-  settings: object,
+  settings: DeckSettingsRaw,
 ) =>
   new UpdateDeckHandler(
     make(IDBDeckCommandRepository),
@@ -77,6 +88,16 @@ export const deleteDeck = (id: number) =>
     make(IDBDeckCommandRepository),
     make(IDBDeckQueryRepository),
   ).invoke(id);
+
+export const importDeckData = (id: number, data: ImportRaw[]) =>
+  new ImportDeckDataHandler(
+    make(IDBCardCommandRepository),
+    make(IDBTagCommandRepository),
+    make(IDBCardQueryRepository),
+    make(IDBDeckQueryRepository),
+    make(IDBTagQueryRepository),
+    make(CardContentFactory),
+  ).invoke(id, data);
 
 /* ------------------------------------------------------------------------- */
 
@@ -93,22 +114,24 @@ export const createVocabularyCard = (
   question: string,
   answer: string,
   transcription: string,
+  isActive: boolean,
 ) =>
   new CreateVocabularyCardHandler(
     make(IDBCardCommandRepository),
     make(IDBDeckQueryRepository),
-  ).invoke(deckId, question, answer, transcription);
+  ).invoke(deckId, question, answer, transcription, isActive);
 
 export const updateVocabularyCard = (
   id: number,
   question: string,
   answer: string,
   transcription: string,
+  isActive: boolean,
 ) =>
   new UpdateVocabularyCardHandler(
     make(IDBCardCommandRepository),
     make(IDBCardQueryRepository),
-  ).invoke(id, question, answer, transcription);
+  ).invoke(id, question, answer, transcription, isActive);
 
 export const deleteCard = (id: number) =>
   new DeleteCardHandler(
@@ -122,6 +145,12 @@ export const syncTagsToCard = (cardId: number, tagIds: number[]) =>
     make(IDBCardQueryRepository),
     make(IDBTagQueryRepository),
   ).invoke(cardId, tagIds);
+
+export const increaseCardClicks = (cardId: number, value: number) =>
+  new IncreaseCardClicksHandler(
+    make(IDBCardCommandRepository),
+    make(IDBCardQueryRepository),
+  ).invoke(cardId, value);
 
 /* ------------------------------------------------------------------------- */
 
@@ -137,12 +166,14 @@ export const createTag = (deckId: number, name: string) =>
   new CreateTagHandler(
     make(IDBTagCommandRepository),
     make(IDBDeckQueryRepository),
+    make(TagUniqueGate),
   ).invoke(deckId, name);
 
 export const updateTag = (id: number, name: string) =>
   new UpdateTagHandler(
     make(IDBTagCommandRepository),
     make(IDBTagQueryRepository),
+    make(TagUniqueGate),
   ).invoke(id, name);
 
 export const deleteTag = (id: number) =>

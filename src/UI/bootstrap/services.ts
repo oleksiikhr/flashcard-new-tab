@@ -18,6 +18,7 @@ import IDBTagCommandRepository from '../../Infrastructure/Persistence/Tag/Reposi
 import TransactionPipeline from '../../Infrastructure/Persistence/Shared/IndexedDB/Transaction/TransactionPipeline';
 import WindowIdentifyColorScheme from '../../Infrastructure/Service/Settings/WindowIdentifyColorScheme';
 import LSSettingsCommandRepository from '../../Infrastructure/Persistence/Settings/Repository/LSSettingsCommandRepository';
+import TagUniqueGate from '../../Domain/Tag/Gate/TagUniqueGate';
 
 const { register, make } = (() => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -134,6 +135,8 @@ register(
   IDBTagCommandRepository,
   () => new IDBTagCommandRepository(make(TransactionPipeline)),
 );
+
+register(TagUniqueGate, () => new TagUniqueGate(make(IDBTagQueryRepository)));
 
 /* ------------------------------------------------------------------------- */
 

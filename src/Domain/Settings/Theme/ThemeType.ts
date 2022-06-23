@@ -1,16 +1,20 @@
 import NumberValueObject from '../../Shared/ValueObject/NumberValueObject';
+import ObjectValueValidation from '../../../Infrastructure/Persistence/Shared/IndexedDB/Error/ObjectValueValidation';
 
 export default class ThemeType extends NumberValueObject {
   public static LIGHT = 0;
 
   public static DARK = 1;
 
-  public static of(type: number): ThemeType | undefined {
-    if (!ThemeType.isSupport(type)) {
-      return undefined;
+  /**
+   * @throws {ObjectValueValidation}
+   */
+  constructor(value: number) {
+    if (!ThemeType.isSupport(value)) {
+      throw new ObjectValueValidation('Theme type is not supported');
     }
 
-    return new ThemeType(type);
+    super(value);
   }
 
   public static light() {
@@ -37,7 +41,7 @@ export default class ThemeType extends NumberValueObject {
     return ThemeType.DARK === this.getValue();
   }
 
-  private static isSupport(type: number): boolean {
+  public static isSupport(type: number): boolean {
     return ThemeType.LIGHT === type || ThemeType.DARK === type;
   }
 }

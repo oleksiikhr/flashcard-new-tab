@@ -5,12 +5,11 @@ import { SettingsCommandRepository } from '../../../Domain/Settings/Repository/S
 export default class UpdateThemeHandler {
   constructor(private commandRepository: SettingsCommandRepository) {}
 
+  /**
+   * @throws {ObjectValueValidation}
+   */
   invoke(type: number): Theme {
-    const themeType = ThemeType.of(type);
-
-    if (undefined === themeType) {
-      throw new Error('unsupported'); // TODO Error message
-    }
+    const themeType = new ThemeType(type);
 
     const theme = new Theme(themeType);
 

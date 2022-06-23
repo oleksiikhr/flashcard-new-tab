@@ -1,7 +1,21 @@
-export default class DeckSettings {
-  constructor(private obj: object) {}
+export type DeckSettingsRaw = {
+  recalculate: Recalculate;
+};
 
-  public serialize(): object {
-    return this.obj;
+type Recalculate = {
+  count: number;
+  hours: number;
+  algorithm: 'random';
+};
+
+export default class DeckSettings {
+  constructor(private settings: DeckSettingsRaw) {}
+
+  public getRecalculate(): Recalculate {
+    return this.settings.recalculate;
+  }
+
+  public serialize(): DeckSettingsRaw {
+    return this.settings;
   }
 }

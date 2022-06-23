@@ -122,11 +122,3 @@ export function requestCursor(
     request.onerror = reject;
   });
 }
-
-export default {
-  requestKeyCursor,
-  requestPaginate,
-  requestPromise,
-  requestCursor,
-  requestRandom,
-};

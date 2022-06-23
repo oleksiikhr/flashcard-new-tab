@@ -11,8 +11,10 @@ import { FeedRaw } from '../../../../Domain/Feed/FeedMemento';
 import DeckMemento, { DeckRaw } from '../../../../Domain/Deck/DeckMemento';
 import TagMemento, { TagRaw } from '../../../../Domain/Tag/TagMemento';
 import Tag from '../../../../Domain/Tag/Tag';
-import DomainNotFoundError from '../../Shared/IndexedDB/Error/DomainNotFoundError';
 import { random } from '../../../../Domain/Shared/Util/number';
+import DomainNotExistsError from '../../Shared/IndexedDB/Error/DomainNotExistsError';
+import CardId from '../../../../Domain/Card/CardId';
+import DeckId from '../../../../Domain/Deck/DeckId';
 
 export default class IDBFeedQueryRepository implements FeedQueryRepository {
   constructor(
@@ -44,7 +46,6 @@ export default class IDBFeedQueryRepository implements FeedQueryRepository {
       .objectStore(StoreName.CARD_TAG)
       .index('card_id_idx');
 
-    // TODO Cache result
     const feedTotal = (await requestPromise<number>(
       feedStore.count(),
     )) as number;
@@ -81,8 +82,12 @@ export default class IDBFeedQueryRepository implements FeedQueryRepository {
       ),
     ]);
 
-    if (undefined === card || undefined === deck) {
-      throw new DomainNotFoundError();
+    if (undefined === card) {
+      throw new DomainNotExistsError(CardId.of(feed.card_id));
+    }
+
+    if (undefined === deck) {
+      throw new DomainNotExistsError(DeckId.of(feed.deck_id));
     }
 
     return new Feed(

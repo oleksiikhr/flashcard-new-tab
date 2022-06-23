@@ -3,9 +3,9 @@ import DeckId from '../../../Domain/Deck/DeckId';
 import CardQuestion from '../../../Domain/Card/CardQuestion';
 import CardTemplateType from '../../../Domain/Card/CardTemplateType';
 import DeckQueryRepository from '../../../Domain/Deck/Repository/DeckQueryRepository';
-import DomainNotFoundError from '../../../Infrastructure/Persistence/Shared/IndexedDB/Error/DomainNotFoundError';
 import CardCommandRepository from '../../../Domain/Card/Repository/CardCommandRepository';
 import CardVocabularyContent from '../../../Domain/Card/Content/CardVocabularyContent';
+import DomainNotExistsError from '../../../Infrastructure/Persistence/Shared/IndexedDB/Error/DomainNotExistsError';
 
 export default class CreateVocabularyCardHandler {
   constructor(
@@ -13,28 +13,30 @@ export default class CreateVocabularyCardHandler {
     private deckQueryRepository: DeckQueryRepository,
   ) {}
 
+  /**
+   * @throws {DomainNotExistsError}
+   * @throws {ObjectValueValidation}
+   * @throws {InvalidIdentifierError}
+   */
   public async invoke(
     deckId: number,
     question: string,
     answer: string,
     transcription: string,
+    isActive: boolean,
   ): Promise<Card> {
     const deck = await this.deckQueryRepository.findById(DeckId.of(deckId));
 
     if (undefined === deck) {
-      throw new DomainNotFoundError();
+      throw new DomainNotExistsError(DeckId.of(deckId));
     }
-
-    const content = new CardVocabularyContent({
-      answer,
-      transcription,
-    });
 
     const card = Card.create(
       deck.getId(),
       new CardQuestion(question),
-      content,
+      CardVocabularyContent.create(answer, transcription),
       CardTemplateType.createVocabulary(),
+      isActive,
     );
 
     await this.cardCommandRepository.create(card);

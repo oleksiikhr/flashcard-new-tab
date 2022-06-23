@@ -16,13 +16,11 @@ export default class Theme {
   }
 
   public static unserialize(raw: ThemeRaw): Theme | undefined {
-    const type = ThemeType.of(raw.type);
-
-    if (undefined === type) {
+    if (!ThemeType.isSupport(raw.type)) {
       return undefined;
     }
 
-    return new Theme(type);
+    return new Theme(new ThemeType(raw.type));
   }
 
   public serialize(): ThemeRaw {

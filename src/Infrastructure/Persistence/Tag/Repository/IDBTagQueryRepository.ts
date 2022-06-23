@@ -9,6 +9,7 @@ import {
   requestPaginate,
   requestPromise,
 } from '../../Shared/IndexedDB/Util/idb';
+import TagName from '../../../../Domain/Tag/TagName';
 
 export default class IDBTagQueryRepository implements TagQueryRepository {
   constructor(private memento: TagMemento, private idb: IndexedDB) {}
@@ -40,6 +41,23 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
       .transaction(StoreName.TAGS, 'readonly')
       .objectStore(StoreName.TAGS)
       .get(id.getIdentifier());
+
+    return requestPromise<TagRaw>(request).then((raw) =>
+      undefined !== raw ? this.memento.unserialize(raw) : undefined,
+    );
+  }
+
+  public async findByDeckIdAndName(
+    deckId: DeckId,
+    name: TagName,
+  ): Promise<Tag | undefined> {
+    const db = await this.idb.openDB();
+
+    const request = db
+      .transaction(StoreName.TAGS, 'readonly')
+      .objectStore(StoreName.TAGS)
+      .index('deck_id_and_name_idx')
+      .get(IDBKeyRange.only([deckId.getIdentifier(), name.getValue()]));
 
     return requestPromise<TagRaw>(request).then((raw) =>
       undefined !== raw ? this.memento.unserialize(raw) : undefined,

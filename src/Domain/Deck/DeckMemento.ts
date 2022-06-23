@@ -1,7 +1,7 @@
 import Deck from './Deck';
 import DeckId from './DeckId';
 import DeckName from './DeckName';
-import DeckSettings from './DeckSettings';
+import DeckSettings, { DeckSettingsRaw } from './DeckSettings';
 
 export type DeckRaw = {
   id: number | undefined;
@@ -10,7 +10,7 @@ export type DeckRaw = {
   cards_count: number;
   active_cards_count: number;
   tags_count: number;
-  settings: object;
+  settings: DeckSettingsRaw;
   generate_at: Date;
   updated_at: Date;
   created_at: Date;

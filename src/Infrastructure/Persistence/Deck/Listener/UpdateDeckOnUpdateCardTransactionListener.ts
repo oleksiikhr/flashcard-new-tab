@@ -9,7 +9,7 @@ export default class UpdateDeckOnUpdateCardTransactionListener
   implements TransactionListener<CardUpdateTransactionEvent>
 {
   public isNeedHandle(event: CardUpdateTransactionEvent): boolean {
-    return event.getCard().isChangedIsActive();
+    return event.getCard().isChangedActive();
   }
 
   public getStoreName(): StoreName {

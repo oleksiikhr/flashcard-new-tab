@@ -1,6 +1,6 @@
 export type CardStatisticsRaw = {
-  views: number;
-  clicks: number;
+  views: number | undefined;
+  clicks: number | undefined;
 };
 
 export default class CardStatistics {
@@ -8,7 +8,7 @@ export default class CardStatistics {
 
   private clicks: number;
 
-  constructor(obj: { views?: number; clicks?: number }) {
+  constructor(obj: CardStatisticsRaw) {
     this.views = obj.views || 0;
     this.clicks = obj.clicks || 0;
   }

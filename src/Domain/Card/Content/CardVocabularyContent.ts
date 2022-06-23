@@ -10,6 +10,13 @@ export default class CardVocabularyContent implements CardContent {
     this.transcription = content.transcription || '';
   }
 
+  public static create(answer: string, transcription: string) {
+    return new CardVocabularyContent({
+      answer: answer.trim(),
+      transcription: transcription.trim(),
+    });
+  }
+
   public getAnswer(): string {
     return this.answer;
   }

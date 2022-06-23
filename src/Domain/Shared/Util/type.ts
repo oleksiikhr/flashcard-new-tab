@@ -10,7 +10,3 @@ export function toArray<T>(data: T | T[]): T[] {
 
   return [data];
 }
-
-export default {
-  isObject,
-};

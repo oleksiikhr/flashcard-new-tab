@@ -66,7 +66,6 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
       .index('deck_id_and_is_active_idx');
 
     const query = IDBKeyRange.only([deckId.getIdentifier(), 1]);
-    // TODO cache
     const total = (await requestPromise<number>(
       request.count(query),
     )) as number;

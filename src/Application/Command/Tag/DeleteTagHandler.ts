@@ -8,6 +8,9 @@ export default class DeleteTagHandler {
     private queryRepository: TagQueryRepository,
   ) {}
 
+  /**
+   * @throws {InvalidIdentifierError}
+   */
   public async invoke(id: number): Promise<void> {
     const tag = await this.queryRepository.findById(TagId.of(id));
 

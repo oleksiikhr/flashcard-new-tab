@@ -3,7 +3,6 @@ import CardQuestion from './CardQuestion';
 import CardContent from './Content/CardContent';
 import CardTemplateType from './CardTemplateType';
 import CardStatistics from './CardStatistics';
-import DomainNotExistsError from '../../Infrastructure/Persistence/Shared/IndexedDB/Error/DomainNotExistsError';
 import DeckId from '../Deck/DeckId';
 
 export default class Card {
@@ -29,6 +28,7 @@ export default class Card {
     question: CardQuestion,
     content: CardContent,
     templateType: CardTemplateType,
+    isActive = true,
   ): Card {
     return new Card(
       undefined,
@@ -37,16 +37,21 @@ export default class Card {
       content,
       templateType,
       CardStatistics.createEmpty(),
-      true,
+      isActive,
       new Date(),
       new Date(),
       new Date(),
     );
   }
 
-  public from(question: CardQuestion, content: CardContent): void {
+  public from(
+    question: CardQuestion,
+    content: CardContent,
+    isActive: boolean,
+  ): void {
     this.question = question;
     this.content = content;
+    this.isActive = isActive;
     this.updatedAt = new Date();
   }
 
@@ -64,7 +69,7 @@ export default class Card {
 
   public getId(): CardId {
     if (undefined === this.id) {
-      throw new DomainNotExistsError();
+      throw new Error('The ID already exists');
     }
 
     return this.id;
@@ -94,7 +99,7 @@ export default class Card {
     return this.isActive;
   }
 
-  public isChangedIsActive(): boolean {
+  public isChangedActive(): boolean {
     return this.isActive === this.initIsActive;
   }
 

@@ -25,6 +25,9 @@ export default (event: IDBVersionChangeEvent): Promise<void> =>
     });
 
     tags.createIndex('deck_id_idx', 'deck_id');
+    tags.createIndex('deck_id_and_name_idx', ['deck_id', 'name'], {
+      unique: true,
+    });
 
     const cardTag = db.createObjectStore('card_tag', {
       keyPath: ['card_id', 'tag_id'],

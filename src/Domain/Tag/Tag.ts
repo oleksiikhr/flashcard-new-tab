@@ -34,7 +34,7 @@ export default class Tag {
 
   public getId(): TagId {
     if (undefined === this.id) {
-      throw new Error(''); // TODO
+      throw new Error('The ID already exists');
     }
 
     return this.id;

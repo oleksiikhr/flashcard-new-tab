@@ -8,6 +8,9 @@ export default class DeleteCardHandler {
     private queryRepository: CardQueryRepository,
   ) {}
 
+  /**
+   * @throws {InvalidIdentifierError}
+   */
   public async invoke(id: number): Promise<void> {
     const card = await this.queryRepository.findById(CardId.of(id));
 
