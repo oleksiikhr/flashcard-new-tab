@@ -6,7 +6,7 @@ import StoreName from '../../Shared/IndexedDB/StoreName';
 export default class DeleteFeedOnDeleteCardTransactionListener
   implements TransactionListener<CardDeleteTransactionEvent>
 {
-  isNeedHandle(): boolean {
+  public isNeedHandle(): boolean {
     return true;
   }
 

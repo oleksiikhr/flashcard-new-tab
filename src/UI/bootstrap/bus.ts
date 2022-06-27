@@ -200,8 +200,6 @@ export const generateFeedByDeck = (deckId: number) =>
 export const findRandomFeed = () =>
   new FindRandomFeedHandler(
     make(IDBCardCommandRepository),
-    make(IDBCardQueryRepository),
-    make(IDBDeckQueryRepository),
     make(IDBFeedQueryRepository),
   ).invoke();
 

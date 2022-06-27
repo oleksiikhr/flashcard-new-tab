@@ -114,12 +114,7 @@ register(CardMemento, () => new CardMemento(make(CardContentFactory)));
 
 register(
   IDBCardQueryRepository,
-  () =>
-    new IDBCardQueryRepository(
-      make(CardContentFactory),
-      make(CardMemento),
-      make(IndexedDB),
-    ),
+  () => new IDBCardQueryRepository(make(CardMemento), make(IndexedDB)),
 );
 
 register(

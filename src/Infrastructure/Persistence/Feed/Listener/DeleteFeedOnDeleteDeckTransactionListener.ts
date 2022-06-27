@@ -6,7 +6,7 @@ import DeckDeleteTransactionEvent from '../../Deck/Event/DeckDeleteTransactionEv
 export default class DeleteFeedOnDeleteDeckTransactionListener
   implements TransactionListener<DeckDeleteTransactionEvent>
 {
-  isNeedHandle(): boolean {
+  public isNeedHandle(): boolean {
     return true;
   }
 

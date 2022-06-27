@@ -6,7 +6,7 @@ import TagDeleteTransactionEvent from '../Event/TagDeleteTransactionEvent';
 export default class DeleteTagTransactionListener
   implements TransactionListener<TagDeleteTransactionEvent>
 {
-  isNeedHandle(): boolean {
+  public isNeedHandle(): boolean {
     return true;
   }
 

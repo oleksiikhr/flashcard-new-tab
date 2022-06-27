@@ -8,7 +8,7 @@ export default class FindThemeHandler {
     private queryRepository: SettingsQueryRepository,
   ) {}
 
-  public invoke(): Theme | undefined {
+  public invoke(): Theme {
     const theme = this.queryRepository.findTheme();
 
     if (undefined !== theme) {

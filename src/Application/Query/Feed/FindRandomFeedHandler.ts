@@ -1,14 +1,10 @@
 import FeedQueryRepository from '../../../Domain/Feed/Repository/FeedQueryRepository';
 import CardCommandRepository from '../../../Domain/Card/Repository/CardCommandRepository';
-import CardQueryRepository from '../../../Domain/Card/Repository/CardQueryRepository';
-import DeckQueryRepository from '../../../Domain/Deck/Repository/DeckQueryRepository';
 import Feed from '../../../Domain/Feed/Feed';
 
 export default class FindRandomFeedHandler {
   constructor(
     private cardCommandRepository: CardCommandRepository,
-    private cardQueryRepository: CardQueryRepository,
-    private deckQueryRepository: DeckQueryRepository,
     private queryRepository: FeedQueryRepository,
   ) {}
 

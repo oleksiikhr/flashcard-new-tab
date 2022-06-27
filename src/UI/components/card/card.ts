@@ -5,11 +5,7 @@ import { numberCounter } from '../../helpers/animation';
 import CardVocabularyContent from '../../../Domain/Card/Content/CardVocabularyContent';
 import { h } from '../../../Domain/Shared/Util/dom';
 
-const renderVocabulary = (
-  element: HTMLElement,
-  contentElement: HTMLElement,
-  card: Card,
-) => {
+const renderVocabulary = (contentElement: HTMLElement, card: Card) => {
   const content = card.getContent() as CardVocabularyContent;
 
   // TODO dynamic text-size depends on text length
@@ -80,6 +76,6 @@ export default (card: Card, deck: Deck, tags: Tag[]) => {
 
   if (card.getTemplateType().isVocabulary()) {
     element.classList.add('card_vocabulary');
-    renderVocabulary(element, contentElement, card);
+    renderVocabulary(contentElement, card);
   }
 };

@@ -10,7 +10,7 @@ export default class CreateTagTransactionListener
 {
   constructor(private memento: TagMemento) {}
 
-  isNeedHandle(): boolean {
+  public isNeedHandle(): boolean {
     return true;
   }
 

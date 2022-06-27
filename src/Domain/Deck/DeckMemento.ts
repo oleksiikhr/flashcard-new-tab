@@ -4,7 +4,7 @@ import DeckName from './DeckName';
 import DeckSettings, { DeckSettingsRaw } from './DeckSettings';
 
 export type DeckRaw = {
-  id: number | undefined;
+  id?: number | undefined;
   name: string;
   is_active: number;
   cards_count: number;

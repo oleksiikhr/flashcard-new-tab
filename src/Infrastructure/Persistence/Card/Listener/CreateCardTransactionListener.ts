@@ -10,7 +10,7 @@ export default class CreateCardTransactionListener
 {
   constructor(private memento: CardMemento) {}
 
-  isNeedHandle(): boolean {
+  public isNeedHandle(): boolean {
     return true;
   }
 

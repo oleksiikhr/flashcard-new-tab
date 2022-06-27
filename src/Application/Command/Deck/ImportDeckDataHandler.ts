@@ -56,9 +56,13 @@ export default class ImportDeckDataHandler {
       );
 
       const createCard = () =>
-        this.cardCommandRepository
-          .create(card)
-          .then(() => this.cardCommandRepository.syncTags(card, tags));
+        this.cardCommandRepository.create(card).then(() => {
+          if (tags.length) {
+            return this.cardCommandRepository.syncTags(card, tags);
+          }
+
+          return Promise.resolve();
+        });
 
       if (undefined !== raw.id) {
         return this.cardQueryRepository

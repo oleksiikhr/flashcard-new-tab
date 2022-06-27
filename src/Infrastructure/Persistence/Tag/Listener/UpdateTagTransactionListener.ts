@@ -9,7 +9,7 @@ export default class UpdateTagTransactionListener
 {
   constructor(private memento: TagMemento) {}
 
-  isNeedHandle(): boolean {
+  public isNeedHandle(): boolean {
     return true;
   }
 

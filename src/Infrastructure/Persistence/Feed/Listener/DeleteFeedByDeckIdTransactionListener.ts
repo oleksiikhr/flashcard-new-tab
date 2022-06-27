@@ -6,7 +6,7 @@ import FeedDeleteByIdDeckTransactionEvent from '../Event/FeedDeleteByIdDeckTrans
 export default class DeleteFeedByDeckIdTransactionListener
   implements TransactionListener<FeedDeleteByIdDeckTransactionEvent>
 {
-  isNeedHandle(): boolean {
+  public isNeedHandle(): boolean {
     return true;
   }
 

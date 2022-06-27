@@ -8,7 +8,8 @@ initProviders();
 
 themeToggler.register();
 
-navigator.serviceWorker.register(resolvePath('sw.js'))
+navigator.serviceWorker
+  .register(resolvePath('sw.js'))
   .then((registration) => {
     registration.active?.postMessage({ action: 'generateFeed' });
   })

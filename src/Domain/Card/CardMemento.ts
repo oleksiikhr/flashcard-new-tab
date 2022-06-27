@@ -7,7 +7,7 @@ import DeckId from '../Deck/DeckId';
 import CardQuestion from './CardQuestion';
 
 export type CardRaw = {
-  id: number | undefined;
+  id?: number | undefined;
   deck_id: number;
   question: string;
   content: object;

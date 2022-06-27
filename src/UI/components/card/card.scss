@@ -38,9 +38,9 @@
 
 .card-icons {
   align-items: center;
-  cursor: context-menu;
+  cursor: auto;
   display: flex;
-  user-select: auto;
+  user-select: none;
 
   > div {
     align-items: center;

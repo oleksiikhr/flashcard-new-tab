@@ -6,7 +6,7 @@ import CardDeleteTransactionEvent from '../Event/CardDeleteTransactionEvent';
 export default class DeleteCardTransactionListener
   implements TransactionListener<CardDeleteTransactionEvent>
 {
-  isNeedHandle(): boolean {
+  public isNeedHandle(): boolean {
     return true;
   }
 

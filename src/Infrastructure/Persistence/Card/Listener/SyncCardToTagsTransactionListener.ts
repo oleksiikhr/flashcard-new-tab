@@ -7,7 +7,7 @@ import { requestKeyCursor } from '../../Shared/IndexedDB/Util/idb';
 export default class SyncCardToTagsTransactionListener
   implements TransactionListener<CardSyncTagsTransactionEvent>
 {
-  isNeedHandle(): boolean {
+  public isNeedHandle(): boolean {
     return true;
   }
 

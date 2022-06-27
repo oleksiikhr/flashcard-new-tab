@@ -1,7 +1,6 @@
 import Card from '../../../../Domain/Card/Card';
 import CardId from '../../../../Domain/Card/CardId';
 import CardQueryRepository from '../../../../Domain/Card/Repository/CardQueryRepository';
-import CardContentFactory from '../../../../Domain/Card/Content/CardContentFactory';
 import CardMemento, { CardRaw } from '../../../../Domain/Card/CardMemento';
 import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 import {
@@ -14,11 +13,7 @@ import { randomUniqueRange } from '../../../../Domain/Shared/Util/number';
 import DeckId from '../../../../Domain/Deck/DeckId';
 
 export default class IDBCardQueryRepository implements CardQueryRepository {
-  constructor(
-    private contentFactory: CardContentFactory,
-    private memento: CardMemento,
-    private idb: IndexedDB,
-  ) {}
+  constructor(private memento: CardMemento, private idb: IndexedDB) {}
 
   public async paginate(
     fromId: CardId | undefined,
@@ -80,6 +75,7 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
       if (init && 1 !== numbers[0]) {
         init = false;
 
+        // @ts-ignore
         return cursor.advance(numbers[0] - 1);
       }
 
@@ -87,6 +83,7 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
         return false;
       }
 
+      // @ts-ignore
       return cursor.advance(numbers[cards.length] - numbers[cards.length - 1]);
     });
 

@@ -9,7 +9,7 @@ export default class UpdateDeckTransactionListener
 {
   constructor(private memento: DeckMemento) {}
 
-  isNeedHandle(): boolean {
+  public isNeedHandle(): boolean {
     return true;
   }
 

@@ -4,7 +4,7 @@ import TagName from './TagName';
 import DeckId from '../Deck/DeckId';
 
 export type TagRaw = {
-  id: number | undefined;
+  id?: number | undefined;
   deck_id: number;
   name: string;
   updated_at: Date;

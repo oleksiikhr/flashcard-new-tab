@@ -8,7 +8,7 @@ import DomainNotExistsError from '../../Shared/IndexedDB/Error/DomainNotExistsEr
 export default class UpdateDeckOnCreateCardTransactionListener
   implements TransactionListener<CardCreateTransactionEvent>
 {
-  isNeedHandle(): boolean {
+  public isNeedHandle(): boolean {
     return true;
   }
 

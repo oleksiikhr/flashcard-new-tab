@@ -6,7 +6,7 @@ import FeedCreateTransactionEvent from '../Event/FeedCreateTransactionEvent';
 export default class CreateFeedTransactionListener
   implements TransactionListener<FeedCreateTransactionEvent>
 {
-  isNeedHandle(): boolean {
+  public isNeedHandle(): boolean {
     return true;
   }
 

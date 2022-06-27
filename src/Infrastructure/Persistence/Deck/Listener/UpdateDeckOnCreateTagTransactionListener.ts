@@ -8,7 +8,7 @@ import { DeckRaw } from '../../../../Domain/Deck/DeckMemento';
 export default class UpdateDeckOnCreateTagTransactionListener
   implements TransactionListener<TagCreateTransactionEvent>
 {
-  isNeedHandle(): boolean {
+  public isNeedHandle(): boolean {
     return true;
   }
 
