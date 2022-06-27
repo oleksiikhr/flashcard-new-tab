@@ -32,15 +32,20 @@
   padding: 10px 30px;
 }
 
+.card__top__right {
+  margin-left: 20px;
+}
+
 .card-icons {
   align-items: center;
+  cursor: context-menu;
   display: flex;
+  user-select: auto;
 
   > div {
     align-items: center;
     display: flex;
     justify-content: center;
-    margin-left: 20px;
   }
 
   svg {
@@ -56,6 +61,18 @@
 
 .card-icons__edit {
   cursor: pointer;
+  margin-right: 12px;
+  padding: 8px;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
+.card-icons__clicks,
+.card-icons__separator {
+  margin-right: 20px;
 }
 
 .card__footer {

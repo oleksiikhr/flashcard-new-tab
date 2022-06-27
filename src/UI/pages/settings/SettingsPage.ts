@@ -2,32 +2,27 @@ import Page from '../Page';
 import {
   createDeck,
   findDeck,
-  generateFeed,
+  generateFeedByDeck,
   importDeckData,
 } from '../../bootstrap/bus';
-import { error, log } from '../../../Domain/Shared/Util/logger';
 import { ImportRaw } from '../../../Application/Command/Deck/ImportDeckDataHandler';
 
 export default class SettingsPage implements Page {
   protected root!: HTMLDivElement;
 
-  onFirstMount() {
+  onFirstMount(): void {
     this.root = document.querySelector(`[page="settings"]`) as HTMLDivElement;
 
     this.root.querySelector('#create-deck')?.addEventListener('click', () => {
-      findDeck(1)
-        .then((deck) => {
-          if (undefined === deck) {
-            return createDeck('Eng - Ukr', true, {
-              recalculate: { hours: 1, count: 100, algorithm: 'random' },
-            })
-              .then(log)
-              .catch(error);
-          }
+      findDeck(1).then((deck) => {
+        if (undefined === deck) {
+          return createDeck('Eng - Ukr', true, {
+            recalculate: { hours: 1, count: 100, algorithm: 'random' },
+          });
+        }
 
-          return Promise.resolve();
-        })
-        .catch(error);
+        return Promise.resolve(undefined);
+      });
     });
 
     this.root.querySelector('#import')?.addEventListener('click', () => {
@@ -47,27 +42,27 @@ export default class SettingsPage implements Page {
 
         try {
           data = JSON.parse(evt.target.result) as ImportRaw[];
-        } catch (e) {
-          error(e);
+        } catch (err) {
+          // TODO logger
           return;
         }
 
-        importDeckData(1, data).then(log).catch(error);
+        importDeckData(1, data);
       };
 
       fileReader.readAsText(files.item(0) as File);
     });
 
     this.root.querySelector('#generate-feed')?.addEventListener('click', () => {
-      generateFeed(10).then(log).catch(error);
+      generateFeedByDeck(1);
     });
   }
 
-  mount() {
+  mount(): void {
     this.root.style.display = '';
   }
 
-  destroy() {
+  destroy(): void {
     this.root.style.display = 'none';
   }
 }

@@ -1,7 +1,6 @@
 import TransactionEvent from './TransactionEvent';
 import TransactionListener from './TransactionListener';
 import IndexedDB from '../IndexedDB';
-import { error } from '../../../../../Domain/Shared/Util/logger';
 import { toArray } from '../../../../../Domain/Shared/Util/type';
 
 export default class TransactionPipeline {
@@ -44,20 +43,22 @@ export default class TransactionPipeline {
 
         promises.push(...toArray(result));
       });
-    } catch (e) {
+    } catch (err) {
       transaction.abort();
 
-      Promise.all(promises).catch(error);
+      Promise.all(promises).catch(() => {
+        /* nothing */
+      });
 
-      return Promise.reject(e);
+      return Promise.reject(err);
     }
 
     return Promise.all(promises)
       .then(() => transaction.commit())
-      .catch((e) => {
+      .catch((err) => {
         transaction.abort();
 
-        throw e;
+        throw err;
       });
   }
 }

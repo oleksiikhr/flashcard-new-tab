@@ -12,16 +12,10 @@ export default class UpdateVocabularyCardHandler {
     private queryRepository: CardQueryRepository,
   ) {}
 
-  /**
-   * @throws {DomainNotExistsError}
-   * @throws {ObjectValueValidation}
-   * @throws {InvalidIdentifierError}
-   */
   public async invoke(
     id: number,
     question: string,
     answer: string,
-    transcription: string,
     isActive: boolean,
   ): Promise<Card> {
     const card = await this.queryRepository.findById(CardId.of(id));
@@ -32,7 +26,6 @@ export default class UpdateVocabularyCardHandler {
 
     const content = new CardVocabularyContent({
       answer,
-      transcription,
     });
 
     card.from(new CardQuestion(question), content, isActive);

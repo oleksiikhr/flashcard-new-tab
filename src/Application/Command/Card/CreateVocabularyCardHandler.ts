@@ -13,16 +13,10 @@ export default class CreateVocabularyCardHandler {
     private deckQueryRepository: DeckQueryRepository,
   ) {}
 
-  /**
-   * @throws {DomainNotExistsError}
-   * @throws {ObjectValueValidation}
-   * @throws {InvalidIdentifierError}
-   */
   public async invoke(
     deckId: number,
     question: string,
     answer: string,
-    transcription: string,
     isActive: boolean,
   ): Promise<Card> {
     const deck = await this.deckQueryRepository.findById(DeckId.of(deckId));
@@ -34,7 +28,7 @@ export default class CreateVocabularyCardHandler {
     const card = Card.create(
       deck.getId(),
       new CardQuestion(question),
-      CardVocabularyContent.create(answer, transcription),
+      CardVocabularyContent.create(answer),
       CardTemplateType.createVocabulary(),
       isActive,
     );

@@ -19,7 +19,8 @@ export default class CreateFeedTransactionListener
     event: FeedCreateTransactionEvent,
   ): Promise<unknown> {
     const card = event.getCard();
-    const request = transaction.objectStore(StoreName.FEED).add({
+    const store = transaction.objectStore(StoreName.FEED);
+    const request = store.add({
       card_id: card.getId().getIdentifier(),
       deck_id: card.getDeckId().getIdentifier(),
     });

@@ -3,13 +3,15 @@ import HomePage from './home/HomePage';
 import SettingsPage from './settings/SettingsPage';
 
 export class PageManager {
-  private pages: Map<string, { new (): Page }> = new Map();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private pages: Map<string, { new (...args: any[]): Page }> = new Map();
 
   private instances: Map<string, Page> = new Map();
 
   private current: Page | null = null;
 
-  constructor(pages: { name: string; page: { new (): Page } }[]) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(pages: { name: string; page: { new (...args: any[]): Page } }[]) {
     pages.forEach(({ name, page }) => {
       this.pages.set(name, page);
     });

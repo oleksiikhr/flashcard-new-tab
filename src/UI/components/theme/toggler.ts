@@ -11,7 +11,7 @@ const applyPreference = () => {
 };
 
 export default {
-  register() {
+  register(): void {
     applyPreference();
 
     window.addEventListener('DOMContentLoaded', () => {

@@ -25,6 +25,7 @@ export default class SyncCardToTagsTransactionListener
     const request = store
       .index('card_id_idx')
       .openKeyCursor(card.getId().getIdentifier());
+
     await requestKeyCursor(request, (primaryKey) => {
       store.delete(primaryKey);
     });

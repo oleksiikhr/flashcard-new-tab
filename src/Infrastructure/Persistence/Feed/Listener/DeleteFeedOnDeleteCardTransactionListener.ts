@@ -19,10 +19,8 @@ export default class DeleteFeedOnDeleteCardTransactionListener
     event: CardDeleteTransactionEvent,
   ): Promise<unknown> {
     const card = event.getCard();
-
-    const request = transaction
-      .objectStore(StoreName.FEED)
-      .delete(card.getId().getIdentifier());
+    const store = transaction.objectStore(StoreName.FEED);
+    const request = store.delete(card.getId().getIdentifier());
 
     return requestPromise(request);
   }

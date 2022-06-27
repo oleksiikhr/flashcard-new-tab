@@ -13,12 +13,6 @@ export default class CreateTagHandler {
     private tagUniqueTag: TagUniqueGate,
   ) {}
 
-  /**
-   * @throws {TagUniqueGateError}
-   * @throws {DomainNotExistsError}
-   * @throws {ObjectValueValidation}
-   * @throws {InvalidIdentifierError}
-   */
   public async invoke(deckId: number, name: string): Promise<Tag> {
     const deck = await this.deckQueryRepository.findById(DeckId.of(deckId));
 

@@ -1,43 +1,18 @@
 import DeckQueryRepository from '../../../Domain/Deck/Repository/DeckQueryRepository';
-import DeckCommandRepository from '../../../Domain/Deck/Repository/DeckCommandRepository';
-import CardQueryRepository from '../../../Domain/Card/Repository/CardQueryRepository';
-import FeedCommandRepository from '../../../Domain/Feed/Repository/FeedCommandRepository';
+import GenerateFeed from '../../../Domain/Feed/Service/GenerateFeed';
 
 export default class GenerateFeedHandler {
   constructor(
-    private deckCommandRepository: DeckCommandRepository,
-    private feedCommandRepository: FeedCommandRepository,
     private deckQueryRepository: DeckQueryRepository,
-    private cardQueryRepository: CardQueryRepository,
+    private generateFeed: GenerateFeed,
   ) {}
 
-  public async invoke(limit: number) {
+  public async invoke(limit: number): Promise<void> {
     const decks = await this.deckQueryRepository.findGenerateAtUpperByNow(
       limit,
     );
 
-    const promises = decks.map((deck) => {
-      deck.nextGenerateAt();
-
-      if (!deck.getIsActive() || !deck.getCardsCount()) {
-        return this.deckCommandRepository.update(deck);
-      }
-
-      return this.feedCommandRepository
-        .deleteByDeckId(deck.getId())
-        .then(() =>
-          this.cardQueryRepository.findRandomActiveByDeckId(
-            deck.getId(),
-            deck.getSettings().getRecalculate().count,
-          ),
-        )
-        .then((cards) =>
-          Promise.all(
-            cards.map((card) => this.feedCommandRepository.create(card)),
-          ),
-        )
-        .then(() => this.deckCommandRepository.update(deck));
-    });
+    const promises = decks.map((deck) => this.generateFeed.generate(deck));
 
     await Promise.all(promises);
   }

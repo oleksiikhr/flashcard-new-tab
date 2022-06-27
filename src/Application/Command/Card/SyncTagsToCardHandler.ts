@@ -12,10 +12,6 @@ export default class SyncTagsToCardHandler {
     private tagQueryRepository: TagQueryRepository,
   ) {}
 
-  /**
-   * @throws {DomainNotExistsError}
-   * @throws {InvalidIdentifierError}
-   */
   public async invoke(cardId: number, tagIds: number[]): Promise<void> {
     const card = await this.cardQueryRepository.findById(CardId.of(cardId));
 

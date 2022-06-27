@@ -4,7 +4,6 @@ import IDBDeckQueryRepository from '../../Infrastructure/Persistence/Deck/Reposi
 import LSSettingsQueryRepository from '../../Infrastructure/Persistence/Settings/Repository/LSSettingsQueryRepository';
 import GenerateFeedHandler from '../../Application/Command/Feed/GenerateFeedHandler';
 import IDBDeckCommandRepository from '../../Infrastructure/Persistence/Deck/Repository/IDBDeckCommandRepository';
-import IDBFeedCommandRepository from '../../Infrastructure/Persistence/Feed/Repository/IDBFeedCommandRepository';
 import IDBCardQueryRepository from '../../Infrastructure/Persistence/Card/Repository/IDBCardQueryRepository';
 import FindRandomFeedHandler from '../../Application/Query/Feed/FindRandomFeedHandler';
 import IDBCardCommandRepository from '../../Infrastructure/Persistence/Card/Repository/IDBCardCommandRepository';
@@ -37,6 +36,8 @@ import IncreaseCardClicksHandler from '../../Application/Command/Card/IncreaseCa
 import { DeckSettingsRaw } from '../../Domain/Deck/DeckSettings';
 import TagUniqueGate from '../../Domain/Tag/Gate/TagUniqueGate';
 import CardContentFactory from '../../Domain/Card/Content/CardContentFactory';
+import GenerateFeed from '../../Domain/Feed/Service/GenerateFeed';
+import GenerateFeedByDeckHandler from '../../Application/Command/Feed/GenerateFeedByDeckHandler';
 
 /* ------------------------------------------------------------------------- */
 
@@ -113,25 +114,23 @@ export const createVocabularyCard = (
   deckId: number,
   question: string,
   answer: string,
-  transcription: string,
   isActive: boolean,
 ) =>
   new CreateVocabularyCardHandler(
     make(IDBCardCommandRepository),
     make(IDBDeckQueryRepository),
-  ).invoke(deckId, question, answer, transcription, isActive);
+  ).invoke(deckId, question, answer, isActive);
 
 export const updateVocabularyCard = (
   id: number,
   question: string,
   answer: string,
-  transcription: string,
   isActive: boolean,
 ) =>
   new UpdateVocabularyCardHandler(
     make(IDBCardCommandRepository),
     make(IDBCardQueryRepository),
-  ).invoke(id, question, answer, transcription, isActive);
+  ).invoke(id, question, answer, isActive);
 
 export const deleteCard = (id: number) =>
   new DeleteCardHandler(
@@ -188,11 +187,15 @@ export const deleteTag = (id: number) =>
 
 export const generateFeed = (limit: number) =>
   new GenerateFeedHandler(
-    make(IDBDeckCommandRepository),
-    make(IDBFeedCommandRepository),
     make(IDBDeckQueryRepository),
-    make(IDBCardQueryRepository),
+    make(GenerateFeed),
   ).invoke(limit);
+
+export const generateFeedByDeck = (deckId: number) =>
+  new GenerateFeedByDeckHandler(
+    make(IDBDeckQueryRepository),
+    make(GenerateFeed),
+  ).invoke(deckId);
 
 export const findRandomFeed = () =>
   new FindRandomFeedHandler(

@@ -5,7 +5,7 @@ export default class DomainNotExistsError extends Error {
     super();
   }
 
-  public getIdentifier() {
+  public getIdentifier(): Identifier {
     return this.identifier;
   }
 }

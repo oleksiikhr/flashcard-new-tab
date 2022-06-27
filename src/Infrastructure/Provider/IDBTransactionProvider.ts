@@ -41,7 +41,7 @@ import UpdateDeckOnUpdateCardTransactionListener from '../Persistence/Deck/Liste
 export default class IDBTransactionProvider {
   constructor(private pipeline: TransactionPipeline) {}
 
-  invoke() {
+  public invoke(): void {
     this.pipeline.subscribe(DeckCreateTransactionEvent, [
       new CreateDeckTransactionListener(make(DeckMemento)),
     ]);

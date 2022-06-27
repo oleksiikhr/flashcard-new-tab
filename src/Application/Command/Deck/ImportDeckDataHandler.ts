@@ -32,12 +32,6 @@ export default class ImportDeckDataHandler {
     private contentFactory: CardContentFactory,
   ) {}
 
-  /**
-   * @throws {DomainNotExistsError}
-   * @throws {ObjectValueValidation}
-   * @throws {InvalidIdentifierError}
-   * @throws {ContentNotSupportedByTemplateTypeError}
-   */
   public async invoke(deckId: number, raws: ImportRaw[]): Promise<void> {
     const deck = await this.deckQueryRepository.findById(DeckId.of(deckId));
 

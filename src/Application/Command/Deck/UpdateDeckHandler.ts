@@ -14,11 +14,6 @@ export default class UpdateDeckHandler {
     private queryRepository: DeckQueryRepository,
   ) {}
 
-  /**
-   * @throws {DomainNotExistsError}
-   * @throws {ObjectValueValidation}
-   * @throws {InvalidIdentifierError}
-   */
   public async invoke(
     id: number,
     name: string,

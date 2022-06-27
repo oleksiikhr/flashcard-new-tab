@@ -8,9 +8,6 @@ export default class DeleteDeckHandler {
     private queryRepository: DeckQueryRepository,
   ) {}
 
-  /**
-   * @throws {InvalidIdentifierError}
-   */
   public async invoke(id: number): Promise<void> {
     const deck = await this.queryRepository.findById(DeckId.of(id));
 

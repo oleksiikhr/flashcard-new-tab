@@ -10,9 +10,6 @@ export default class IncreaseCardClicksHandler {
     private queryRepository: CardQueryRepository,
   ) {}
 
-  /**
-   * @throws {DomainNotExistsError}
-   */
   public async invoke(id: number, value = 1): Promise<Card> {
     const card = await this.queryRepository.findById(CardId.of(id));
 

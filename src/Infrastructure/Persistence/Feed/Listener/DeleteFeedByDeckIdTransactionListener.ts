@@ -18,10 +18,11 @@ export default class DeleteFeedByDeckIdTransactionListener
     transaction: IDBTransaction,
     event: FeedDeleteByIdDeckTransactionEvent,
   ): Promise<unknown> {
+    const deck = event.getDeck();
     const store = transaction.objectStore(StoreName.FEED);
     const request = store
       .index('deck_id_idx')
-      .openKeyCursor(event.getDeckId().getIdentifier());
+      .openKeyCursor(deck.getId().getIdentifier());
 
     return requestKeyCursor(request, (primaryKey) => {
       store.delete(primaryKey);

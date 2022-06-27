@@ -18,10 +18,9 @@ export default class DeleteCardTagsOnDeleteDeckTransactionListener
     transaction: IDBTransaction,
     event: DeckDeleteTransactionEvent,
   ): Promise<unknown> {
+    const deckId = event.getDeck().getId().getIdentifier();
     const store = transaction.objectStore(StoreName.CARD_TAG);
-    const request = store
-      .index('deck_id_idx')
-      .openKeyCursor(event.getDeck().getId().getIdentifier());
+    const request = store.index('deck_id_idx').openKeyCursor(deckId);
 
     return requestKeyCursor(request, (primaryKey) => {
       store.delete(primaryKey);

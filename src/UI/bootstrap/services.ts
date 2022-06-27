@@ -19,6 +19,8 @@ import TransactionPipeline from '../../Infrastructure/Persistence/Shared/Indexed
 import WindowIdentifyColorScheme from '../../Infrastructure/Service/Settings/WindowIdentifyColorScheme';
 import LSSettingsCommandRepository from '../../Infrastructure/Persistence/Settings/Repository/LSSettingsCommandRepository';
 import TagUniqueGate from '../../Domain/Tag/Gate/TagUniqueGate';
+import GenerateFeed from '../../Domain/Feed/Service/GenerateFeed';
+import ConsoleLogger from '../../Infrastructure/Service/Logger/ConsoleLogger';
 
 const { register, make } = (() => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -59,9 +61,14 @@ const { register, make } = (() => {
 
 // Shared
 
-register(IndexedDB, () => new IndexedDB(idbConfig.name, list));
+register(ConsoleLogger, () => new ConsoleLogger());
 
-register(LocalStorage, () => new LocalStorage());
+register(
+  IndexedDB,
+  () => new IndexedDB(idbConfig.name, list, make(ConsoleLogger)),
+);
+
+register(LocalStorage, () => new LocalStorage(make(ConsoleLogger)));
 
 register(TransactionPipeline, () => new TransactionPipeline(make(IndexedDB)));
 
@@ -156,6 +163,16 @@ register(
 register(
   IDBFeedCommandRepository,
   () => new IDBFeedCommandRepository(make(TransactionPipeline)),
+);
+
+register(
+  GenerateFeed,
+  () =>
+    new GenerateFeed(
+      make(IDBFeedCommandRepository),
+      make(IDBDeckCommandRepository),
+      make(IDBCardQueryRepository),
+    ),
 );
 
 /* ------------------------------------------------------------------------- */

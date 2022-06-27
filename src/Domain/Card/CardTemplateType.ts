@@ -3,7 +3,7 @@ import NumberValueObject from '../Shared/ValueObject/NumberValueObject';
 export default class CardTemplateType extends NumberValueObject {
   public static VOCABULARY = 0;
 
-  public static createVocabulary() {
+  public static createVocabulary(): CardTemplateType {
     return new CardTemplateType(CardTemplateType.VOCABULARY);
   }
 

@@ -24,20 +24,6 @@ const renderVocabulary = (
     ),
   );
 
-  if (content.getTranscription()) {
-    contentElement.append(
-      h(
-        'div',
-        {
-          class: 'card-vocabulary-transcription',
-        },
-        h('span', undefined, content.getTranscription()),
-      ),
-    );
-
-    // TODO svg + on click tts
-  }
-
   const helperElement = h(
     'div',
     {

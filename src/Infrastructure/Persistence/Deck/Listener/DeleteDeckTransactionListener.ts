@@ -18,8 +18,9 @@ export default class DeleteDeckTransactionListener
     transaction: IDBTransaction,
     event: DeckDeleteTransactionEvent,
   ): Promise<unknown> {
+    const deckId = event.getDeck().getId().getIdentifier();
     const store = transaction.objectStore(StoreName.DECKS);
-    const request = store.delete(event.getDeck().getId().getIdentifier());
+    const request = store.delete(deckId);
 
     return requestPromise(request);
   }

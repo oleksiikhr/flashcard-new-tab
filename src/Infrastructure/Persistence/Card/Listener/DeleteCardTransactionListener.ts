@@ -18,8 +18,9 @@ export default class DeleteCardTransactionListener
     transaction: IDBTransaction,
     event: CardDeleteTransactionEvent,
   ): Promise<unknown> {
+    const cardId = event.getCard().getId().getIdentifier();
     const store = transaction.objectStore(StoreName.CARDS);
-    const request = store.delete(event.getCard().getId().getIdentifier());
+    const request = store.delete(cardId);
 
     return requestPromise(request);
   }

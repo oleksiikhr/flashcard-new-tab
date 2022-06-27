@@ -1,17 +1,12 @@
 import TransactionEvent from '../../Shared/IndexedDB/Transaction/TransactionEvent';
-import StoreName from '../../Shared/IndexedDB/StoreName';
-import DeckId from '../../../../Domain/Deck/DeckId';
+import Deck from '../../../../Domain/Deck/Deck';
 
 export default class FeedDeleteByIdDeckTransactionEvent
   implements TransactionEvent
 {
-  constructor(private deckId: DeckId) {}
+  constructor(private deck: Deck) {}
 
-  public getDeckId() {
-    return this.deckId;
-  }
-
-  getStoreName(): StoreName {
-    return StoreName.FEED;
+  public getDeck(): Deck {
+    return this.deck;
   }
 }

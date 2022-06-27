@@ -8,9 +8,6 @@ import DeckCommandRepository from '../../../Domain/Deck/Repository/DeckCommandRe
 export default class CreateDeckHandler {
   constructor(private commandRepository: DeckCommandRepository) {}
 
-  /**
-   * @throws {ObjectValueValidation}
-   */
   public async invoke(
     name: string,
     isActive: boolean,

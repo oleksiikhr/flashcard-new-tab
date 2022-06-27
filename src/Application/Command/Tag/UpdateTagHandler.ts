@@ -13,11 +13,6 @@ export default class UpdateTagHandler {
     private tagUniqueTag: TagUniqueGate,
   ) {}
 
-  /**
-   * @throws {TagUniqueGateError}
-   * @throws {DomainNotExistsError}
-   * @throws {ObjectValueValidation}
-   */
   public async invoke(id: number, name: string): Promise<Tag> {
     const tag = await this.queryRepository.findById(TagId.of(id));
 

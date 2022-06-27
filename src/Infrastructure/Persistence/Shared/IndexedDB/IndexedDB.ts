@@ -1,4 +1,4 @@
-import { error } from '../../../../Domain/Shared/Util/logger';
+import Logger from '../../../../Domain/Shared/Service/Logger';
 
 export default class IndexedDB {
   private db: IDBDatabase | null = null;
@@ -6,6 +6,7 @@ export default class IndexedDB {
   constructor(
     private name: string,
     private migrations: ((event: IDBVersionChangeEvent) => Promise<void>)[],
+    private logger: Logger,
   ) {}
 
   public openDB(): Promise<IDBDatabase> {
@@ -14,10 +15,18 @@ export default class IndexedDB {
     }
 
     return new Promise<IDBDatabase>((resolve, reject) => {
-      const req = window.indexedDB.open(this.name, this.migrations.length);
+      const req = indexedDB.open(this.name, this.migrations.length);
 
       req.onupgradeneeded = (event) => {
-        this.migrations[event.oldVersion](event).catch(error);
+        const migration = this.migrations[event.oldVersion];
+
+        if (undefined === migration) {
+          throw new Error(`Migration not found: v${event.oldVersion}`);
+        }
+
+        migration(event).catch((err) => {
+          this.logger.error('Migration failed', { error: err as Error });
+        });
       };
 
       req.onsuccess = (event) => {

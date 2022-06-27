@@ -23,19 +23,18 @@ export default class UpdateDeckOnUpdateCardTransactionListener
     const card = event.getCard();
     const store = transaction.objectStore(StoreName.DECKS);
     const request = store.get(card.getDeckId().getIdentifier());
-
     const raw = await requestPromise<DeckRaw>(request);
 
     if (undefined === raw) {
-      throw new DomainNotExistsError();
+      throw new DomainNotExistsError(card.getId());
     }
 
-    if (event.getCard().getIsActive()) {
+    if (card.getIsActive()) {
       raw.active_cards_count += 1;
     } else {
       raw.active_cards_count -= 1;
     }
 
-    return requestPromise(transaction.objectStore(StoreName.DECKS).put(raw));
+    return requestPromise(store.put(raw));
   }
 }

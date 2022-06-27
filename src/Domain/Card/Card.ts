@@ -115,7 +115,7 @@ export default class Card {
     return this.createdAt;
   }
 
-  public updateLastSeen() {
+  public updateLastSeen(): void {
     this.statistics.increaseViews();
 
     this.seenAt = new Date();

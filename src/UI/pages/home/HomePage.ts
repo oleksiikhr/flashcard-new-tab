@@ -1,35 +1,36 @@
 import Page from '../Page';
 import { findRandomFeed } from '../../bootstrap/bus';
-import { error } from '../../../Domain/Shared/Util/logger';
 import feedStatistics from '../../components/feedStatistics/feedStatistics';
 import card from '../../components/card/card';
 
 export default class HomePage implements Page {
   protected rootElement!: HTMLDivElement;
 
-  onFirstMount() {
+  onFirstMount(): void {
     this.rootElement = document.querySelector(
       '[page="home"]',
     ) as HTMLDivElement;
   }
 
-  mount() {
+  mount(): void {
     findRandomFeed()
       .then((feed) => {
-        if (undefined === feed) {
-          throw new Error('Feed not found.');
+        if (undefined !== feed) {
+          feedStatistics(feed.getPosition(), feed.getCount());
+          card(feed.getCard(), feed.getDeck(), feed.getTags());
         }
-
-        feedStatistics(feed.getPosition(), feed.getCount());
-        card(feed.getCard(), feed.getDeck(), feed.getTags());
       })
-      .catch((e) => error(e))
+      .catch((err) =>
+        console.error('Error when trying to find feed', {
+          error: err as Error,
+        }),
+      )
       .finally(() => {
         this.rootElement.style.display = '';
       });
   }
 
-  destroy() {
+  destroy(): void {
     this.rootElement.style.display = 'none';
   }
 }

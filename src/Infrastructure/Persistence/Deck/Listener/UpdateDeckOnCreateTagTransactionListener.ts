@@ -20,18 +20,17 @@ export default class UpdateDeckOnCreateTagTransactionListener
     transaction: IDBTransaction,
     event: TagCreateTransactionEvent,
   ): Promise<unknown> {
-    const request = transaction
-      .objectStore(StoreName.DECKS)
-      .get(event.getTag().getDeckId().getIdentifier());
-
+    const tag = event.getTag();
+    const store = transaction.objectStore(StoreName.DECKS);
+    const request = store.get(tag.getDeckId().getIdentifier());
     const raw = await requestPromise<DeckRaw>(request);
 
     if (undefined === raw) {
-      throw new DomainNotExistsError();
+      throw new DomainNotExistsError(tag.getDeckId());
     }
 
     raw.tags_count += 1;
 
-    return requestPromise(transaction.objectStore(StoreName.DECKS).put(raw));
+    return requestPromise(store.put(raw));
   }
 }

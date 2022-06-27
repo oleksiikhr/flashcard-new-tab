@@ -19,18 +19,18 @@ export default class DeleteCardsOnDeleteDeckTransactionListener
     event: DeckDeleteTransactionEvent,
   ): Promise<unknown>[] {
     const store = transaction.objectStore(StoreName.CARDS);
-    const id = event.getDeck().getId().getIdentifier();
     const index = store.index('deck_id_and_is_active_idx');
+    const deckId = event.getDeck().getId().getIdentifier();
 
     return [
       requestKeyCursor(
-        index.openKeyCursor(IDBKeyRange.only([id, 0])),
+        index.openKeyCursor(IDBKeyRange.only([deckId, 0])),
         (primaryKey) => {
           store.delete(primaryKey);
         },
       ),
       requestKeyCursor(
-        index.openKeyCursor(IDBKeyRange.only([id, 1])),
+        index.openKeyCursor(IDBKeyRange.only([deckId, 1])),
         (primaryKey) => {
           store.delete(primaryKey);
         },

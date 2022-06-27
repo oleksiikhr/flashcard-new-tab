@@ -6,9 +6,6 @@ export default class ThemeType extends NumberValueObject {
 
   public static DARK = 1;
 
-  /**
-   * @throws {ObjectValueValidation}
-   */
   constructor(value: number) {
     if (!ThemeType.isSupport(value)) {
       throw new ObjectValueValidation('Theme type is not supported');
@@ -17,11 +14,11 @@ export default class ThemeType extends NumberValueObject {
     super(value);
   }
 
-  public static light() {
+  public static light(): ThemeType {
     return new ThemeType(ThemeType.LIGHT);
   }
 
-  public static dark() {
+  public static dark(): ThemeType {
     return new ThemeType(ThemeType.DARK);
   }
 

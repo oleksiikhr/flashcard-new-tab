@@ -55,12 +55,12 @@ export function requestPromise<T>(request: IDBRequest): Promise<T | undefined> {
 
       try {
         resolve(result);
-      } catch (e) {
-        reject(e);
+      } catch (err) {
+        reject(err);
       }
     };
 
-    request.onerror = (e) => reject(e);
+    request.onerror = (err) => reject(err);
   });
 }
 
@@ -86,8 +86,8 @@ export function requestKeyCursor(
         }
 
         cursor.continue();
-      } catch (e) {
-        reject(e);
+      } catch (err) {
+        reject(err);
       }
     };
 
@@ -114,8 +114,8 @@ export function requestCursor(
         if (false === callback(cursor)) {
           resolve();
         }
-      } catch (e) {
-        reject(e);
+      } catch (err) {
+        reject(err);
       }
     };
 

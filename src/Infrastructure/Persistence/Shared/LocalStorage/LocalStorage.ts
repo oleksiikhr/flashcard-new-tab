@@ -1,7 +1,9 @@
-import { warn } from '../../../../Domain/Shared/Util/logger';
 import { isObject } from '../../../../Domain/Shared/Util/type';
+import Logger from '../../../../Domain/Shared/Service/Logger';
 
 export default class LocalStorage {
+  constructor(private logger: Logger) {}
+
   public getObject<T>(key: string): T | undefined {
     const item = localStorage.getItem(key);
 
@@ -13,13 +15,13 @@ export default class LocalStorage {
 
     try {
       data = JSON.parse(item) as T;
-    } catch (e) {
-      warn(e);
+    } catch (err) {
+      this.logger.warn((err as Error).message, { err });
       return undefined;
     }
 
     if (!isObject(data)) {
-      warn(`This "${key}" key is not an object`);
+      this.logger.warn(`This "${key}" key is not an object`);
       return undefined;
     }
 
