@@ -37,7 +37,7 @@ export default class DeleteCardTagsOnDeleteDeckTransactionListener
           'TransactionListener',
           this.constructor.name,
           'complete',
-          { event, deleted, performance: performance.now() - time },
+          { event, deleted, performance: Math.floor(performance.now() - time) },
         );
       });
   }

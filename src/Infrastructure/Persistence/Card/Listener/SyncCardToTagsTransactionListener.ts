@@ -47,7 +47,7 @@ export default class SyncCardToTagsTransactionListener
         'TransactionListener',
         this.constructor.name,
         'complete',
-        { event, performance: performance.now() - time },
+        { event, performance: Math.floor(performance.now() - time) },
       );
     });
   }

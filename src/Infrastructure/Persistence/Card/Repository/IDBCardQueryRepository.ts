@@ -6,6 +6,7 @@ import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import { randomUniqueRange } from '../../../../Domain/Shared/Util/number';
 import DeckId from '../../../../Domain/Deck/DeckId';
+import CardQuestion from '../../../../Domain/Card/CardQuestion';
 
 export default class IDBCardQueryRepository implements CardQueryRepository {
   constructor(private idb: IndexedDB, private memento: CardMemento) {}
@@ -33,11 +34,26 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
   public async findById(id: CardId): Promise<Card | undefined> {
     const db = await this.idb.openDB();
 
-    const transaction = db.transaction(StoreName.CARDS, 'readonly');
-
-    const request = transaction
+    const request = db
+      .transaction(StoreName.CARDS, 'readonly')
       .objectStore(StoreName.CARDS)
       .get(id.getIdentifier());
+
+    return this.idb
+      .requestPromise<CardRaw>(request)
+      .then((raw) =>
+        undefined !== raw ? this.memento.unserialize(raw) : undefined,
+      );
+  }
+
+  public async findByQuestion(name: CardQuestion): Promise<Card | undefined> {
+    const db = await this.idb.openDB();
+
+    const request = db
+      .transaction(StoreName.CARDS, 'readonly')
+      .objectStore(StoreName.CARDS)
+      .index('question_idx')
+      .get(name.getValue());
 
     return this.idb
       .requestPromise<CardRaw>(request)

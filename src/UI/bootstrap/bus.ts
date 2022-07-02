@@ -29,9 +29,9 @@ import FindThemeHandler from '../../Application/Query/Theme/FindThemeHandler';
 import WindowIdentifyColorScheme from '../../Infrastructure/Service/Settings/WindowIdentifyColorScheme';
 import UpdateThemeHandler from '../../Application/Command/Theme/UpdateThemeHandler';
 import LSSettingsCommandRepository from '../../Infrastructure/Persistence/Settings/Repository/LSSettingsCommandRepository';
-import ImportDeckDataHandler, {
+import ImportCardsHandler, {
   ImportRaw,
-} from '../../Application/Command/Deck/ImportDeckDataHandler';
+} from '../../Application/Command/Card/ImportCardsHandler';
 import IncreaseCardClicksHandler from '../../Application/Command/Card/IncreaseCardClicksHandler';
 import { DeckSettingsRaw } from '../../Domain/Deck/DeckSettings';
 import TagUniqueGate from '../../Domain/Tag/Gate/TagUniqueGate';
@@ -40,6 +40,7 @@ import GenerateFeed from '../../Domain/Feed/Service/GenerateFeed';
 import GenerateFeedByDeckHandler from '../../Application/Command/Feed/GenerateFeedByDeckHandler';
 import ConsoleLogger from '../../Infrastructure/Service/Logger/ConsoleLogger';
 import Deck from '../../Domain/Deck/Deck';
+import Card from '../../Domain/Card/Card';
 
 /* ------------------------------------------------------------------------- */
 
@@ -92,15 +93,19 @@ export const deleteDeck = (id: number) =>
     make(IDBDeckQueryRepository),
   ).invoke(id);
 
-export const importDeckData = (id: number, data: ImportRaw[]) =>
-  new ImportDeckDataHandler(
+export const importCards = (
+  id: number,
+  data: ImportRaw[],
+  cb?: (card: Card) => void,
+) =>
+  new ImportCardsHandler(
     make(IDBCardCommandRepository),
     make(IDBTagCommandRepository),
     make(IDBCardQueryRepository),
     make(IDBDeckQueryRepository),
     make(IDBTagQueryRepository),
     make(CardContentFactory),
-  ).invoke(id, data);
+  ).invoke(id, data, cb);
 
 /* ------------------------------------------------------------------------- */
 

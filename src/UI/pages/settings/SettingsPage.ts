@@ -3,9 +3,9 @@ import {
   createDeck,
   findDeck,
   generateFeedByDeck,
-  importDeckData,
+  importCards,
 } from '../../bootstrap/bus';
-import { ImportRaw } from '../../../Application/Command/Deck/ImportDeckDataHandler';
+import { ImportRaw } from '../../../Application/Command/Card/ImportCardsHandler';
 import logger from '../../helpers/logger';
 
 export default class SettingsPage implements Page {
@@ -52,8 +52,8 @@ export default class SettingsPage implements Page {
           return;
         }
 
-        importDeckData(1, data).catch((err: unknown) =>
-          logger.error('SettingsPage', 'importDeckData', 'click', { err }),
+        importCards(1, data).catch((err: unknown) =>
+          logger.error('SettingsPage', 'importCards', 'click', { err }),
         );
       };
 

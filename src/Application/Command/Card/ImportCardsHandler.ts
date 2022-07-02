@@ -11,10 +11,8 @@ import Tag from '../../../Domain/Tag/Tag';
 import TagQueryRepository from '../../../Domain/Tag/Repository/TagQueryRepository';
 import TagCommandRepository from '../../../Domain/Tag/Repository/TagCommandRepository';
 import TagName from '../../../Domain/Tag/TagName';
-import CardId from '../../../Domain/Card/CardId';
 
 export type ImportRaw = {
-  id: number | undefined;
   question: string;
   content: object;
   template_type: number;
@@ -22,7 +20,7 @@ export type ImportRaw = {
   tags: string[];
 };
 
-export default class ImportDeckDataHandler {
+export default class ImportCardsHandler {
   constructor(
     private cardCommandRepository: CardCommandRepository,
     private tagCommandRepository: TagCommandRepository,
@@ -32,7 +30,11 @@ export default class ImportDeckDataHandler {
     private contentFactory: CardContentFactory,
   ) {}
 
-  public async invoke(deckId: number, raws: ImportRaw[]): Promise<void[]> {
+  public async invoke(
+    deckId: number,
+    raws: ImportRaw[],
+    cb?: (card: Card) => void,
+  ): Promise<Card[]> {
     const deck = await this.deckQueryRepository.findById(DeckId.of(deckId));
 
     if (undefined === deck) {
@@ -43,42 +45,47 @@ export default class ImportDeckDataHandler {
 
     const promises = raws.map((raw) => {
       const templateType = new CardTemplateType(raw.template_type);
-      const cardQuestion = new CardQuestion(raw.question);
+      const question = new CardQuestion(raw.question);
       const content = this.contentFactory.make(raw.content, templateType);
       const tags = raw.tags.map((tagName) => tagsMap.get(tagName)) as Tag[];
 
-      const card = Card.create(
-        DeckId.of(deckId),
-        cardQuestion,
-        content,
-        templateType,
-        raw.is_active,
-      );
+      return this.cardQueryRepository
+        .findByQuestion(question)
+        .then((card) => {
+          if (undefined === card) {
+            const newCard = Card.create(
+              DeckId.of(deckId),
+              question,
+              content,
+              templateType,
+              raw.is_active,
+            );
 
-      const createCard = () =>
-        this.cardCommandRepository.create(card).then(() => {
-          if (tags.length) {
-            return this.cardCommandRepository.syncTags(card, tags);
+            return this.cardCommandRepository
+              .create(newCard)
+              .then(() => newCard);
           }
 
-          return Promise.resolve();
+          card.from(question, content, raw.is_active);
+
+          return this.cardCommandRepository.update(card).then(() => card);
+        })
+        .then((card) => {
+          if (tags.length) {
+            return this.cardCommandRepository
+              .syncTags(card, tags)
+              .then(() => card);
+          }
+
+          return Promise.resolve(card);
+        })
+        .then((card) => {
+          if (undefined !== cb) {
+            cb(card);
+          }
+
+          return card;
         });
-
-      if (undefined !== raw.id) {
-        return this.cardQueryRepository
-          .findById(CardId.of(raw.id))
-          .then((existsCard) => {
-            if (undefined === existsCard) {
-              return createCard();
-            }
-
-            existsCard.from(cardQuestion, content, raw.is_active);
-
-            return this.cardCommandRepository.update(existsCard);
-          });
-      }
-
-      return createCard();
     });
 
     return Promise.all(promises);
