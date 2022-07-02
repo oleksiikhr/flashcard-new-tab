@@ -1,13 +1,16 @@
 import TransactionListener from '../../Shared/IndexedDB/Transaction/TransactionListener';
-import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import DomainNotExistsError from '../../Shared/IndexedDB/Error/DomainNotExistsError';
 import { DeckRaw } from '../../../../Domain/Deck/DeckMemento';
 import CardUpdateTransactionEvent from '../../Card/Event/CardUpdateTransactionEvent';
+import Logger from '../../../../Domain/Shared/Service/Logger';
+import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 
 export default class UpdateDeckOnUpdateCardTransactionListener
   implements TransactionListener<CardUpdateTransactionEvent>
 {
+  constructor(private idb: IndexedDB, private logger: Logger) {}
+
   public isNeedHandle(event: CardUpdateTransactionEvent): boolean {
     return event.getCard().isChangedActive();
   }
@@ -20,21 +23,27 @@ export default class UpdateDeckOnUpdateCardTransactionListener
     transaction: IDBTransaction,
     event: CardUpdateTransactionEvent,
   ): Promise<unknown> {
+    const time = performance.now();
     const card = event.getCard();
     const store = transaction.objectStore(StoreName.DECKS);
     const request = store.get(card.getDeckId().getIdentifier());
-    const raw = await requestPromise<DeckRaw>(request);
+    const raw = await this.idb.requestPromise<DeckRaw>(request);
 
     if (undefined === raw) {
       throw new DomainNotExistsError(card.getId());
     }
 
-    if (card.getIsActive()) {
-      raw.active_cards_count += 1;
-    } else {
-      raw.active_cards_count -= 1;
+    if (card.isChangedActive()) {
+      raw.active_cards_count += card.getIsActive() ? 1 : -1;
     }
 
-    return requestPromise(store.put(raw));
+    return this.idb.requestPromise(store.put(raw)).finally(() => {
+      this.logger.debug(
+        'TransactionListener',
+        this.constructor.name,
+        'complete',
+        { event, performance: performance.now() - time },
+      );
+    });
   }
 }

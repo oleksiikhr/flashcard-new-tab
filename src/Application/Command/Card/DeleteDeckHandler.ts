@@ -1,6 +1,7 @@
 import CardId from '../../../Domain/Card/CardId';
 import CardQueryRepository from '../../../Domain/Card/Repository/CardQueryRepository';
 import CardCommandRepository from '../../../Domain/Card/Repository/CardCommandRepository';
+import Card from '../../../Domain/Card/Card';
 
 export default class DeleteCardHandler {
   constructor(
@@ -8,13 +9,15 @@ export default class DeleteCardHandler {
     private queryRepository: CardQueryRepository,
   ) {}
 
-  public async invoke(id: number): Promise<void> {
+  public async invoke(id: number): Promise<Card | undefined> {
     const card = await this.queryRepository.findById(CardId.of(id));
 
     if (undefined === card) {
-      return Promise.resolve();
+      return Promise.resolve(undefined);
     }
 
-    return this.commandRepository.delete(card);
+    await this.commandRepository.delete(card);
+
+    return card;
   }
 }

@@ -4,6 +4,8 @@ import CardId from '../../../Domain/Card/CardId';
 import TagQueryRepository from '../../../Domain/Tag/Repository/TagQueryRepository';
 import TagId from '../../../Domain/Tag/TagId';
 import DomainNotExistsError from '../../../Infrastructure/Persistence/Shared/IndexedDB/Error/DomainNotExistsError';
+import Card from '../../../Domain/Card/Card';
+import Tag from '../../../Domain/Tag/Tag';
 
 export default class SyncTagsToCardHandler {
   constructor(
@@ -12,7 +14,10 @@ export default class SyncTagsToCardHandler {
     private tagQueryRepository: TagQueryRepository,
   ) {}
 
-  public async invoke(cardId: number, tagIds: number[]): Promise<void> {
+  public async invoke(
+    cardId: number,
+    tagIds: number[],
+  ): Promise<{ card: Card; tags: Tag[] }> {
     const card = await this.cardQueryRepository.findById(CardId.of(cardId));
 
     if (undefined === card) {
@@ -24,5 +29,7 @@ export default class SyncTagsToCardHandler {
     );
 
     await this.cardCommandRepository.syncTags(card, tags);
+
+    return { card, tags };
   }
 }

@@ -1,6 +1,7 @@
 import TagCommandRepository from '../../../Domain/Tag/Repository/TagCommandRepository';
 import TagQueryRepository from '../../../Domain/Tag/Repository/TagQueryRepository';
 import TagId from '../../../Domain/Tag/TagId';
+import Tag from '../../../Domain/Tag/Tag';
 
 export default class DeleteTagHandler {
   constructor(
@@ -8,13 +9,15 @@ export default class DeleteTagHandler {
     private queryRepository: TagQueryRepository,
   ) {}
 
-  public async invoke(id: number): Promise<void> {
+  public async invoke(id: number): Promise<Tag | undefined> {
     const tag = await this.queryRepository.findById(TagId.of(id));
 
     if (undefined === tag) {
-      return Promise.resolve();
+      return Promise.resolve(undefined);
     }
 
-    return this.commandRepository.delete(tag);
+    await this.commandRepository.delete(tag);
+
+    return tag;
   }
 }

@@ -1,16 +1,41 @@
 import Logger from '../../../Domain/Shared/Service/Logger';
 
-/* eslint-disable no-console @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
+
 export default class ConsoleLogger implements Logger {
-  log(message: string, content: any): void {
-    console.log(message, content);
+  info(
+    module: string,
+    handler: string,
+    action: string,
+    context?: object,
+  ): void {
+    console.log(`[${module}] ${handler}@${action}`, context);
   }
 
-  warn(message: string, content: any): void {
-    console.warn(message, content);
+  warn(
+    module: string,
+    handler: string,
+    action: string,
+    context?: object,
+  ): void {
+    console.warn(`[${module}] ${handler}@${action}`, context);
   }
 
-  error(message: string, content: any): void {
-    console.error(message, content);
+  error(
+    module: string,
+    handler: string,
+    action: string,
+    context?: object,
+  ): void {
+    console.error(`[${module}] ${handler}@${action}`, context);
+  }
+
+  debug(
+    module: string,
+    handler: string,
+    action: string,
+    context?: object,
+  ): void {
+    console.debug(`[${module}] ${handler}@${action}`, context);
   }
 }

@@ -70,7 +70,10 @@ register(
 
 register(LocalStorage, () => new LocalStorage(make(ConsoleLogger)));
 
-register(TransactionPipeline, () => new TransactionPipeline(make(IndexedDB)));
+register(
+  TransactionPipeline,
+  () => new TransactionPipeline(make(IndexedDB), make(ConsoleLogger)),
+);
 
 /* ------------------------------------------------------------------------- */
 
@@ -114,7 +117,7 @@ register(CardMemento, () => new CardMemento(make(CardContentFactory)));
 
 register(
   IDBCardQueryRepository,
-  () => new IDBCardQueryRepository(make(CardMemento), make(IndexedDB)),
+  () => new IDBCardQueryRepository(make(IndexedDB), make(CardMemento)),
 );
 
 register(
@@ -167,6 +170,7 @@ register(
       make(IDBFeedCommandRepository),
       make(IDBDeckCommandRepository),
       make(IDBCardQueryRepository),
+      make(ConsoleLogger),
     ),
 );
 

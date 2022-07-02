@@ -2,11 +2,14 @@ import TransactionListener from '../../Shared/IndexedDB/Transaction/TransactionL
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import CardSyncTagsTransactionEvent from '../Event/CardSyncTagsTransactionEvent';
 import { CardTagRaw } from '../../../../Domain/Card/CardMemento';
-import { requestKeyCursor } from '../../Shared/IndexedDB/Util/idb';
+import Logger from '../../../../Domain/Shared/Service/Logger';
+import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 
 export default class SyncCardToTagsTransactionListener
   implements TransactionListener<CardSyncTagsTransactionEvent>
 {
+  constructor(private idb: IndexedDB, private logger: Logger) {}
+
   public isNeedHandle(): boolean {
     return true;
   }
@@ -19,6 +22,7 @@ export default class SyncCardToTagsTransactionListener
     transaction: IDBTransaction,
     event: CardSyncTagsTransactionEvent,
   ): Promise<unknown> {
+    const time = performance.now();
     const card = event.getCard();
     const store = transaction.objectStore(StoreName.CARD_TAG);
 
@@ -26,7 +30,7 @@ export default class SyncCardToTagsTransactionListener
       .index('card_id_idx')
       .openKeyCursor(card.getId().getIdentifier());
 
-    await requestKeyCursor(request, (primaryKey) => {
+    await this.idb.requestKeyCursor(request, (primaryKey) => {
       store.delete(primaryKey);
     });
 
@@ -38,6 +42,13 @@ export default class SyncCardToTagsTransactionListener
           tag_id: tag.getId().getIdentifier(),
         } as CardTagRaw),
       ),
-    );
+    ).finally(() => {
+      this.logger.debug(
+        'TransactionListener',
+        this.constructor.name,
+        'complete',
+        { event, performance: performance.now() - time },
+      );
+    });
   }
 }

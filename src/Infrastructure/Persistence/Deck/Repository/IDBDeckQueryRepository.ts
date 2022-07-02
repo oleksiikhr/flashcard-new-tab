@@ -4,10 +4,6 @@ import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 import DeckMemento, { DeckRaw } from '../../../../Domain/Deck/DeckMemento';
 import DeckId from '../../../../Domain/Deck/DeckId';
 import StoreName from '../../Shared/IndexedDB/StoreName';
-import {
-  requestPaginate,
-  requestPromise,
-} from '../../Shared/IndexedDB/Util/idb';
 
 export default class IDBDeckQueryRepository implements DeckQueryRepository {
   constructor(private memento: DeckMemento, private idb: IndexedDB) {}
@@ -27,9 +23,9 @@ export default class IDBDeckQueryRepository implements DeckQueryRepository {
           : null,
       );
 
-    return requestPaginate<DeckRaw>(request, limit).then((raws) =>
-      raws.map((raw) => this.memento.unserialize(raw)),
-    );
+    return this.idb
+      .requestPaginate<DeckRaw>(request, limit)
+      .then((raws) => raws.map((raw) => this.memento.unserialize(raw)));
   }
 
   public async findById(id: DeckId): Promise<Deck | undefined> {
@@ -40,9 +36,11 @@ export default class IDBDeckQueryRepository implements DeckQueryRepository {
       .objectStore(StoreName.DECKS)
       .get(id.getIdentifier());
 
-    return requestPromise<DeckRaw>(request).then((raw) =>
-      undefined !== raw ? this.memento.unserialize(raw) : undefined,
-    );
+    return this.idb
+      .requestPromise<DeckRaw>(request)
+      .then((raw) =>
+        undefined !== raw ? this.memento.unserialize(raw) : undefined,
+      );
   }
 
   public async findGenerateAtUpperByNow(count: number): Promise<Deck[]> {
@@ -54,8 +52,10 @@ export default class IDBDeckQueryRepository implements DeckQueryRepository {
       .index('generate_at_idx')
       .getAll(IDBKeyRange.upperBound(new Date()), count);
 
-    return requestPromise<DeckRaw[]>(request).then((raws) =>
-      (raws as DeckRaw[]).map((raw) => this.memento.unserialize(raw)),
-    );
+    return this.idb
+      .requestPromise<DeckRaw[]>(request)
+      .then((raws) =>
+        (raws as DeckRaw[]).map((raw) => this.memento.unserialize(raw)),
+      );
   }
 }

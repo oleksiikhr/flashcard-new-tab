@@ -1,6 +1,7 @@
 import DeckId from '../../../Domain/Deck/DeckId';
 import DeckQueryRepository from '../../../Domain/Deck/Repository/DeckQueryRepository';
 import DeckCommandRepository from '../../../Domain/Deck/Repository/DeckCommandRepository';
+import Deck from '../../../Domain/Deck/Deck';
 
 export default class DeleteDeckHandler {
   constructor(
@@ -8,13 +9,15 @@ export default class DeleteDeckHandler {
     private queryRepository: DeckQueryRepository,
   ) {}
 
-  public async invoke(id: number): Promise<void> {
+  public async invoke(id: number): Promise<Deck | undefined> {
     const deck = await this.queryRepository.findById(DeckId.of(id));
 
     if (undefined === deck) {
-      return Promise.resolve();
+      return Promise.resolve(undefined);
     }
 
-    return this.commandRepository.delete(deck);
+    await this.commandRepository.delete(deck);
+
+    return deck;
   }
 }

@@ -5,10 +5,6 @@ import TagId from '../../../../Domain/Tag/TagId';
 import Tag from '../../../../Domain/Tag/Tag';
 import DeckId from '../../../../Domain/Deck/DeckId';
 import StoreName from '../../Shared/IndexedDB/StoreName';
-import {
-  requestPaginate,
-  requestPromise,
-} from '../../Shared/IndexedDB/Util/idb';
 import TagName from '../../../../Domain/Tag/TagName';
 
 export default class IDBTagQueryRepository implements TagQueryRepository {
@@ -29,9 +25,9 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
           : null,
       );
 
-    return requestPaginate<TagRaw>(request, limit).then((raws) =>
-      raws.map((raw) => this.memento.unserialize(raw)),
-    );
+    return this.idb
+      .requestPaginate<TagRaw>(request, limit)
+      .then((raws) => raws.map((raw) => this.memento.unserialize(raw)));
   }
 
   public async findById(id: TagId): Promise<Tag | undefined> {
@@ -42,9 +38,11 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
       .objectStore(StoreName.TAGS)
       .get(id.getIdentifier());
 
-    return requestPromise<TagRaw>(request).then((raw) =>
-      undefined !== raw ? this.memento.unserialize(raw) : undefined,
-    );
+    return this.idb
+      .requestPromise<TagRaw>(request)
+      .then((raw) =>
+        undefined !== raw ? this.memento.unserialize(raw) : undefined,
+      );
   }
 
   public async findByDeckIdAndName(
@@ -59,9 +57,11 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
       .index('deck_id_and_name_idx')
       .get(IDBKeyRange.only([deckId.getIdentifier(), name.getValue()]));
 
-    return requestPromise<TagRaw>(request).then((raw) =>
-      undefined !== raw ? this.memento.unserialize(raw) : undefined,
-    );
+    return this.idb
+      .requestPromise<TagRaw>(request)
+      .then((raw) =>
+        undefined !== raw ? this.memento.unserialize(raw) : undefined,
+      );
   }
 
   public async findByIds(ids: TagId[]): Promise<Tag[]> {
@@ -72,9 +72,11 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
       .objectStore(StoreName.TAGS);
 
     const promises = ids.map((id) =>
-      requestPromise<TagRaw>(request.get(id.getIdentifier())).then((raw) =>
-        undefined !== raw ? this.memento.unserialize(raw) : undefined,
-      ),
+      this.idb
+        .requestPromise<TagRaw>(request.get(id.getIdentifier()))
+        .then((raw) =>
+          undefined !== raw ? this.memento.unserialize(raw) : undefined,
+        ),
     );
 
     const tags = await Promise.all<Tag | undefined>(promises);
@@ -91,8 +93,10 @@ export default class IDBTagQueryRepository implements TagQueryRepository {
       .index('deck_id_and_is_active_idx')
       .getAll([deckId.getIdentifier(), 1]);
 
-    return requestPromise<TagRaw[]>(request).then((raws) =>
-      (raws as TagRaw[]).map((raw) => this.memento.unserialize(raw)),
-    );
+    return this.idb
+      .requestPromise<TagRaw[]>(request)
+      .then((raws) =>
+        (raws as TagRaw[]).map((raw) => this.memento.unserialize(raw)),
+      );
   }
 }

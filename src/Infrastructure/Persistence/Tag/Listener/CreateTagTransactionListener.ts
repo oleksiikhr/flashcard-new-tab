@@ -1,14 +1,19 @@
 import TransactionListener from '../../Shared/IndexedDB/Transaction/TransactionListener';
-import { requestPromise } from '../../Shared/IndexedDB/Util/idb';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import TagMemento from '../../../../Domain/Tag/TagMemento';
 import TagCreateTransactionEvent from '../Event/TagCreateTransactionEvent';
 import TagId from '../../../../Domain/Tag/TagId';
+import Logger from '../../../../Domain/Shared/Service/Logger';
+import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 
 export default class CreateTagTransactionListener
   implements TransactionListener<TagCreateTransactionEvent>
 {
-  constructor(private memento: TagMemento) {}
+  constructor(
+    private idb: IndexedDB,
+    private logger: Logger,
+    private memento: TagMemento,
+  ) {}
 
   public isNeedHandle(): boolean {
     return true;
@@ -22,6 +27,7 @@ export default class CreateTagTransactionListener
     transaction: IDBTransaction,
     event: TagCreateTransactionEvent,
   ): Promise<unknown> {
+    const time = performance.now();
     const tag = event.getTag();
     const raw = this.memento.serialize(tag);
     delete raw.id;
@@ -29,8 +35,18 @@ export default class CreateTagTransactionListener
     const store = transaction.objectStore(StoreName.TAGS);
     const request = store.add(raw);
 
-    return requestPromise<number>(request).then((id) => {
-      tag.setId(TagId.of(id as number));
-    });
+    return this.idb
+      .requestPromise<number>(request)
+      .then((id) => {
+        tag.setId(TagId.of(id as number));
+      })
+      .finally(() => {
+        this.logger.debug(
+          'TransactionListener',
+          this.constructor.name,
+          'complete',
+          { event, performance: performance.now() - time },
+        );
+      });
   }
 }

@@ -6,6 +6,7 @@ import {
   importDeckData,
 } from '../../bootstrap/bus';
 import { ImportRaw } from '../../../Application/Command/Deck/ImportDeckDataHandler';
+import logger from '../../helpers/logger';
 
 export default class SettingsPage implements Page {
   protected root!: HTMLDivElement;
@@ -14,15 +15,19 @@ export default class SettingsPage implements Page {
     this.root = document.querySelector(`[page="settings"]`) as HTMLDivElement;
 
     this.root.querySelector('#create-deck')?.addEventListener('click', () => {
-      findDeck(1).then((deck) => {
-        if (undefined === deck) {
-          return createDeck('Eng - Ukr', true, {
-            recalculate: { hours: 1, count: 100, algorithm: 'random' },
-          });
-        }
+      findDeck(1)
+        .then((deck) => {
+          if (undefined === deck) {
+            return createDeck('Eng - Ukr', true, {
+              recalculate: { hours: 1, count: 100, algorithm: 'random' },
+            });
+          }
 
-        return Promise.resolve(undefined);
-      });
+          return Promise.resolve(undefined);
+        })
+        .catch((err: unknown) =>
+          logger.error('SettingsPage', 'createDeck', 'click', { err }),
+        );
     });
 
     this.root.querySelector('#import')?.addEventListener('click', () => {
@@ -47,14 +52,18 @@ export default class SettingsPage implements Page {
           return;
         }
 
-        importDeckData(1, data);
+        importDeckData(1, data).catch((err: unknown) =>
+          logger.error('SettingsPage', 'importDeckData', 'click', { err }),
+        );
       };
 
       fileReader.readAsText(files.item(0) as File);
     });
 
     this.root.querySelector('#generate-feed')?.addEventListener('click', () => {
-      generateFeedByDeck(1);
+      generateFeedByDeck(1).catch((err: unknown) =>
+        logger.error('SettingsPage', 'generateFeed', 'click', { err }),
+      );
     });
   }
 

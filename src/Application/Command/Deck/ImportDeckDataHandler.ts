@@ -32,7 +32,7 @@ export default class ImportDeckDataHandler {
     private contentFactory: CardContentFactory,
   ) {}
 
-  public async invoke(deckId: number, raws: ImportRaw[]): Promise<void> {
+  public async invoke(deckId: number, raws: ImportRaw[]): Promise<void[]> {
     const deck = await this.deckQueryRepository.findById(DeckId.of(deckId));
 
     if (undefined === deck) {
@@ -81,7 +81,7 @@ export default class ImportDeckDataHandler {
       return createCard();
     });
 
-    await Promise.all(promises);
+    return Promise.all(promises);
   }
 
   private async getUniqueTags(

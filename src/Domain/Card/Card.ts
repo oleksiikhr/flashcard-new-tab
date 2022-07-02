@@ -100,7 +100,7 @@ export default class Card {
   }
 
   public isChangedActive(): boolean {
-    return this.isActive === this.initIsActive;
+    return this.isActive !== this.initIsActive;
   }
 
   public getSeenAt(): Date {

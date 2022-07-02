@@ -2,6 +2,7 @@ import TransactionEvent from './TransactionEvent';
 import TransactionListener from './TransactionListener';
 import IndexedDB from '../IndexedDB';
 import { toArray } from '../../../../../Domain/Shared/Util/type';
+import Logger from '../../../../../Domain/Shared/Service/Logger';
 
 export default class TransactionPipeline {
   private listeners = new Map<
@@ -9,7 +10,7 @@ export default class TransactionPipeline {
     TransactionListener<TransactionEvent>[]
   >();
 
-  constructor(private idb: IndexedDB) {}
+  constructor(private idb: IndexedDB, private logger: Logger) {}
 
   public subscribe(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,14 +25,23 @@ export default class TransactionPipeline {
   }
 
   public async trigger(event: TransactionEvent): Promise<void> {
-    const listeners = this.listeners.get(event.constructor.name) || [];
     const storeNames: Set<string> = new Set();
+    const listeners = (this.listeners.get(event.constructor.name) || []).filter(
+      (listener) => {
+        const isNeedHandle = listener.isNeedHandle(event);
+        if (isNeedHandle) {
+          storeNames.add(listener.getStoreName(event));
+        }
 
-    listeners
-      .filter((listener) => listener.isNeedHandle(event))
-      .forEach((listener) => {
-        storeNames.add(listener.getStoreName(event));
-      });
+        return isNeedHandle;
+      },
+    );
+
+    this.logger.debug('TransactionPipeline', this.constructor.name, 'trigger', {
+      storeNames,
+      event,
+      listeners,
+    });
 
     const db = await this.idb.openDB();
     const transaction = db.transaction(storeNames, 'readwrite');

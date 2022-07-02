@@ -38,6 +38,8 @@ import TagUniqueGate from '../../Domain/Tag/Gate/TagUniqueGate';
 import CardContentFactory from '../../Domain/Card/Content/CardContentFactory';
 import GenerateFeed from '../../Domain/Feed/Service/GenerateFeed';
 import GenerateFeedByDeckHandler from '../../Application/Command/Feed/GenerateFeedByDeckHandler';
+import ConsoleLogger from '../../Infrastructure/Service/Logger/ConsoleLogger';
+import Deck from '../../Domain/Deck/Deck';
 
 /* ------------------------------------------------------------------------- */
 
@@ -185,11 +187,12 @@ export const deleteTag = (id: number) =>
 
 // Feed
 
-export const generateFeed = (limit: number) =>
+export const generateFeed = (limit: number, cb?: (deck: Deck) => void) =>
   new GenerateFeedHandler(
     make(IDBDeckQueryRepository),
     make(GenerateFeed),
-  ).invoke(limit);
+    make(ConsoleLogger),
+  ).invoke(limit, cb);
 
 export const generateFeedByDeck = (deckId: number) =>
   new GenerateFeedByDeckHandler(

@@ -1,9 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 export default interface Logger {
-  log(message: string, content?: object): void;
+  info(module: string, handler: string, action: string, context?: object): void;
 
-  warn(message: string, content?: object): void;
+  warn(module: string, handler: string, action: string, context?: object): void;
 
-  error(message: string, content?: object): void;
+  error(
+    module: string,
+    handler: string,
+    action: string,
+    context?: object,
+  ): void;
+
+  debug(
+    module: string,
+    handler: string,
+    action: string,
+    context?: object,
+  ): void;
 }

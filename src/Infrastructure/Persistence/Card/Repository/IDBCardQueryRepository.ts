@@ -3,17 +3,12 @@ import CardId from '../../../../Domain/Card/CardId';
 import CardQueryRepository from '../../../../Domain/Card/Repository/CardQueryRepository';
 import CardMemento, { CardRaw } from '../../../../Domain/Card/CardMemento';
 import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
-import {
-  requestCursor,
-  requestPaginate,
-  requestPromise,
-} from '../../Shared/IndexedDB/Util/idb';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import { randomUniqueRange } from '../../../../Domain/Shared/Util/number';
 import DeckId from '../../../../Domain/Deck/DeckId';
 
 export default class IDBCardQueryRepository implements CardQueryRepository {
-  constructor(private memento: CardMemento, private idb: IndexedDB) {}
+  constructor(private idb: IndexedDB, private memento: CardMemento) {}
 
   public async paginate(
     fromId: CardId | undefined,
@@ -30,9 +25,9 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
           : null,
       );
 
-    return requestPaginate<CardRaw>(request, limit).then((raws) =>
-      raws.map((raw) => this.memento.unserialize(raw)),
-    );
+    return this.idb
+      .requestPaginate<CardRaw>(request, limit)
+      .then((raws) => raws.map((raw) => this.memento.unserialize(raw)));
   }
 
   public async findById(id: CardId): Promise<Card | undefined> {
@@ -44,9 +39,11 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
       .objectStore(StoreName.CARDS)
       .get(id.getIdentifier());
 
-    return requestPromise<CardRaw>(request).then((raw) =>
-      undefined !== raw ? this.memento.unserialize(raw) : undefined,
-    );
+    return this.idb
+      .requestPromise<CardRaw>(request)
+      .then((raw) =>
+        undefined !== raw ? this.memento.unserialize(raw) : undefined,
+      );
   }
 
   public async findRandomActiveByDeckId(
@@ -61,7 +58,7 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
       .index('deck_id_and_is_active_idx');
 
     const query = IDBKeyRange.only([deckId.getIdentifier(), 1]);
-    const total = (await requestPromise<number>(
+    const total = (await this.idb.requestPromise<number>(
       request.count(query),
     )) as number;
 
@@ -69,13 +66,12 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
     const cards: Card[] = [];
     let init = true;
 
-    await requestCursor(request.openCursor(query), (cursor) => {
+    await this.idb.requestCursor(request.openCursor(query), (cursor) => {
       const card = this.memento.unserialize(cursor.value as CardRaw);
 
       if (init && 1 !== numbers[0]) {
         init = false;
 
-        // @ts-ignore
         return cursor.advance(numbers[0] - 1);
       }
 
@@ -83,7 +79,6 @@ export default class IDBCardQueryRepository implements CardQueryRepository {
         return false;
       }
 
-      // @ts-ignore
       return cursor.advance(numbers[cards.length] - numbers[cards.length - 1]);
     });
 

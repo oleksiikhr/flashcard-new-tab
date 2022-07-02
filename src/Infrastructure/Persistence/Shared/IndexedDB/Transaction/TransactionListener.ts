@@ -5,8 +5,5 @@ export default interface TransactionListener<T> {
 
   getStoreName(event: T): StoreName;
 
-  invoke(
-    transaction: IDBTransaction,
-    event: T,
-  ): Promise<unknown> | Promise<unknown>[];
+  invoke(transaction: IDBTransaction, event: T): Promise<unknown>;
 }

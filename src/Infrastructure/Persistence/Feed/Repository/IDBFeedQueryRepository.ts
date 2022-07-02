@@ -5,7 +5,6 @@ import CardMemento, {
   CardTagRaw,
 } from '../../../../Domain/Card/CardMemento';
 import StoreName from '../../Shared/IndexedDB/StoreName';
-import { requestPromise, requestRandom } from '../../Shared/IndexedDB/Util/idb';
 import Feed from '../../../../Domain/Feed/Feed';
 import { FeedRaw } from '../../../../Domain/Feed/FeedMemento';
 import DeckMemento, { DeckRaw } from '../../../../Domain/Deck/DeckMemento';
@@ -46,7 +45,7 @@ export default class IDBFeedQueryRepository implements FeedQueryRepository {
       .objectStore(StoreName.CARD_TAG)
       .index('card_id_idx');
 
-    const feedTotal = (await requestPromise<number>(
+    const feedTotal = (await this.idb.requestPromise<number>(
       feedStore.count(),
     )) as number;
 
@@ -55,31 +54,41 @@ export default class IDBFeedQueryRepository implements FeedQueryRepository {
     }
 
     const position = random(0, feedTotal - 1);
-    const feed = await requestRandom<FeedRaw>(feedStore.openCursor(), position);
+    const feed = await this.idb.requestRandom<FeedRaw>(
+      feedStore.openCursor(),
+      position,
+    );
 
     if (undefined === feed) {
       return undefined;
     }
 
     const [card, deck, tags] = await Promise.all([
-      requestPromise<CardRaw>(cardStore.get(feed.card_id)).then((raw) =>
-        undefined !== raw ? this.cardMemento.unserialize(raw) : undefined,
-      ),
-      requestPromise<DeckRaw>(deckStore.get(feed.deck_id)).then((raw) =>
-        undefined !== raw ? this.deckMemento.unserialize(raw) : undefined,
-      ),
-      requestPromise<CardTagRaw[]>(cardTagStore.getAll(feed.card_id)).then(
-        (raws) =>
+      this.idb
+        .requestPromise<CardRaw>(cardStore.get(feed.card_id))
+        .then((raw) =>
+          undefined !== raw ? this.cardMemento.unserialize(raw) : undefined,
+        ),
+      this.idb
+        .requestPromise<DeckRaw>(deckStore.get(feed.deck_id))
+        .then((raw) =>
+          undefined !== raw ? this.deckMemento.unserialize(raw) : undefined,
+        ),
+      this.idb
+        .requestPromise<CardTagRaw[]>(cardTagStore.getAll(feed.card_id))
+        .then((raws) =>
           Promise.all(
             (raws as CardTagRaw[]).map((raw) =>
-              requestPromise<TagRaw>(tagStore.get(raw.tag_id)).then((subRaw) =>
-                undefined !== subRaw
-                  ? this.tagMemento.unserialize(subRaw)
-                  : undefined,
-              ),
+              this.idb
+                .requestPromise<TagRaw>(tagStore.get(raw.tag_id))
+                .then((subRaw) =>
+                  undefined !== subRaw
+                    ? this.tagMemento.unserialize(subRaw)
+                    : undefined,
+                ),
             ),
           ),
-      ),
+        ),
     ]);
 
     if (undefined === card) {
@@ -95,7 +104,7 @@ export default class IDBFeedQueryRepository implements FeedQueryRepository {
       deck,
       tags.filter((tag) => undefined !== tag) as Tag[],
       feedTotal,
-      position,
+      position + 1,
     );
   }
 }

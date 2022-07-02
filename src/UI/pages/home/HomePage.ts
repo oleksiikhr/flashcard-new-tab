@@ -2,6 +2,7 @@ import Page from '../Page';
 import { findRandomFeed } from '../../bootstrap/bus';
 import feedStatistics from '../../components/feedStatistics/feedStatistics';
 import card from '../../components/card/card';
+import logger from '../../helpers/logger';
 
 export default class HomePage implements Page {
   protected rootElement!: HTMLDivElement;
@@ -20,10 +21,8 @@ export default class HomePage implements Page {
           card(feed.getCard(), feed.getDeck(), feed.getTags());
         }
       })
-      .catch((err) =>
-        console.error('Error when trying to find feed', {
-          error: err as Error,
-        }),
+      .catch((err: unknown) =>
+        logger.error('HomePage', 'mount', 'findRandomFeed', { err }),
       )
       .finally(() => {
         this.rootElement.style.display = '';

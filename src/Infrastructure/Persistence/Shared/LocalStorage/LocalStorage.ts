@@ -16,12 +16,22 @@ export default class LocalStorage {
     try {
       data = JSON.parse(item) as T;
     } catch (err) {
-      this.logger.warn((err as Error).message, { err });
+      this.logger.warn(
+        'LocalStorage',
+        this.constructor.name,
+        (err as Error).message,
+        { data, err },
+      );
       return undefined;
     }
 
     if (!isObject(data)) {
-      this.logger.warn(`This "${key}" key is not an object`);
+      this.logger.warn(
+        'LocalStorage',
+        this.constructor.name,
+        `This "${key}" key is not an object`,
+        { data },
+      );
       return undefined;
     }
 
