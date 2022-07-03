@@ -93,20 +93,6 @@ export const deleteDeck = (id: number) =>
     make(IDBDeckQueryRepository),
   ).invoke(id);
 
-export const importCards = (
-  id: number,
-  data: ImportRaw[],
-  cb?: (card: Card) => void,
-) =>
-  new ImportCardsHandler(
-    make(IDBCardCommandRepository),
-    make(IDBTagCommandRepository),
-    make(IDBCardQueryRepository),
-    make(IDBDeckQueryRepository),
-    make(IDBTagQueryRepository),
-    make(CardContentFactory),
-  ).invoke(id, data, cb);
-
 /* ------------------------------------------------------------------------- */
 
 // Card
@@ -157,6 +143,20 @@ export const increaseCardClicks = (cardId: number, value: number) =>
     make(IDBCardCommandRepository),
     make(IDBCardQueryRepository),
   ).invoke(cardId, value);
+
+export const importCards = (
+  id: number,
+  data: ImportRaw[],
+  cb?: (card: Card) => void,
+) =>
+  new ImportCardsHandler(
+    make(IDBCardCommandRepository),
+    make(IDBTagCommandRepository),
+    make(IDBCardQueryRepository),
+    make(IDBDeckQueryRepository),
+    make(IDBTagQueryRepository),
+    make(CardContentFactory),
+  ).invoke(id, data, cb);
 
 /* ------------------------------------------------------------------------- */
 

@@ -6,7 +6,7 @@ import DeckId from '../../../../Domain/Deck/DeckId';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 
 export default class IDBDeckQueryRepository implements DeckQueryRepository {
-  constructor(private memento: DeckMemento, private idb: IndexedDB) {}
+  constructor(private idb: IndexedDB, private memento: DeckMemento) {}
 
   public async paginate(
     fromId: DeckId | undefined,

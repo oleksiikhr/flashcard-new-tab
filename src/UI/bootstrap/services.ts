@@ -99,7 +99,7 @@ register(DeckMemento, () => new DeckMemento());
 
 register(
   IDBDeckQueryRepository,
-  () => new IDBDeckQueryRepository(make(DeckMemento), make(IndexedDB)),
+  () => new IDBDeckQueryRepository(make(IndexedDB), make(DeckMemento)),
 );
 
 register(
@@ -133,7 +133,7 @@ register(TagMemento, () => new TagMemento());
 
 register(
   IDBTagQueryRepository,
-  () => new IDBTagQueryRepository(make(TagMemento), make(IndexedDB)),
+  () => new IDBTagQueryRepository(make(IndexedDB), make(TagMemento)),
 );
 
 register(

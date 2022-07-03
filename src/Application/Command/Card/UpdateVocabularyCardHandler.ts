@@ -24,11 +24,11 @@ export default class UpdateVocabularyCardHandler {
       throw new DomainNotExistsError(CardId.of(id));
     }
 
-    const content = new CardVocabularyContent({
-      answer,
-    });
-
-    card.from(new CardQuestion(question), content, isActive);
+    card.from(
+      new CardQuestion(question),
+      CardVocabularyContent.create(answer),
+      isActive,
+    );
 
     await this.commandRepository.update(card);
 

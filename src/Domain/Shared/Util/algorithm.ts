@@ -1,4 +1,4 @@
-function shuffle(numbers: number[]): number[] {
+export function shuffle<T>(numbers: T[]): T[] {
   return numbers.sort(() => Math.random() - 0.5);
 }
 

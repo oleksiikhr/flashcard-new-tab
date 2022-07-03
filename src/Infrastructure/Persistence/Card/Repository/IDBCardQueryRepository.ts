@@ -4,7 +4,7 @@ import CardQueryRepository from '../../../../Domain/Card/Repository/CardQueryRep
 import CardMemento, { CardRaw } from '../../../../Domain/Card/CardMemento';
 import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 import StoreName from '../../Shared/IndexedDB/StoreName';
-import { randomUniqueRange } from '../../../../Domain/Shared/Util/number';
+import { randomUniqueRange } from '../../../../Domain/Shared/Util/algorithm';
 import DeckId from '../../../../Domain/Deck/DeckId';
 import CardQuestion from '../../../../Domain/Card/CardQuestion';
 

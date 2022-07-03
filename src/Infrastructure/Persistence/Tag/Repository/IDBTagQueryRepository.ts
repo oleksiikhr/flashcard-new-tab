@@ -8,7 +8,7 @@ import StoreName from '../../Shared/IndexedDB/StoreName';
 import TagName from '../../../../Domain/Tag/TagName';
 
 export default class IDBTagQueryRepository implements TagQueryRepository {
-  constructor(private memento: TagMemento, private idb: IndexedDB) {}
+  constructor(private idb: IndexedDB, private memento: TagMemento) {}
 
   public async paginate(
     fromId: TagId | undefined,

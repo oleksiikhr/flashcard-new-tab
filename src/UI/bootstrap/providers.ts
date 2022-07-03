@@ -40,7 +40,7 @@ import FeedDeleteByIdDeckTransactionEvent from '../../Infrastructure/Persistence
 import DeleteFeedByDeckIdTransactionListener from '../../Infrastructure/Persistence/Feed/Listener/DeleteFeedByDeckIdTransactionListener';
 import IndexedDB from '../../Infrastructure/Persistence/Shared/IndexedDB/IndexedDB';
 
-function registerTransactionPipeline() {
+function registerTransactionPipeline(): void {
   const pipeline = make(TransactionPipeline);
 
   pipeline.subscribe(DeckCreateTransactionEvent, [

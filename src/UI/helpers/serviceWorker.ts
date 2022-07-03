@@ -7,7 +7,7 @@ export type ServiceWorkerRequest = {
 
 export type ServiceWorkerResponse = {
   result: 'success' | 'error';
-  response: SWGenerateFeedResponse;
+  response: SWGenerateFeedResponse | unknown;
 };
 
 export type SWGenerateFeedRequest = {

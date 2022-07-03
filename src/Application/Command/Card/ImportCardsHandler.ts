@@ -16,8 +16,8 @@ export type ImportRaw = {
   question: string;
   content: object;
   template_type: number;
-  is_active: boolean;
-  tags: string[];
+  is_active?: boolean;
+  tags?: string[];
 };
 
 export default class ImportCardsHandler {
@@ -41,13 +41,15 @@ export default class ImportCardsHandler {
       throw new DomainNotExistsError(DeckId.of(deckId));
     }
 
-    const tagsMap = await this.getUniqueTags(deck.getId(), raws);
+    const tagsMap = await this.uniqueTags(deck.getId(), raws);
 
     const promises = raws.map((raw) => {
       const templateType = new CardTemplateType(raw.template_type);
       const question = new CardQuestion(raw.question);
       const content = this.contentFactory.make(raw.content, templateType);
-      const tags = raw.tags.map((tagName) => tagsMap.get(tagName)) as Tag[];
+      const tags = (raw.tags || []).map((tagName) =>
+        tagsMap.get(tagName),
+      ) as Tag[];
 
       return this.cardQueryRepository
         .findByQuestion(question)
@@ -66,7 +68,7 @@ export default class ImportCardsHandler {
               .then(() => newCard);
           }
 
-          card.from(question, content, raw.is_active);
+          card.from(question, content, raw.is_active ?? card.getIsActive());
 
           return this.cardCommandRepository.update(card).then(() => card);
         })
@@ -91,14 +93,14 @@ export default class ImportCardsHandler {
     return Promise.all(promises);
   }
 
-  private async getUniqueTags(
+  private async uniqueTags(
     deckId: DeckId,
     raws: ImportRaw[],
   ): Promise<Map<string, Tag>> {
     const tagNames: Set<string> = new Set();
 
     raws.forEach((raw) => {
-      raw.tags.forEach((tagName) => {
+      (raw.tags || []).forEach((tagName) => {
         tagNames.add(tagName);
       });
     });

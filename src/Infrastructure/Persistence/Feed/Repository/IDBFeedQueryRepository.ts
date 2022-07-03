@@ -10,7 +10,7 @@ import { FeedRaw } from '../../../../Domain/Feed/FeedMemento';
 import DeckMemento, { DeckRaw } from '../../../../Domain/Deck/DeckMemento';
 import TagMemento, { TagRaw } from '../../../../Domain/Tag/TagMemento';
 import Tag from '../../../../Domain/Tag/Tag';
-import { random } from '../../../../Domain/Shared/Util/number';
+import { random } from '../../../../Domain/Shared/Util/algorithm';
 import DomainNotExistsError from '../../Shared/IndexedDB/Error/DomainNotExistsError';
 import CardId from '../../../../Domain/Card/CardId';
 import DeckId from '../../../../Domain/Deck/DeckId';

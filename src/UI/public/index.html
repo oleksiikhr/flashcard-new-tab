@@ -163,20 +163,25 @@
       </footer>
     </section>
     <section class="settings-page" page="settings" style="display: none">
-      <div>
-        <button id="create-deck">Create ENG-UKR Deck</button>
+      <div style="margin: 20px; text-align: center; font-size: 2em">
+        Demo version. Page is in development!
+        <br /><br />
+        <code>Create Deck => Import Cards => Generate Feed => Go Home</code>
       </div>
       <br />
-      <div>
-        <input type="file" id="file" value="JSON file" />
-        <button id="import">Import Ukrainian-English Dictionary</button>
+      <div style="text-align: center">
+        <button to="home">Go Home</button>
+        <button id="fetch-abort" style="display: none">Stop downloading</button>
       </div>
       <br />
-      <div>
-        <button id="generate-feed">Generate Feed</button>
-      </div>
+      <div id="process" style="text-align: center"></div>
       <br />
-      <div to="home">Go Home</div>
+      <h2 style="text-align: center; font-size: 1.8em">List of decks</h2>
+      <br />
+      <div style="text-align: center">
+        <button id="create-deck-button">Create ENG-UKR Deck</button>
+      </div>
+      <div id="decks-list" style="padding: 20px; text-align: center"></div>
     </section>
   </body>
 </html>
