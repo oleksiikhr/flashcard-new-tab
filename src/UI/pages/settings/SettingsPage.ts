@@ -44,7 +44,7 @@ export default class SettingsPage implements Page {
       .querySelector('#create-deck-button')
       ?.addEventListener('click', () => {
         createDeck('Eng - Ukr', true, {
-          recalculate: { hours: 1, count: 50, algorithm: 'random' },
+          recalculate: { hours: 24, count: 50, algorithm: 'random' },
         })
           .then(() => {
             this.process('Deck created');

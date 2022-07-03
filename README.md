@@ -1,59 +1,79 @@
-Set up the project
+# Flashcard New Tab
+
+> In development to maintain all the features.
+
+## How it works?
+
+Extension replaces a new tab in the browser. Each time you open the browser/new tab, you will see a new random card.
+
+## Features
+
+- No permissions
+- No analytics
+- No frameworks (pure js)
+- Multiple decks
+- Support for different types of cards
+- Assign tags
+- Local data storage (IndexedDB)
+- Open-Source
+
+## Screenshots
+
+<table>
+  <tr>
+    <td>
+      <a href="https://raw.githubusercontent.com/oleksiikhr/flashcard-new-tab/main/docs/images/home-light.png" title="Home page - light theme">
+        <img src="https://raw.githubusercontent.com/oleksiikhr/flashcard-new-tab/main/docs/images/home-light.png" width="250" alt="Home page - Light theme">
+      </a>
+      <a href="https://raw.githubusercontent.com/oleksiikhr/flashcard-new-tab/main/docs/images/home-dark.png" title="Home page - dark theme">
+        <img src="https://raw.githubusercontent.com/oleksiikhr/flashcard-new-tab/main/docs/images/home-dark.png" width="250" alt="Home page - dark theme">
+      </a>
+    </td>
+  </tr>
+</table>
+
+## Contribution
+
+**Local install**
+
+Install [pnpm](https://pnpm.io/).
 
 ```shell
-$ make up
+# Install packages
+$ pnpm i
+
+# Run linters
+$ pnpm lint:fix
+$ pnpm eslint:fix
+$ pnpm prettier:fix
+$ pnpm stylelint:fix
+
+# Run test
+$ pnpm test
 ```
 
-# DATABASE
+**Local install via docker**
 
-> global
-- theme (dark / light)
+```shell
+# Set up and run the project
+$ make up
 
-> decks
-- id
-- name
-- is_active
-- cards_count
-- active_cards_count
-- tags_count
-- settings ({ count: 1000, recalculate: 'day/week/month', algorithm: 'random/sm2/leitner' })
-- generate_at
-- updated_at
-- created_at
+# Run linters
+$ make lint
+$ make eslint
+$ make prettier
+$ make stylelint
 
-> cards
-- id
-- deck_id
-- question
-- content ({ answer: '' })
-- template_type (default, select, multiSelect, vocabulary)
-- statistics ({ views: 0 })
-- is_active
-- seen_at
-- updated_at
-- created_at
+# Run tests
+$ make tests
 
-> tags
-- id
-- deck_id
-- name
-- updated_at
-- created_at
+# View docker logs
+$ make logs
 
-> card_tag
-- card_id
-- tag_id
-- deck_id
+## Stop project
+$ make down
+```
 
-> feed
-- card_id
-- deck_id
+## License
 
-> statistics
-- id
-- deck_id
-- card_id
-- action
-- created_at
-
-https://www.gettyimages.com/
+[MIT](https://opensource.org/licenses/MIT)
