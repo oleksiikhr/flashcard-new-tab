@@ -1,8 +1,5 @@
-FROM node:14.1-alpine
+FROM node:16-alpine
 
-RUN yarn
-RUN yarn global add parcel-bundler
+WORKDIR /home/node/app
 
-EXPOSE 1234
-
-CMD ["yarn", "start"]
+RUN npm i -g pnpm

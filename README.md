@@ -1,62 +1,78 @@
 # Flashcard New Tab
 
-> Initially, I wanted to write for himself, so that I could learn English (repeat the rules, memorize words, etc.).
-> But then I thought, why not share this code, maybe someone will come in handy. Design and code so-so,
-> but generally usable. :)
+> In development to maintain all the features.
 
 ## How it works?
 
-This extension replace the new tab in the browser. You add Deck(s), attach several questions with answers to it.
-After each opening of a new tab, you will see a random question.
+Extension replaces a new tab in the browser. Each time you open the browser/new tab, you will see a new random card.
 
-## Benefits
+## Features
 
-- No Browser Permissions
-- No Analytics
-- No Frameworks
-- Multiple Decks
+- No permissions
+- No analytics
+- No frameworks (pure js)
+- Multiple decks
+- Support for different types of cards
+- Assign tags
+- Local data storage (IndexedDB)
 - Open-Source
-- Chrome/Firefox Support
-
-## Where to find extension?
-
-- [Google Chrome](https://chrome.google.com/webstore/detail/flashcard-new-tab/aglggobkfpbjcgkhchdcflocblfbadfa)
-- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/flashcard-new-tab/)
 
 ## Screenshots
 
-<p>
-  <img alt="Welcome Page" height="150" src="https://raw.githubusercontent.com/alexeykhr/flashcard-new-tab/master/screenshots/welcome.jpeg" />
-  <img alt="Home Page" height="150" src="https://raw.githubusercontent.com/alexeykhr/flashcard-new-tab/master/screenshots/main.jpeg" />
-  <img alt="Settings Page" height="150" src="https://raw.githubusercontent.com/alexeykhr/flashcard-new-tab/master/screenshots/settings.jpeg" />
-</p>
+<table>
+  <tr>
+    <td>
+      <a href="https://raw.githubusercontent.com/oleksiikhr/flashcard-new-tab/main/docs/images/home-light.png" title="Home page - light theme">
+        <img src="https://raw.githubusercontent.com/oleksiikhr/flashcard-new-tab/main/docs/images/home-light.png" width="250" alt="Home page - Light theme">
+      </a>
+      <a href="https://raw.githubusercontent.com/oleksiikhr/flashcard-new-tab/main/docs/images/home-dark.png" title="Home page - dark theme">
+        <img src="https://raw.githubusercontent.com/oleksiikhr/flashcard-new-tab/main/docs/images/home-dark.png" width="250" alt="Home page - dark theme">
+      </a>
+    </td>
+  </tr>
+</table>
 
-## How to develop?
+## Contribution
 
-[Getting Started Tutorial](https://developer.chrome.com/extensions/getstarted)
+**Local install**
 
-### Manual
+Install [pnpm](https://pnpm.io/).
 
-```shell script
-$ yarn global add parcel-bundler
-$ yarn
-$ yarn start
+```shell
+# Install packages
+$ pnpm i
+
+# Run linters
+$ pnpm lint:fix
+$ pnpm eslint:fix
+$ pnpm prettier:fix
+$ pnpm stylelint:fix
+
+# Run test
+$ pnpm test
 ```
 
-### Docker
+**Local install via docker**
 
-```shell script
-$ docker-compose up -d
+```shell
+# Set up and run the project
+$ make up
+
+# Run linters
+$ make lint
+$ make eslint
+$ make prettier
+$ make stylelint
+
+# Run tests
+$ make tests
+
+# View docker logs
+$ make logs
+
+## Stop project
+$ make down
 ```
-
-## Thanks
-
-- [Parcel](https://github.com/parcel-bundler/parcel)
-- [Feather Icons](https://github.com/feathericons/feather)
-- [Dexie - Wrapper for IndexedDB](https://github.com/dfahlander/Dexie.js)
-- [unDraw - Illustrations](https://undraw.co/)
-- [JetBrains Mono - Font](https://www.jetbrains.com/lp/mono/)
-- Other technologies and tools
 
 ## License
 

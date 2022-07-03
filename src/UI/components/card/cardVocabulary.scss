@@ -1,0 +1,26 @@
+.card-vocabulary-question {
+  font-size: 6em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.card-vocabulary-helper {
+  align-items: center;
+  border-radius: 20px;
+  color: #848484;
+  cursor: pointer;
+  display: flex;
+  font-size: 0.9em;
+  justify-content: center;
+  letter-spacing: 5px;
+  margin-top: 50px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.card-vocabulary-helper_clicked {
+  color: var(--text);
+  cursor: auto;
+  font-size: 3em;
+  font-weight: bold;
+}

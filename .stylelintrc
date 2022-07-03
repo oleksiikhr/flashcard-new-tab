@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-prettier-scss",
+    "stylelint-config-sass-guidelines"
+  ],
+  "rules": {
+    "string-quotes": "double",
+    "selector-class-pattern": null
+  }
+}

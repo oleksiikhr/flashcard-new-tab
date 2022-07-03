@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,minimum-scale=1,initial-scale=1"
+    />
+    <title>New Tab</title>
+    <link href="dist/app.css" rel="stylesheet" />
+    <script src="dist/app.js"></script>
+  </head>
+  <body>
+    <section class="home-page" page="home" style="display: none">
+      <header class="home-page-header">
+        <div class="home-page-header__left">
+          <a class="page-button page-button_settings" to="settings">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M12 16c2.206 0 4-1.794 4-4s-1.794-4-4-4s-4 1.794-4 4s1.794 4 4 4zm0-6c1.084 0 2 .916 2 2s-.916 2-2 2s-2-.916-2-2s.916-2 2-2z"
+              />
+              <path
+                fill="currentColor"
+                d="m2.845 16.136l1 1.73c.531.917 1.809 1.261 2.73.73l.529-.306A8.1 8.1 0 0 0 9 19.402V20c0 1.103.897 2 2 2h2c1.103 0 2-.897 2-2v-.598a8.132 8.132 0 0 0 1.896-1.111l.529.306c.923.53 2.198.188 2.731-.731l.999-1.729a2.001 2.001 0 0 0-.731-2.732l-.505-.292a7.718 7.718 0 0 0 0-2.224l.505-.292a2.002 2.002 0 0 0 .731-2.732l-.999-1.729c-.531-.92-1.808-1.265-2.731-.732l-.529.306A8.1 8.1 0 0 0 15 4.598V4c0-1.103-.897-2-2-2h-2c-1.103 0-2 .897-2 2v.598a8.132 8.132 0 0 0-1.896 1.111l-.529-.306c-.924-.531-2.2-.187-2.731.732l-.999 1.729a2.001 2.001 0 0 0 .731 2.732l.505.292a7.683 7.683 0 0 0 0 2.223l-.505.292a2.003 2.003 0 0 0-.731 2.733zm3.326-2.758A5.703 5.703 0 0 1 6 12c0-.462.058-.926.17-1.378a.999.999 0 0 0-.47-1.108l-1.123-.65l.998-1.729l1.145.662a.997.997 0 0 0 1.188-.142a6.071 6.071 0 0 1 2.384-1.399A1 1 0 0 0 11 5.3V4h2v1.3a1 1 0 0 0 .708.956a6.083 6.083 0 0 1 2.384 1.399a.999.999 0 0 0 1.188.142l1.144-.661l1 1.729l-1.124.649a1 1 0 0 0-.47 1.108c.112.452.17.916.17 1.378c0 .461-.058.925-.171 1.378a1 1 0 0 0 .471 1.108l1.123.649l-.998 1.729l-1.145-.661a.996.996 0 0 0-1.188.142a6.071 6.071 0 0 1-2.384 1.399A1 1 0 0 0 13 18.7l.002 1.3H11v-1.3a1 1 0 0 0-.708-.956a6.083 6.083 0 0 1-2.384-1.399a.992.992 0 0 0-1.188-.141l-1.144.662l-1-1.729l1.124-.651a1 1 0 0 0 .471-1.108z"
+              />
+            </svg>
+          </a>
+        </div>
+        <div class="home-page-header__right">
+          <div component="feed-statistics"></div>
+        </div>
+      </header>
+      <main>
+        <div class="home-page-wrapper">
+          <article class="card" component="card">
+            <div class="card__header">
+              <div class="card__top__left">
+                <div class="card-deck-name">none</div>
+              </div>
+              <div class="card__top__right">
+                <div class="card-icons">
+                  <div class="card-icons__edit">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div class="card-icons__separator">|</div>
+                  <div class="card-icons__clicks">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+                      />
+                    </svg>
+                    <span class="card-clicks-value">0</span>
+                  </div>
+                  <div class="card-icons__views">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
+                    <span class="card-views-value">0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card__content"><!--Dynamic--></div>
+            <div class="card__footer">
+              <div class="card-tags">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                  />
+                </svg>
+                <div class="card-tag-values"></div>
+              </div>
+              <div class="card-dot"></div>
+            </div>
+          </article>
+        </div>
+      </main>
+      <footer class="home-page-footer">
+        <div class="home-page-footer__right">
+          <button class="theme-toggle" component="theme-toggle">
+            <svg
+              class="theme-toggle__svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <mask class="theme-toggle-moon" id="theme-toggle-moon-mask">
+                <rect
+                  x="0"
+                  y="0"
+                  width="100%"
+                  height="100%"
+                  fill="white"
+                ></rect>
+                <circle cx="24" cy="10" r="6" fill="black"></circle>
+              </mask>
+              <circle
+                class="theme-toggle-sun"
+                cx="12"
+                cy="12"
+                r="6"
+                mask="url(#theme-toggle-moon-mask)"
+                fill="currentColor"
+              ></circle>
+              <g class="theme-toggle-sun-beams" stroke="currentColor">
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </g>
+            </svg>
+          </button>
+        </div>
+      </footer>
+    </section>
+    <section class="settings-page" page="settings" style="display: none">
+      <div style="margin: 20px; text-align: center; font-size: 2em">
+        Demo version. Page is in development!
+        <br /><br />
+        <code>Create Deck => Import Cards => Generate Feed => Go Home</code>
+      </div>
+      <br />
+      <div style="text-align: center">
+        <button to="home">Go Home</button>
+        <button id="fetch-abort" style="display: none">Stop downloading</button>
+      </div>
+      <br />
+      <div id="process" style="text-align: center"></div>
+      <br />
+      <h2 style="text-align: center; font-size: 1.8em">List of decks</h2>
+      <br />
+      <div style="text-align: center">
+        <button id="create-deck-button">Create ENG-UKR Deck</button>
+      </div>
+      <div id="decks-list" style="padding: 20px; text-align: center"></div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+.feed-statistics {
+  position: relative;
+}
+
+.feed-statistics__position {
+  font-size: 4em;
+  position: relative;
+
+  &::before {
+    background: var(--accent);
+    border: 3px solid var(--background);
+    border-radius: 50%;
+    content: "";
+    height: 16px;
+    left: -23px;
+    position: absolute;
+    top: calc(50% - 8px);
+    width: 16px;
+  }
+}
+
+.feed-statistics__count {
+  color: var(--text-second);
+  font-size: 2em;
+  text-align: right;
+}
