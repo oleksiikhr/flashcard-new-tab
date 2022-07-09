@@ -40,7 +40,10 @@ Install [pnpm](https://pnpm.io/).
 
 ```shell
 # Install packages
-$ pnpm i
+$ pnpm i --frozen-lockfile
+
+# Run project
+$ pnpm dev
 
 # Run linters
 $ pnpm lint:fix
@@ -48,7 +51,7 @@ $ pnpm eslint:fix
 $ pnpm prettier:fix
 $ pnpm stylelint:fix
 
-# Run test
+# Run tests
 $ pnpm test
 ```
 
@@ -73,6 +76,10 @@ $ make logs
 ## Stop project
 $ make down
 ```
+
+**Install extension**
+
+Load unpacked from path `src/UI/app/public`.
 
 ## License
 

@@ -1,8 +1,8 @@
 import Page from '../Page';
-import { findRandomFeed } from '../../bootstrap/bus';
 import feedStatistics from '../../components/feedStatistics/feedStatistics';
 import card from '../../components/card/card';
-import logger from '../../helpers/logger';
+import logger from '../../helper/logger';
+import findRandomFeed from '../../app/bus/feed/findRandomFeed';
 
 export default class HomePage implements Page {
   protected rootElement!: HTMLDivElement;

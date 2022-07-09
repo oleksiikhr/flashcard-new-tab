@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "description": "Repeat your knowledge with flashcard on each new tab",
   "scripts": {
-    "dev": "node src/UI/build/dev.js",
-    "build": "node src/UI/build/prod.js",
+    "dev": "node src/UI/app/build/dev.js",
+    "build": "node src/UI/app/build/prod.js",
     "lint": "npm run eslint && npm run prettier && npm run stylelint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix && npm run stylelint:fix",
     "eslint": "eslint --ext .ts,.js .",

@@ -1,5 +1,6 @@
-import { findTheme, updateTheme } from '../../bootstrap/bus';
 import ThemeType from '../../../Domain/Settings/Theme/ThemeType';
+import updateTheme from '../../app/bus/settings/updateTheme';
+import findTheme from '../../app/bus/settings/findTheme';
 
 let element: HTMLButtonElement | null = null;
 let theme = findTheme();

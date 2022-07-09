@@ -1,7 +1,7 @@
-import NumberValueObject from '../../Shared/ValueObject/NumberValueObject';
 import ObjectValueValidation from '../../../Infrastructure/Persistence/Shared/IndexedDB/Error/ObjectValueValidation';
+import ValueObject from '../../Shared/ValueObject/ValueObject';
 
-export default class ThemeType extends NumberValueObject {
+export default class ThemeType extends ValueObject<number> {
   public static LIGHT = 0;
 
   public static DARK = 1;

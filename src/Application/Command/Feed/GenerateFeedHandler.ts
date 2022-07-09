@@ -19,7 +19,7 @@ export default class GenerateFeedHandler {
       limit,
     );
 
-    this.logger.info('Feed', this.constructor.name, 'invoke', { decks, limit });
+    this.logger.info('Feed', 'GenerateFeed', 'invoke', { decks, limit });
 
     const promises = decks.map((deck) =>
       this.generateFeed.generate(deck).then((data) => {

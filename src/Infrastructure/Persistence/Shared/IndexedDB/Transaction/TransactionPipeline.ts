@@ -37,7 +37,7 @@ export default class TransactionPipeline {
       },
     );
 
-    this.logger.debug('TransactionPipeline', this.constructor.name, 'trigger', {
+    this.logger.debug('IndexedDB', 'TransactionPipeline', 'trigger', {
       storeNames,
       event,
       listeners,

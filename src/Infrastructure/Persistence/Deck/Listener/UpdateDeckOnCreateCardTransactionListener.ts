@@ -3,13 +3,12 @@ import StoreName from '../../Shared/IndexedDB/StoreName';
 import CardCreateTransactionEvent from '../../Card/Event/CardCreateTransactionEvent';
 import { DeckRaw } from '../../../../Domain/Deck/DeckMemento';
 import DomainNotExistsError from '../../Shared/IndexedDB/Error/DomainNotExistsError';
-import Logger from '../../../../Domain/Shared/Service/Logger';
 import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 
 export default class UpdateDeckOnCreateCardTransactionListener
   implements TransactionListener<CardCreateTransactionEvent>
 {
-  constructor(private idb: IndexedDB, private logger: Logger) {}
+  constructor(private idb: IndexedDB) {}
 
   public isNeedHandle(): boolean {
     return true;
@@ -23,7 +22,6 @@ export default class UpdateDeckOnCreateCardTransactionListener
     transaction: IDBTransaction,
     event: CardCreateTransactionEvent,
   ): Promise<unknown> {
-    const time = performance.now();
     const card = event.getCard();
     const store = transaction.objectStore(StoreName.DECKS);
     const request = store.get(card.getDeckId().getIdentifier());
@@ -39,13 +37,6 @@ export default class UpdateDeckOnCreateCardTransactionListener
       raw.active_cards_count += 1;
     }
 
-    return this.idb.requestPromise(store.put(raw)).finally(() => {
-      this.logger.debug(
-        'TransactionListener',
-        this.constructor.name,
-        'complete',
-        { event, performance: Math.floor(performance.now() - time) },
-      );
-    });
+    return this.idb.requestPromise(store.put(raw));
   }
 }

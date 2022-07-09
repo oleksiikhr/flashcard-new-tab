@@ -1,4 +1,4 @@
-import { h } from '../../../Domain/Shared/Util/dom';
+import { h } from '../../helper/dom';
 
 export default (position: number, count: number) => {
   const element = document.querySelector(
