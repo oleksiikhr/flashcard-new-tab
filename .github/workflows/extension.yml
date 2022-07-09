@@ -40,8 +40,13 @@ jobs:
       - run: pnpm test
       - run: pnpm build
 
+      - name: Zip public folder
+        working-directory: ./src/UI/app/public
+        if: startsWith(github.ref, 'refs/tags/')
+        run: zip -r extension.zip *
+
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: src/UI/app/public/*
+          files: src/UI/app/public/extension.zip
