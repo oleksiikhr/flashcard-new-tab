@@ -1,15 +1,13 @@
 import Page from '../Page';
-import {
-  createDeck,
-  deleteDeck,
-  generateFeedByDeck,
-  importCards,
-  paginateDecks,
-} from '../../bootstrap/bus';
 import { ImportRaw } from '../../../Application/Command/Card/ImportCardsHandler';
-import logger from '../../helpers/logger';
-import { h } from '../../../Domain/Shared/Util/dom';
+import logger from '../../helper/logger';
+import { h } from '../../helper/dom';
 import { shuffle } from '../../../Domain/Shared/Util/algorithm';
+import generateFeedByDeck from '../../app/bus/feed/generateFeedByDeck';
+import createDeck from '../../app/bus/deck/createDeck';
+import importCards from '../../app/bus/card/importCards';
+import paginateDecks from '../../app/bus/deck/paginateDecks';
+import deleteDeck from '../../app/bus/deck/deleteDeck';
 
 // TODO Demo version, refactor code
 

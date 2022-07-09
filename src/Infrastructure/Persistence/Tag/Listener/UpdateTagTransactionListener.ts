@@ -2,17 +2,12 @@ import TransactionListener from '../../Shared/IndexedDB/Transaction/TransactionL
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import TagMemento from '../../../../Domain/Tag/TagMemento';
 import TagUpdateTransactionEvent from '../Event/TagUpdateTransactionEvent';
-import Logger from '../../../../Domain/Shared/Service/Logger';
 import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 
 export default class UpdateTagTransactionListener
   implements TransactionListener<TagUpdateTransactionEvent>
 {
-  constructor(
-    private idb: IndexedDB,
-    private logger: Logger,
-    private memento: TagMemento,
-  ) {}
+  constructor(private idb: IndexedDB, private memento: TagMemento) {}
 
   public isNeedHandle(): boolean {
     return true;
@@ -26,20 +21,12 @@ export default class UpdateTagTransactionListener
     transaction: IDBTransaction,
     event: TagUpdateTransactionEvent,
   ): Promise<unknown> {
-    const time = performance.now();
     const tag = event.getTag();
     const raw = this.memento.serialize(tag);
 
     const store = transaction.objectStore(StoreName.TAGS);
     const request = store.put(raw);
 
-    return this.idb.requestPromise<number>(request).finally(() => {
-      this.logger.debug(
-        'TransactionListener',
-        this.constructor.name,
-        'complete',
-        { event, performance: Math.floor(performance.now() - time) },
-      );
-    });
+    return this.idb.requestPromise<number>(request);
   }
 }

@@ -1,13 +1,12 @@
 import TransactionListener from '../../Shared/IndexedDB/Transaction/TransactionListener';
 import StoreName from '../../Shared/IndexedDB/StoreName';
 import DeckDeleteTransactionEvent from '../../Deck/Event/DeckDeleteTransactionEvent';
-import Logger from '../../../../Domain/Shared/Service/Logger';
 import IndexedDB from '../../Shared/IndexedDB/IndexedDB';
 
 export default class DeleteTagsOnDeleteDeckTransactionListener
   implements TransactionListener<DeckDeleteTransactionEvent>
 {
-  constructor(private idb: IndexedDB, private logger: Logger) {}
+  constructor(private idb: IndexedDB) {}
 
   public isNeedHandle(): boolean {
     return true;
@@ -21,25 +20,13 @@ export default class DeleteTagsOnDeleteDeckTransactionListener
     transaction: IDBTransaction,
     event: DeckDeleteTransactionEvent,
   ): Promise<unknown> {
-    let deleted = 0;
-    const time = performance.now();
     const store = transaction.objectStore(StoreName.TAGS);
     const request = store
       .index('deck_id_idx')
       .openKeyCursor(event.getDeck().getId().getIdentifier());
 
-    return this.idb
-      .requestKeyCursor(request, (primaryKey) => {
-        store.delete(primaryKey);
-        deleted += 1;
-      })
-      .finally(() => {
-        this.logger.debug(
-          'TransactionListener',
-          this.constructor.name,
-          'complete',
-          { event, deleted, performance: Math.floor(performance.now() - time) },
-        );
-      });
+    return this.idb.requestKeyCursor(request, (primaryKey) => {
+      store.delete(primaryKey);
+    });
   }
 }

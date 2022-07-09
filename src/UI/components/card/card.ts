@@ -1,9 +1,9 @@
 import Card from '../../../Domain/Card/Card';
 import Tag from '../../../Domain/Tag/Tag';
 import Deck from '../../../Domain/Deck/Deck';
-import { numberCounter } from '../../helpers/animation';
+import { numberCounter } from '../../helper/animation';
 import CardVocabularyContent from '../../../Domain/Card/Content/CardVocabularyContent';
-import { h } from '../../../Domain/Shared/Util/dom';
+import { h } from '../../helper/dom';
 
 const renderVocabulary = (contentElement: HTMLElement, card: Card) => {
   const content = card.getContent() as CardVocabularyContent;

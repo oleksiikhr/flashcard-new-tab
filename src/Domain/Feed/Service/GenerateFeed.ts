@@ -18,7 +18,7 @@ export default class GenerateFeed {
 
     if (!deck.getIsActive() || !deck.getActiveCardsCount()) {
       return this.deckCommandRepository.update(deck).then(() => {
-        this.logger.debug('Feed', this.constructor.name, 'update empty deck');
+        this.logger.debug('Feed', 'generate', 'update empty deck');
 
         return { deck, cards: [] };
       });
@@ -30,14 +30,14 @@ export default class GenerateFeed {
         deck.getSettings().getRecalculate().count,
       )
       .then((cards) => {
-        this.logger.debug('Feed', this.constructor.name, 'find random cards', {
+        this.logger.debug('Feed', 'generate', 'find random cards', {
           cards,
         });
 
         return this.feedCommandRepository.deleteByDeck(deck).then(() => cards);
       })
       .then((cards) => {
-        this.logger.debug('Feed', this.constructor.name, 'delete by deck', {
+        this.logger.debug('Feed', 'generate', 'delete by deck', {
           deck,
         });
 
@@ -46,14 +46,14 @@ export default class GenerateFeed {
         ).then(() => cards);
       })
       .then((cards) => {
-        this.logger.debug('Feed', this.constructor.name, 'create cards');
+        this.logger.debug('Feed', 'generate', 'create cards');
 
         return this.deckCommandRepository
           .update(deck)
           .then(() => ({ deck, cards }));
       })
       .then((data) => {
-        this.logger.debug('Feed', this.constructor.name, 'update deck');
+        this.logger.debug('Feed', 'generate', 'update deck');
 
         return data;
       });

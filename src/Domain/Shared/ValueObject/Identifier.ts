@@ -1,4 +1,4 @@
-import InvalidIdentifierError from '../Error/InvalidIdentifierError';
+import InvalidIdentifierError from './InvalidIdentifierError';
 
 export default abstract class Identifier {
   private readonly identifier: number;

@@ -25,7 +25,7 @@ export default class IndexedDB {
         }
 
         migration(event).catch((err: unknown) => {
-          this.logger.error('IDB', this.constructor.name, 'openDB', {
+          this.logger.error('IndexedDB', 'openDB', 'migration', {
             err,
           });
         });

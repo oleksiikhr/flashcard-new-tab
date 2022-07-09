@@ -2,8 +2,15 @@ export function shuffle<T>(numbers: T[]): T[] {
   return numbers.sort(() => Math.random() - 0.5);
 }
 
-export function sort(numbers: number[]): number[] {
-  return numbers.sort((a, b) => a - b);
+export function sort(
+  numbers: number[],
+  order: 'asc' | 'desc' = 'asc',
+): number[] {
+  if ('asc' === order) {
+    return numbers.sort((a, b) => a - b);
+  }
+
+  return numbers.sort((a, b) => b - a);
 }
 
 export function randomUniqueRange(
