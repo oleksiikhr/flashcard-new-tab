@@ -1,6 +1,6 @@
 {
   "name": "flashcard-new-tab",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Repeat your knowledge with flashcard on each new tab",
   "scripts": {
     "dev": "node src/UI/build/dev.js",
