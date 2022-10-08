@@ -34,13 +34,33 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - run: pnpm i --frozen-lockfile
+      - run: pnpm typescript
       - run: pnpm eslint
       - run: pnpm prettier
       - run: pnpm stylelint
       - run: pnpm test
       - run: pnpm build
 
-      - name: Zip public folder
+      - name: Commit changes
+        working-directory: ./src/UI/app/public
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git init
+          git add -A
+          git commit -m "deploy"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          force: true
+          directory: ./src/UI/app/public
+
+      - name: Zip extension
         working-directory: ./src/UI/app/public
         if: startsWith(github.ref, 'refs/tags/')
         run: zip -r extension.zip *

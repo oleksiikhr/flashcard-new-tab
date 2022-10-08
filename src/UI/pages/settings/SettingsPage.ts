@@ -1,13 +1,12 @@
 import Page from '../Page';
-import { ImportRaw } from '../../../Application/Command/Card/ImportCardsHandler';
-import logger from '../../helper/logger';
+import { ImportRaw } from '../../../Application/Card/ImportCards/ImportCardsHandler';
 import { h } from '../../helper/dom';
-import { shuffle } from '../../../Domain/Shared/Util/algorithm';
-import generateFeedByDeck from '../../app/bus/feed/generateFeedByDeck';
-import createDeck from '../../app/bus/deck/createDeck';
-import importCards from '../../app/bus/card/importCards';
-import paginateDecks from '../../app/bus/deck/paginateDecks';
-import deleteDeck from '../../app/bus/deck/deleteDeck';
+import { shuffle } from '../../../Domain/Util/algorithm';
+import { deleteDeck } from '../../../Application/Deck/DeleteDeck';
+import { createDeck } from '../../../Application/Deck/CreateDeck';
+import { paginateDeck } from '../../../Application/Deck/PaginateDeck';
+import { importCards } from '../../../Application/Card/ImportCards';
+import { generateFeedByDeck } from '../../../Application/Feed/GenerateFeedByDeck';
 
 // TODO Demo version, refactor code
 
@@ -41,16 +40,17 @@ export default class SettingsPage implements Page {
     this.root
       .querySelector('#create-deck-button')
       ?.addEventListener('click', () => {
-        createDeck('Eng - Ukr', true, {
-          recalculate: { hours: 24, count: 50, algorithm: 'random' },
-        })
+        createDeck
+          .invoke('Eng - Ukr', true, {
+            recalculate: { hours: 24, count: 50, algorithm: 'random' },
+          })
           .then(() => {
             this.process('Deck created');
             this.renderDecks();
           })
           .catch((err: unknown) => {
             this.process('Something went wrong');
-            logger.error('SettingsPage', 'createDeck', 'click', { err });
+            console.error(err);
           });
       });
 
@@ -76,9 +76,7 @@ export default class SettingsPage implements Page {
           return;
         }
 
-        importCards(1, data).catch((err: unknown) =>
-          logger.error('SettingsPage', 'importCards', 'click', { err }),
-        );
+        importCards.invoke(1, data).catch((err: unknown) => console.error(err));
       };
 
       fileReader.readAsText(files.item(0) as File);
@@ -96,7 +94,8 @@ export default class SettingsPage implements Page {
   }
 
   private renderDecks(): void {
-    paginateDecks(undefined, 10)
+    paginateDeck
+      .invoke(undefined, 10)
       .then((decks) => {
         this.decksListElement.innerText = '';
 
@@ -120,7 +119,7 @@ export default class SettingsPage implements Page {
                 'div',
                 {},
                 h('strong', {}, 'Name: '),
-                h('span', {}, deck.getName().getValue()),
+                h('span', {}, deck.getName()),
               ),
               h(
                 'div',
@@ -161,16 +160,15 @@ export default class SettingsPage implements Page {
                 'button',
                 {
                   click: () => {
-                    deleteDeck(deck.getId().getIdentifier())
+                    deleteDeck
+                      .invoke(deck.getId().getIdentifier())
                       .then(() => {
                         this.process('Deck deleted');
                         this.renderDecks();
                       })
                       .catch((err: unknown) => {
                         this.process('Something went wrong');
-                        logger.error('SettingsPage', 'deleteDeck', 'click', {
-                          err,
-                        });
+                        console.error(err);
                       });
                   },
                 },
@@ -180,15 +178,14 @@ export default class SettingsPage implements Page {
                 'button',
                 {
                   click: () => {
-                    generateFeedByDeck(deck.getId().getIdentifier())
+                    generateFeedByDeck
+                      .invoke(deck.getId().getIdentifier())
                       .then(() => {
                         this.process('Feed regenerated');
                       })
                       .catch((err: unknown) => {
                         this.process('Something went wrong');
-                        logger.error('SettingsPage', 'generateFeed', 'click', {
-                          err,
-                        });
+                        console.error(err);
                       });
                   },
                 },
@@ -210,9 +207,7 @@ export default class SettingsPage implements Page {
                   click: () => {
                     this.importCards(deck.getId().getIdentifier(), 10).catch(
                       (err: unknown) => {
-                        logger.error('SettingsPage', 'import-10', 'click', {
-                          err,
-                        });
+                        console.error(err);
                       },
                     );
                   },
@@ -225,9 +220,7 @@ export default class SettingsPage implements Page {
                   click: () => {
                     this.importCards(deck.getId().getIdentifier(), 1000).catch(
                       (err: unknown) => {
-                        logger.error('SettingsPage', 'import-1000', 'click', {
-                          err,
-                        });
+                        console.error(err);
                       },
                     );
                   },
@@ -240,9 +233,7 @@ export default class SettingsPage implements Page {
                   click: () => {
                     this.importCards(deck.getId().getIdentifier()).catch(
                       (err: unknown) => {
-                        logger.error('SettingsPage', 'import-all', 'click', {
-                          err,
-                        });
+                        console.error(err);
                       },
                     );
                   },
@@ -256,9 +247,7 @@ export default class SettingsPage implements Page {
         });
       })
       .catch((err: unknown) => {
-        logger.error('SettingsPage', 'renderDecks', 'click', {
-          err,
-        });
+        console.error(err);
       });
   }
 
@@ -287,17 +276,18 @@ export default class SettingsPage implements Page {
 
     let imported = 0;
 
-    return importCards(deckId, data, () => {
-      imported += 1;
-      this.process(`Importing: ${imported}`);
-    })
+    return importCards
+      .invoke(deckId, data, () => {
+        imported += 1;
+        this.process(`Importing: ${imported}`);
+      })
       .then(() => {
         this.process('Cards imported');
         this.renderDecks();
       })
       .catch((err: unknown) => {
         this.process('Something went wrong');
-        logger.error('SettingsPage', 'importCards', 'click', { err });
+        console.error(err);
       });
   }
 

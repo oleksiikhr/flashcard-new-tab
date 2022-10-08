@@ -1,4 +1,4 @@
-import Logger from '../../../Domain/Shared/Service/Logger';
+import Logger from '../../../Domain/Service/Logger';
 
 /* eslint-disable no-console */
 

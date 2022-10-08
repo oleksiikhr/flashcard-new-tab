@@ -7,8 +7,14 @@ down:
 logs:
 	docker-compose logs -f app
 
+sh:
+	docker-compose exec app sh
+
 build:
 	docker-compose run app pnpm run build
+
+typescript:
+	docker-compose exec app pnpm typescript
 
 lint:
 	docker-compose exec app pnpm lint:fix
@@ -24,3 +30,6 @@ stylelint:
 
 tests:
 	docker-compose exec app pnpm test
+
+tests-coverage:
+	docker-compose exec app pnpm test:coverage

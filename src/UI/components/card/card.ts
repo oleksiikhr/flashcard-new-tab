@@ -1,51 +1,15 @@
-import Card from '../../../Domain/Card/Card';
-import Tag from '../../../Domain/Tag/Tag';
-import Deck from '../../../Domain/Deck/Deck';
+import Card from '../../../Domain/Modules/Card/Card';
+import Tag from '../../../Domain/Modules/Tag/Tag';
+import Deck from '../../../Domain/Modules/Deck/Deck';
 import { numberCounter } from '../../helper/animation';
-import CardVocabularyContent from '../../../Domain/Card/Content/CardVocabularyContent';
 import { h } from '../../helper/dom';
-
-const renderVocabulary = (contentElement: HTMLElement, card: Card) => {
-  const content = card.getContent() as CardVocabularyContent;
-
-  // TODO dynamic text-size depends on text length
-
-  contentElement.append(
-    h(
-      'div',
-      {
-        class: 'card-vocabulary-question',
-      },
-      card.getQuestion().getValue(),
-    ),
-  );
-
-  const helperElement = h(
-    'div',
-    {
-      class: 'card-vocabulary-helper',
-    },
-    'Show answer',
-  );
-
-  helperElement.innerText = content.getAnswer();
-  helperElement.classList.add('card-vocabulary-helper_clicked');
-  // helperElement.addEventListener('click', () => {
-  //   increaseCardClicks(card.getId().getIdentifier(), 1).then((card) => {
-  //     (element.querySelector('.card-clicks-value') as HTMLElement).innerText =
-  //       card.getStatistics().getClicks().toString();
-  //   });
-  // });
-
-  contentElement.append(helperElement);
-};
+import { renderVocabulary } from './cardVocabulary';
 
 export default (card: Card, deck: Deck, tags: Tag[]) => {
   const element = document.querySelector('[component="card"]') as HTMLElement;
 
-  (element.querySelector('.card-deck-name') as HTMLElement).innerText = deck
-    .getName()
-    .getValue();
+  (element.querySelector('.card-deck-name') as HTMLElement).innerText =
+    deck.getName();
 
   numberCounter(
     element.querySelector('.card-clicks-value') as HTMLElement,
@@ -66,7 +30,7 @@ export default (card: Card, deck: Deck, tags: Tag[]) => {
         {
           class: 'card-tag-value',
         },
-        tag.getName().getValue(),
+        tag.getName(),
       ),
     );
   });

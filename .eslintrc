@@ -18,6 +18,9 @@
   "rules": {
     "class-methods-use-this": "off",
     "import/prefer-default-export": "off",
+    "no-console": "off",
+    "import/no-cycle": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
     "yoda": ["error", "always"]
   }
 }

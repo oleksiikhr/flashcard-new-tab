@@ -1,39 +1,9 @@
 import '../styles/index.scss';
 import pageManager from '../../pages/PageManager';
-import { register } from '../providers/register';
 import themeToggler from '../../components/theme/toggler';
-import { resolvePath } from '../config/build';
-import {
-  ServiceWorkerRequest,
-  ServiceWorkerResponse,
-} from '../../helper/serviceWorker';
-import logger from '../../helper/logger';
-
-register();
+import { generateFeed } from '../../../Application/Feed/GenerateFeed';
 
 themeToggler.register();
-
-navigator.serviceWorker
-  .register(resolvePath('sw.js'))
-  .then((registration) => {
-    const data: ServiceWorkerRequest = {
-      command: {
-        action: 'generateFeed',
-        limit: 3,
-      },
-    };
-
-    registration.active?.postMessage(data);
-  })
-  .catch((err: unknown) =>
-    logger.error('App', 'serviceWorker', 'registration', { err }),
-  );
-
-navigator.serviceWorker.addEventListener('message', (event) => {
-  const data = event.data as ServiceWorkerResponse;
-
-  logger.info('App', 'serviceWorker', 'message', { event, data });
-});
 
 window.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll(`[to]`).forEach((element) => {
@@ -44,3 +14,23 @@ window.addEventListener('DOMContentLoaded', () => {
 
   pageManager.render('home');
 });
+
+// TODO Refactor, delay regenerate feed
+setTimeout(() => {
+  // TODO Delete on next release
+  navigator.serviceWorker
+    ?.getRegistrations()
+    .then((registrations) => {
+      const workers = registrations.map((registration) =>
+        registration.unregister(),
+      );
+
+      Promise.all(workers).catch((err) => console.error(err));
+    })
+    .catch((err) => console.error(err));
+
+  generateFeed
+    .invoke(3)
+    .then((res) => console.log(res))
+    .catch((err) => console.error(err));
+}, 1000);

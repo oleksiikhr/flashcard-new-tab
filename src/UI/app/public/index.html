@@ -7,8 +7,8 @@
       content="width=device-width,minimum-scale=1,initial-scale=1"
     />
     <title>New Tab</title>
-    <link href="/dist/app.css" rel="stylesheet" />
-    <script src="/dist/app.js"></script>
+    <link href="dist/app.css" rel="stylesheet" />
+    <script src="dist/app.js"></script>
   </head>
   <body>
     <section class="home-page" page="home" style="display: none">
@@ -28,7 +28,7 @@
           </a>
         </div>
         <div class="home-page-header__right">
-          <div component="feed-statistics"></div>
+          <div class="feed-statistics" component="feed-statistics"></div>
         </div>
       </header>
       <main>
@@ -121,6 +121,9 @@
         </div>
       </main>
       <footer class="home-page-footer">
+        <div class="home-page-footer__left">
+          <div class="package-version"></div>
+        </div>
         <div class="home-page-footer__right">
           <button class="theme-toggle" component="theme-toggle">
             <svg

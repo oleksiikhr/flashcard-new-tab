@@ -1,5 +1,5 @@
-import Deck from '../../Domain/Deck/Deck';
-import Card from '../../Domain/Card/Card';
+import Deck from '../../Domain/Modules/Deck/Deck';
+import Card from '../../Domain/Modules/Card/Card';
 
 export type ServiceWorkerRequest = {
   command: SWGenerateFeedRequest;

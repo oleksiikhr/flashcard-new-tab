@@ -6,7 +6,6 @@ const options = require('./common');
 esbuild
   .build({
     ...options,
-    sourcemap: true,
     minify: true,
   })
   .then(() => console.log('⚡ Done'))

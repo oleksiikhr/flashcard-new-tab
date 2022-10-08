@@ -4,7 +4,6 @@ export default (position: number, count: number) => {
   const element = document.querySelector(
     '[component="feed-statistics"]',
   ) as HTMLElement;
-  element.classList.add('feed-statistics');
 
   element.innerText = '';
 
