@@ -1,8 +1,8 @@
-import Card from '../../../Domain/Modules/Card/Card';
-import Tag from '../../../Domain/Modules/Tag/Tag';
-import Deck from '../../../Domain/Modules/Deck/Deck';
-import { numberCounter } from '../../helper/animation';
-import { h } from '../../helper/dom';
+import Card from '../../../../Domain/Modules/Card/Card';
+import Tag from '../../../../Domain/Modules/Tag/Tag';
+import Deck from '../../../../Domain/Modules/Deck/Deck';
+import { numberCounter } from '../../../helper/animation';
+import { h } from '../../../helper/dom';
 import { renderVocabulary } from './cardVocabulary';
 
 export default (card: Card, deck: Deck, tags: Tag[]) => {

@@ -1,7 +1,9 @@
+@import "global";
 @import "header";
 @import "main";
 @import "footer";
 
 // Components
-@import "../../../components/feedStatistics/feedStatistics";
-@import "../../../components/card/card";
+@import "../feedStatistics/feedStatistics";
+@import "../card/card";
+@import "../theme/toggler";

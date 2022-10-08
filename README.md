@@ -12,7 +12,7 @@ Extension replaces a new tab in the browser. Each time you open the browser/new 
 - No analytics
 - No frameworks (pure js)
 - Multiple decks
-- Support for different types of cards
+- Support different types of cards
 - Assign tags
 - Local data storage (IndexedDB)
 - Open-Source
@@ -33,6 +33,28 @@ Extension replaces a new tab in the browser. Each time you open the browser/new 
 </table>
 
 ## Contribution
+
+**Install via docker**
+
+```shell
+# Set up and run the project
+$ make up
+
+# Run linters
+$ make lint
+$ make eslint
+$ make prettier
+$ make stylelint
+
+# Run tests
+$ make tests
+
+# View docker logs
+$ make logs
+
+## Stop project
+$ make down
+```
 
 **Local install**
 
@@ -55,31 +77,9 @@ $ pnpm stylelint:fix
 $ pnpm test
 ```
 
-**Local install via docker**
-
-```shell
-# Set up and run the project
-$ make up
-
-# Run linters
-$ make lint
-$ make eslint
-$ make prettier
-$ make stylelint
-
-# Run tests
-$ make tests
-
-# View docker logs
-$ make logs
-
-## Stop project
-$ make down
-```
-
 **Install extension**
 
-Load unpacked from path `src/UI/app/public`.
+Load unpacked from path `src/UI/public`.
 
 ## License
 

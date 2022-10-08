@@ -1,6 +1,6 @@
-import ThemeType from '../../../Domain/Modules/Settings/Theme/ThemeType';
-import { updateTheme } from '../../../Application/Theme/UpdateTheme';
-import { findTheme } from '../../../Application/Theme/FindTheme';
+import ThemeType from '../../../../Domain/Modules/Settings/Theme/ThemeType';
+import { updateTheme } from '../../../../Application/Theme/UpdateTheme';
+import { findTheme } from '../../../../Application/Theme/FindTheme';
 
 let element: HTMLButtonElement | null = null;
 let theme = findTheme.invoke();
@@ -19,11 +19,9 @@ const applyPreference = () => {
 };
 
 const onDOMContentLoaded = () => {
-  element = document.querySelector(
-    '[component="theme-toggle"]',
-  ) as HTMLButtonElement;
+  element = document.querySelector('[component="theme-toggle"]');
 
-  element.addEventListener('click', () => {
+  element?.addEventListener('click', () => {
     theme
       .then((result) => {
         theme = updateTheme.invoke(

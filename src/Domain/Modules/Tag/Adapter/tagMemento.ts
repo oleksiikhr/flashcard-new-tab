@@ -1,4 +1,4 @@
-import TagMemento from './TagMemento';
+import TagMemento from '../Service/TagMemento';
 
 const tagMemento = new TagMemento();
 

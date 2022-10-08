@@ -1,6 +1,6 @@
-import Card from '../../../Domain/Modules/Card/Card';
-import CardVocabularyContent from '../../../Domain/Modules/Card/Content/CardVocabularyContent';
-import { h } from '../../helper/dom';
+import Card from '../../../../Domain/Modules/Card/Card';
+import CardVocabularyContent from '../../../../Domain/Modules/Card/Content/CardVocabularyContent';
+import { h } from '../../../helper/dom';
 
 const renderVocabulary = (contentElement: HTMLElement, card: Card) => {
   const content = card.getContent() as CardVocabularyContent;

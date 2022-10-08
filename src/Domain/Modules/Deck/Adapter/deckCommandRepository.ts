@@ -1,6 +1,14 @@
 import IDBDeckCommandRepository from '../../../../Infrastructure/Modules/Deck/Repository/IDBDeckCommandRepository';
-import { transactionPipeline } from '../../../../Infrastructure/Persistence/IndexedDB';
+import {
+  idb,
+  transactionPipeline,
+} from '../../../../Infrastructure/Persistence/IndexedDB';
+import { deckMemento } from './deckMemento';
 
-const deckCommandRepository = new IDBDeckCommandRepository(transactionPipeline);
+const deckCommandRepository = new IDBDeckCommandRepository(
+  transactionPipeline,
+  deckMemento,
+  idb,
+);
 
 export { deckCommandRepository };

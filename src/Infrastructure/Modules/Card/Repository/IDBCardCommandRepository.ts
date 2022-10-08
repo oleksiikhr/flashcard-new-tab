@@ -19,7 +19,7 @@ import CardCommandRepository from '../../../../Domain/Modules/Card/Repository/Ca
 
 export default class IDBCardCommandRepository implements CardCommandRepository {
   constructor(
-    private transactionPipeline: TransactionPipeline,
+    private pipeline: TransactionPipeline,
     private cardMemento: CardMemento,
     private idb: IndexedDB,
   ) {}
@@ -27,7 +27,7 @@ export default class IDBCardCommandRepository implements CardCommandRepository {
   public create(card: Card): Promise<void> {
     const event = new CardCreateTransactionEvent(card);
 
-    return this.transactionPipeline.trigger(event, [
+    return this.pipeline.trigger(event, [
       new CreateCardTransactionListener(this.idb, this.cardMemento),
       new UpdateDeckOnCreateCardTransactionListener(this.idb),
     ]);
@@ -36,7 +36,7 @@ export default class IDBCardCommandRepository implements CardCommandRepository {
   public update(card: Card): Promise<void> {
     const event = new CardUpdateTransactionEvent(card);
 
-    return this.transactionPipeline.trigger(event, [
+    return this.pipeline.trigger(event, [
       new UpdateCardTransactionListener(this.idb, this.cardMemento),
       new UpdateDeckOnUpdateCardTransactionListener(this.idb),
     ]);
@@ -45,7 +45,7 @@ export default class IDBCardCommandRepository implements CardCommandRepository {
   public delete(card: Card): Promise<void> {
     const event = new CardDeleteTransactionEvent(card);
 
-    return this.transactionPipeline.trigger(event, [
+    return this.pipeline.trigger(event, [
       new UpdateDeckOnDeleteCardTransactionListener(this.idb),
       new DeleteFeedOnDeleteCardTransactionListener(this.idb),
       new DeleteCardTransactionListener(this.idb),
@@ -55,7 +55,7 @@ export default class IDBCardCommandRepository implements CardCommandRepository {
   public syncTags(card: Card, tags: Tag[]): Promise<void> {
     const event = new CardSyncTagsTransactionEvent(card, tags);
 
-    return this.transactionPipeline.trigger(event, [
+    return this.pipeline.trigger(event, [
       new SyncCardToTagsTransactionListener(this.idb),
     ]);
   }

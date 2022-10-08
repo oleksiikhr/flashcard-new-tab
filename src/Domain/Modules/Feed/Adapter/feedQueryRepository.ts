@@ -1,8 +1,8 @@
 import IDBFeedQueryRepository from '../../../../Infrastructure/Modules/Feed/Repository/IDBFeedQueryRepository';
-import { deckMemento } from '../../Deck/Service';
-import { cardMemento } from '../../Card/Service';
-import { tagMemento } from '../../Tag/Service';
 import { idb } from '../../../../Infrastructure/Persistence/IndexedDB';
+import { deckMemento } from '../../Deck/Adapter/deckMemento';
+import { cardMemento } from '../../Card/Adapter/cardMemento';
+import { tagMemento } from '../../Tag/Adapter/tagMemento';
 
 const feedQueryRepository = new IDBFeedQueryRepository(
   deckMemento,

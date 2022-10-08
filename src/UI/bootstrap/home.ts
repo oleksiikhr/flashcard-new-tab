@@ -1,18 +1,12 @@
+import themeToggler from '../pages/home/theme/toggler';
+import { generateFeed } from '../../Application/Feed/GenerateFeed';
+import { renderHomePage } from '../pages/home/render';
 import '../styles/index.scss';
-import pageManager from '../../pages/PageManager';
-import themeToggler from '../../components/theme/toggler';
-import { generateFeed } from '../../../Application/Feed/GenerateFeed';
 
 themeToggler.register();
 
 window.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll(`[to]`).forEach((element) => {
-    element.addEventListener('click', () => {
-      pageManager.render(element.getAttribute('to') as string);
-    });
-  });
-
-  pageManager.render('home');
+  renderHomePage();
 });
 
 // TODO Refactor, delay regenerate feed
@@ -33,4 +27,4 @@ setTimeout(() => {
     .invoke(3)
     .then((res) => console.log(res))
     .catch((err) => console.error(err));
-}, 1000);
+}, 1500);

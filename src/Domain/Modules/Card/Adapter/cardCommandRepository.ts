@@ -3,7 +3,7 @@ import {
   idb,
   transactionPipeline,
 } from '../../../../Infrastructure/Persistence/IndexedDB';
-import { cardMemento } from '../Service';
+import { cardMemento } from './cardMemento';
 
 const cardCommandRepository = new IDBCardCommandRepository(
   transactionPipeline,

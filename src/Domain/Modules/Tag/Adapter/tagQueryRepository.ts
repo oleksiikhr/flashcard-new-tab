@@ -1,6 +1,6 @@
 import IDBTagQueryRepository from '../../../../Infrastructure/Modules/Tag/Repository/IDBTagQueryRepository';
-import { tagMemento } from '../Service';
 import { idb } from '../../../../Infrastructure/Persistence/IndexedDB';
+import { tagMemento } from './tagMemento';
 
 const tagQueryRepository = new IDBTagQueryRepository(tagMemento, idb);
 

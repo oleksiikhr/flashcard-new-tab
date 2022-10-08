@@ -1,6 +1,6 @@
 import FindThemeHandler from './FindThemeHandler';
-import { identifyColorScheme } from '../../../Domain/Modules/Settings/Service';
 import { settingsQueryRepository } from '../../../Domain/Modules/Settings/Adapter/settingsQueryRepository';
+import { identifyColorScheme } from '../../../Domain/Modules/Settings/Adapter/identifyColorScheme';
 
 const findTheme = new FindThemeHandler(
   settingsQueryRepository,

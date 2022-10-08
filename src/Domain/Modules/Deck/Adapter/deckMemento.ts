@@ -1,4 +1,4 @@
-import DeckMemento from './DeckMemento';
+import DeckMemento from '../Service/DeckMemento';
 
 const deckMemento = new DeckMemento();
 
