@@ -42,7 +42,7 @@ jobs:
       - run: pnpm build
 
       - name: Commit changes
-        working-directory: ./src/UI/public
+        working-directory: ./src/app/public
         if: github.ref == 'refs/heads/main'
         run: |
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -58,10 +58,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
           force: true
-          directory: ./src/UI/public
+          directory: ./src/app/public
 
       - name: Zip extension
-        working-directory: ./src/UI/public
+        working-directory: ./src/app/public
         if: startsWith(github.ref, 'refs/tags/')
         run: zip -r extension.zip *
 
@@ -69,4 +69,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: src/UI/public/extension.zip
+          files: src/app/public/extension.zip

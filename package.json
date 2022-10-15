@@ -1,10 +1,10 @@
 {
   "name": "flashcard-new-tab",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Repeat your knowledge with flashcard on each new tab",
   "scripts": {
-    "dev": "node src/UI/build/dev.js",
-    "build": "node src/UI/build/prod.js",
+    "dev": "node src/app/build/dev.js",
+    "build": "node src/app/build/prod.js",
     "lint": "npm run typescript && npm run eslint && npm run prettier && npm run stylelint",
     "lint:fix": "npm run typescript && npm run eslint:fix && npm run prettier:fix && npm run stylelint:fix",
     "typescript": "tsc --noEmit",

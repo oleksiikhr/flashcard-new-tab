@@ -79,7 +79,7 @@ $ pnpm test
 
 **Install extension**
 
-Load unpacked from path `src/UI/public`.
+Load unpacked from path `src/app/public`.
 
 ## License
 
