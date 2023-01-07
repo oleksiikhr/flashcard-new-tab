@@ -1,8 +1,7 @@
-import Tag from '../../model/Tag';
-import { TagRaw, unserializeTag } from '../../model/memento';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
+import { Tag, TagSerialized, unserializeTag } from '../../model/tag';
 
 export const findActiveTagByDeckIdRequest = async (
   deckId: number,
@@ -15,7 +14,7 @@ export const findActiveTagByDeckIdRequest = async (
     .index('deck_id_and_is_active_idx')
     .getAll([deckId, 1]);
 
-  return requestPromise<TagRaw[]>(request).then((raws) =>
-    (raws as TagRaw[]).map((raw) => unserializeTag(raw)),
+  return requestPromise<TagSerialized[]>(request).then((raws) =>
+    (raws as TagSerialized[]).map((raw) => unserializeTag(raw)),
   );
 };

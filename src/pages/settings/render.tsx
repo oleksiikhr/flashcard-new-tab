@@ -3,11 +3,11 @@ import { shuffle } from '../../shared/util/algorithm';
 import {
   importCards,
   ImportRaw,
-} from '../../entities/card/useCases/importCards';
+} from '../../entities/card/model/actions/importCards';
 import { paginateDecksRequest } from '../../entities/deck/database/requests/paginateDecksRequest';
-import { deleteDeck } from '../../entities/deck/useCases/deleteDeck';
-import { createDeck } from '../../entities/deck/useCases/createDeck';
-import { generateFeedByDeck } from '../../entities/feed/useCases/generateFeedByDeck';
+import { deleteDeck } from '../../entities/deck/model/actions/deleteDeck';
+import { createDeck } from '../../entities/deck/model/actions/createDeck';
+import { generateFeedByDeck } from '../../entities/feed/service/actions/generateFeedByDeck';
 
 const renderSettingsPage = () => {
   const rootElement = document.querySelector(
@@ -24,7 +24,7 @@ const renderSettingsPage = () => {
     processElement.innerText = message;
   }
 
-  const importBulkCards = async (deckId: number, count?: number) => {
+  const importBulkCards = async (deckId: string, count?: number) => {
     process('Downloading the file..');
 
     let data = (await fetch(
@@ -48,7 +48,7 @@ const renderSettingsPage = () => {
       .then(() => {
         process('Cards imported');
       })
-      .catch((err: unknown) => {
+      .catch((err) => {
         process('Something went wrong');
         console.error(err);
       });
@@ -60,27 +60,27 @@ const renderSettingsPage = () => {
         decksListElement.innerText = '';
 
         decks.forEach((deck) => {
-          const { recalculate } = deck.getSettings();
+          const { recalculate } = deck.settings;
 
           decksListElement.append(
             <div style="display: inline-block; border: 1px solid; padding: 15px; font-size: 1.5em; text-align: left; margin: 10px;">
               <div>
                 <strong>ID: </strong>
-                <span>{deck.getId()}</span>
+                <span>{deck.id}</span>
               </div>
               <div>
                 <strong>Name: </strong>
-                <span>{deck.getName()}</span>
+                <span>{deck.name}</span>
               </div>
               <div>
                 <strong>Cards/Active: </strong>
                 <span>
-                  {deck.getCardsCount()}/{deck.getActiveCardsCount()}
+                  {deck.metadata.cardsCount}/{deck.metadata.activeCardsCount}
                 </span>
               </div>
               <div>
                 <strong>Next generate feed: </strong>
-                <span>{deck.getGeneratedAt().toLocaleString()}</span>
+                <span>{deck.generateAt.toLocaleString()}</span>
               </div>
               <div>
                 <strong>Settings: </strong>
@@ -94,7 +94,7 @@ const renderSettingsPage = () => {
               <br />
               <button
                 click={() => {
-                  deleteDeck(deck.getId())
+                  deleteDeck(deck.id)
                     .then(() => {
                       process('Deck deleted');
                       renderDecks();
@@ -109,7 +109,7 @@ const renderSettingsPage = () => {
               </button>
               <button
                 click={() => {
-                  generateFeedByDeck(deck.getId())
+                  generateFeedByDeck(deck.id)
                     .then(() => {
                       process('Feed regenerated');
                     })
@@ -129,7 +129,7 @@ const renderSettingsPage = () => {
               <br />
               <button
                 click={() => {
-                  importBulkCards(deck.getId(), 10).catch((err) => {
+                  importBulkCards(deck.id, 10).catch((err) => {
                     console.error(err);
                   });
                 }}
@@ -138,7 +138,7 @@ const renderSettingsPage = () => {
               </button>
               <button
                 click={() => {
-                  importBulkCards(deck.getId(), 1000).catch((err) => {
+                  importBulkCards(deck.id, 1000).catch((err) => {
                     console.error(err);
                   });
                 }}
@@ -147,7 +147,7 @@ const renderSettingsPage = () => {
               </button>
               <button
                 click={() => {
-                  importBulkCards(deck.getId()).catch((err: unknown) => {
+                  importBulkCards(deck.id).catch((err) => {
                     console.error(err);
                   });
                 }}
@@ -159,7 +159,7 @@ const renderSettingsPage = () => {
           );
         });
       })
-      .catch((err: unknown) => {
+      .catch((err) => {
         console.error(err);
       });
   };
@@ -174,39 +174,11 @@ const renderSettingsPage = () => {
           process('Deck created');
           renderDecks();
         })
-        .catch((err: unknown) => {
+        .catch((err) => {
           process('Something went wrong');
           console.error(err);
         });
     });
-
-  rootElement.querySelector('#import')?.addEventListener('click', () => {
-    const { files } = rootElement.querySelector('#file') as HTMLInputElement;
-
-    if (files === null || files.length === 0) {
-      return;
-    }
-
-    const fileReader = new FileReader();
-    fileReader.onload = (evt) => {
-      if (evt.target === null || typeof evt.target.result !== 'string') {
-        return;
-      }
-
-      let data: ImportRaw[] = [];
-
-      try {
-        data = JSON.parse(evt.target.result) as ImportRaw[];
-      } catch (err) {
-        console.error(err);
-        return;
-      }
-
-      importCards(1, data).catch((err: unknown) => console.error(err));
-    };
-
-    fileReader.readAsText(files.item(0) as File);
-  });
 
   renderDecks();
 

@@ -4,6 +4,7 @@ import card from './card/card';
 import './styles/index.scss';
 import { findRandomFeedRequest } from '../../entities/feed/database/requests/findRandomFeedRequest';
 import { updateCardRequest } from '../../entities/card/database/requests/updateCardRequest';
+import { updateLastSeenCard } from '../../entities/card/model/card';
 
 const renderHomePage = () => {
   (
@@ -13,11 +14,10 @@ const renderHomePage = () => {
   findRandomFeedRequest()
     .then((feed) => {
       if (undefined !== feed) {
-        feed.getCard().updateLastSeen();
-        updateCardRequest(feed.getCard()).catch(console.error);
-
-        feedStatistics(feed.getPosition(), feed.getCount());
-        card(feed.getCard(), feed.getDeck(), feed.getTags());
+        updateLastSeenCard(feed.card);
+        updateCardRequest(feed.card).catch(console.error);
+        feedStatistics(feed.position, feed.count);
+        card(feed.card, feed.deck, feed.tags);
       }
     })
     .catch((err) => console.error(err))

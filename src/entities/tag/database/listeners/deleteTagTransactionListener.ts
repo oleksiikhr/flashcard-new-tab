@@ -1,21 +1,21 @@
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
-import Tag from '../../model/Tag';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
+import { Tag } from '../../model/tag';
 
 export const deleteTagTransactionListener: TransactionListener<Tag> = {
-  isNeedHandle(): boolean {
+  invokable(): boolean {
     return true;
   },
 
-  getStoreName(): StoreName {
+  storeName(): StoreName {
     return StoreName.TAGS;
   },
 
   invoke(transaction: IDBTransaction, tag: Tag): Promise<unknown> {
     const store = transaction.objectStore(StoreName.TAGS);
-    const request = store.delete(tag.getId());
+    const request = store.delete(tag.id);
 
-    return requestPromise<number>(request);
+    return requestPromise(request);
   },
 };

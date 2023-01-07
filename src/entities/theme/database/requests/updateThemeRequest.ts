@@ -1,7 +1,6 @@
 import { setObject } from '../../../../shared/database/localStorage/localStorage';
-import { Theme } from '../../model/Theme';
-import { serializeTheme, ThemeRaw } from '../../model/memento';
+import { serializeTheme, Theme, ThemeSerialized } from '../../model/theme';
 
 export const updateThemeRequest = (theme: Theme): void => {
-  setObject<ThemeRaw>('theme', serializeTheme(theme));
+  setObject<ThemeSerialized>('theme', serializeTheme(theme));
 };

@@ -1,24 +1,22 @@
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
-import Tag from '../../model/Tag';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
-import { serializeTag } from '../../model/memento';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
+import { serializeTag, Tag } from '../../model/tag';
 
 export const updateTagTransactionListener: TransactionListener<Tag> = {
-  isNeedHandle(): boolean {
+  invokable(): boolean {
     return true;
   },
 
-  getStoreName(): StoreName {
+  storeName(): StoreName {
     return StoreName.TAGS;
   },
 
   invoke(transaction: IDBTransaction, tag: Tag): Promise<unknown> {
     const raw = serializeTag(tag);
-
     const store = transaction.objectStore(StoreName.TAGS);
     const request = store.put(raw);
 
-    return requestPromise<number>(request);
+    return requestPromise(request);
   },
 };

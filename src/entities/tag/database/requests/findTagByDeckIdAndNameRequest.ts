@@ -1,11 +1,10 @@
-import Tag from '../../model/Tag';
-import { TagRaw, unserializeTag } from '../../model/memento';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
+import { Tag, TagSerialized, unserializeTag } from '../../model/tag';
 
 export const findTagByDeckIdAndNameRequest = async (
-  deckId: number,
+  deckId: string,
   name: string,
 ): Promise<Tag | undefined> => {
   const conn = await useConnection();
@@ -16,7 +15,7 @@ export const findTagByDeckIdAndNameRequest = async (
     .index('deck_id_and_name_idx')
     .get(IDBKeyRange.only([deckId, name]));
 
-  return requestPromise<TagRaw>(request).then((raw) =>
+  return requestPromise<TagSerialized>(request).then((raw) =>
     undefined !== raw ? unserializeTag(raw) : undefined,
   );
 };

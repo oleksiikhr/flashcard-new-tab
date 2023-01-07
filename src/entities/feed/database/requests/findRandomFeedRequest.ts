@@ -1,20 +1,18 @@
-import Feed from '../../model/Feed';
 import { random } from '../../../../shared/util/algorithm';
-import { FeedRaw } from '../../model/memento';
-import {
-  CardRaw,
-  CardTagRaw,
-  unserializeCard,
-} from '../../../card/model/memento';
-import { DeckRaw, unserializeDeck } from '../../../deck/model/memento';
-import { TagRaw, unserializeTag } from '../../../tag/model/memento';
-import Tag from '../../../tag/model/Tag';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
 import {
   requestPromise,
   requestRandom,
 } from '../../../../shared/database/indexedDB/idb';
+import {
+  CardSerialized,
+  CardTag,
+  unserializeCard,
+} from '../../../card/model/card';
+import { DeckSerialized, unserializeDeck } from '../../../deck/model/deck';
+import { Tag, TagSerialized, unserializeTag } from '../../../tag/model/tag';
+import { Feed, FeedSerialized } from '../../model/feed';
 
 export const findRandomFeedRequest = async (): Promise<Feed | undefined> => {
   const conn = await useConnection();
@@ -38,35 +36,38 @@ export const findRandomFeedRequest = async (): Promise<Feed | undefined> => {
     .objectStore(StoreName.CARD_TAG)
     .index('card_id_idx');
 
-  const feedTotal = (await requestPromise<number>(feedStore.count())) as number;
+  const feedTotal = (await requestPromise(feedStore.count())) as number;
 
   if (feedTotal === 0) {
     return undefined;
   }
 
   const position = random(0, feedTotal - 1);
-  const feed = await requestRandom<FeedRaw>(feedStore.openCursor(), position);
+  const feed = await requestRandom<FeedSerialized>(
+    feedStore.openCursor(),
+    position,
+  );
 
   if (undefined === feed) {
     return undefined;
   }
 
   const [card, deck, tags] = await Promise.all([
-    requestPromise<CardRaw>(cardStore.get(feed.card_id)).then((raw) =>
+    requestPromise<CardSerialized>(cardStore.get(feed.card_id)).then((raw) =>
       undefined !== raw ? unserializeCard(raw) : undefined,
     ),
-    requestPromise<DeckRaw>(deckStore.get(feed.deck_id)).then((raw) =>
+    requestPromise<DeckSerialized>(deckStore.get(feed.deck_id)).then((raw) =>
       undefined !== raw ? unserializeDeck(raw) : undefined,
     ),
-    requestPromise<CardTagRaw[]>(cardTagStore.getAll(feed.card_id)).then(
-      (raws) =>
-        Promise.all(
-          (raws as CardTagRaw[]).map((raw) =>
-            requestPromise<TagRaw>(tagStore.get(raw.tag_id)).then((subRaw) =>
+    requestPromise<CardTag[]>(cardTagStore.getAll(feed.card_id)).then((raws) =>
+      Promise.all(
+        (raws as CardTag[]).map((raw) =>
+          requestPromise<TagSerialized>(tagStore.get(raw.tag_id)).then(
+            (subRaw) =>
               undefined !== subRaw ? unserializeTag(subRaw) : undefined,
-            ),
           ),
         ),
+      ),
     ),
   ]);
 
@@ -78,11 +79,11 @@ export const findRandomFeedRequest = async (): Promise<Feed | undefined> => {
     throw new Error('Deck not found.');
   }
 
-  return new Feed(
+  return {
     card,
     deck,
-    tags.filter((tag) => undefined !== tag) as Tag[],
-    feedTotal,
-    position + 1,
-  );
+    tags: tags.filter((tag) => undefined !== tag) as Tag[],
+    count: feedTotal,
+    position: position + 1,
+  };
 };

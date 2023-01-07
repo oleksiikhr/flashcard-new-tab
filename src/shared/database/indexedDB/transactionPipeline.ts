@@ -8,9 +8,9 @@ export const transactionPipeline = async <T extends TransactionEvent>(
 ): Promise<void> => {
   const storeNames: Set<string> = new Set();
   const listeners = transactionListeners.filter((listener) => {
-    const isNeedHandle = listener.isNeedHandle(event);
+    const isNeedHandle = listener.invokable(event);
     if (isNeedHandle) {
-      storeNames.add(listener.getStoreName(event));
+      storeNames.add(listener.storeName(event));
     }
 
     return isNeedHandle;

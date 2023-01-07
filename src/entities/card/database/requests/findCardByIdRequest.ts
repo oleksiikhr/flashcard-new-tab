@@ -1,11 +1,10 @@
-import Card from '../../model/Card';
-import { CardRaw, unserializeCard } from '../../model/memento';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
+import { Card, CardSerialized, unserializeCard } from '../../model/card';
 
 export const findCardByIdRequest = async (
-  id: number,
+  id: string,
 ): Promise<Card | undefined> => {
   const conn = await useConnection();
 
@@ -14,7 +13,7 @@ export const findCardByIdRequest = async (
     .objectStore(StoreName.CARDS)
     .get(id);
 
-  return requestPromise<CardRaw>(request).then((raw) =>
+  return requestPromise<CardSerialized>(request).then((raw) =>
     undefined !== raw ? unserializeCard(raw) : undefined,
   );
 };

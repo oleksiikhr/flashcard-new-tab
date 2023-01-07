@@ -1,8 +1,7 @@
-import { DeckRaw, unserializeDeck } from '../../model/memento';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
-import Deck from '../../model/Deck';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
+import { Deck, DeckSerialized, unserializeDeck } from '../../model/deck';
 
 export const findDecksGeneratedUpperByNowRequest = async (
   count: number,
@@ -15,7 +14,7 @@ export const findDecksGeneratedUpperByNowRequest = async (
     .index('generate_at_idx')
     .getAll(IDBKeyRange.upperBound(new Date()), count);
 
-  return requestPromise<DeckRaw[]>(request).then((raws) =>
-    (raws as DeckRaw[]).map((raw) => unserializeDeck(raw)),
+  return requestPromise<DeckSerialized[]>(request).then((raws) =>
+    (raws as DeckSerialized[]).map((raw) => unserializeDeck(raw)),
   );
 };

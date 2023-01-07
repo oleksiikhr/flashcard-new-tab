@@ -6,14 +6,12 @@ export default (event: IDBVersionChangeEvent): Promise<void> =>
 
     const decks = db.createObjectStore('decks', {
       keyPath: 'id',
-      autoIncrement: true,
     });
 
     decks.createIndex('generate_at_idx', 'generate_at');
 
     const cards = db.createObjectStore('cards', {
       keyPath: 'id',
-      autoIncrement: true,
     });
 
     cards.createIndex('deck_id_and_is_active_idx', ['deck_id', 'is_active']);
@@ -21,7 +19,6 @@ export default (event: IDBVersionChangeEvent): Promise<void> =>
 
     const tags = db.createObjectStore('tags', {
       keyPath: 'id',
-      autoIncrement: true,
     });
 
     tags.createIndex('deck_id_idx', 'deck_id');
@@ -45,7 +42,6 @@ export default (event: IDBVersionChangeEvent): Promise<void> =>
 
     const statistics = db.createObjectStore('statistics', {
       keyPath: 'id',
-      autoIncrement: true,
     });
 
     statistics.createIndex('deck_id_idx', 'deck_id');

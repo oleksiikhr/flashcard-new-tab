@@ -1,22 +1,22 @@
-import Card from '../../../card/model/Card';
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
+import { Card } from '../../../card/model/card';
 
 export const createFeedTransactionListener: TransactionListener<Card> = {
-  isNeedHandle(): boolean {
+  invokable(): boolean {
     return true;
   },
 
-  getStoreName(): StoreName {
+  storeName(): StoreName {
     return StoreName.FEED;
   },
 
   async invoke(transaction: IDBTransaction, card: Card): Promise<unknown> {
     const store = transaction.objectStore(StoreName.FEED);
     const request = store.add({
-      card_id: card.getId(),
-      deck_id: card.getDeckId(),
+      card_id: card.id,
+      deck_id: card.deckId,
     });
 
     return requestPromise(request);

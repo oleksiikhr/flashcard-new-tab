@@ -1,8 +1,7 @@
-import Tag from '../../model/Tag';
-import { TagRaw, unserializeTag } from '../../model/memento';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { requestPaginate } from '../../../../shared/database/indexedDB/idb';
+import { Tag, TagSerialized, unserializeTag } from '../../model/tag';
 
 export const paginateTagsRequest = async (
   fromId: number | undefined,
@@ -15,7 +14,7 @@ export const paginateTagsRequest = async (
     .objectStore(StoreName.TAGS)
     .openCursor(undefined !== fromId ? IDBKeyRange.lowerBound(fromId) : null);
 
-  return requestPaginate<TagRaw>(request, limit).then((raws) =>
+  return requestPaginate<TagSerialized>(request, limit).then((raws) =>
     raws.map((raw) => unserializeTag(raw)),
   );
 };

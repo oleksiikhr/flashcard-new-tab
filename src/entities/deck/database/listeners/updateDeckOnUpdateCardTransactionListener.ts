@@ -1,30 +1,30 @@
-import { DeckRaw } from '../../model/memento';
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
-import Card from '../../../card/model/Card';
+import { DeckSerialized } from '../../model/deck';
+import { Card } from '../../../card/model/card';
 
 export const updateDeckOnUpdateCardTransactionListener: TransactionListener<Card> =
   {
-    isNeedHandle(card: Card): boolean {
-      return card.isActiveChanged();
+    invokable(card: Card): boolean {
+      return card.isActive !== card.originalIsActive;
     },
 
-    getStoreName(): StoreName {
+    storeName(): StoreName {
       return StoreName.DECKS;
     },
 
     async invoke(transaction: IDBTransaction, card: Card): Promise<unknown> {
       const store = transaction.objectStore(StoreName.DECKS);
-      const request = store.get(card.getDeckId());
-      const raw = await requestPromise<DeckRaw>(request);
+      const request = store.get(card.deckId);
+      const raw = await requestPromise<DeckSerialized>(request);
 
       if (undefined === raw) {
         return Promise.resolve(undefined);
       }
 
-      if (card.isActiveChanged()) {
-        raw.active_cards_count += card.getIsActive() ? 1 : -1;
+      if (card.isActive !== card.originalIsActive) {
+        raw.metadata.activeCardsCount += card.isActive ? 1 : -1;
       }
 
       return requestPromise(store.put(raw));

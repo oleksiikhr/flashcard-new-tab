@@ -1,5 +1,5 @@
 import { cardVocabularyContent } from './cardVocabularyContent';
-import { CardTemplateType } from '../Card';
+import { CardTemplateType } from '../card';
 
 export interface CardContent {
   serialize(): object;

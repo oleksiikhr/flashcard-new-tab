@@ -1,13 +1,18 @@
-import Card, { CardTemplateType } from '../model/Card';
-import Tag from '../../tag/model/Tag';
-import { findCardByQuestionRequest } from '../database/requests/findCardByQuestionRequest';
-import { createCardRequest } from '../database/requests/createCardRequest';
-import { updateCardRequest } from '../database/requests/updateCardRequest';
-import { syncCardTagsRequest } from '../database/requests/syncCardTagsRequest';
-import { createTagRequest } from '../../tag/database/requests/createTagRequest';
-import { findTagByDeckIdAndNameRequest } from '../../tag/database/requests/findTagByDeckIdAndNameRequest';
-import { cardContentFactory } from '../model/content/cardContentFactory';
-import { findDeckByIdRequest } from '../../deck/database/requests/findDeckByIdRequest';
+import {
+  Card,
+  CardTemplateType,
+  createCardModel,
+  updateCardModel,
+} from '../card';
+import { findCardByQuestionRequest } from '../../database/requests/findCardByQuestionRequest';
+import { createCardRequest } from '../../database/requests/createCardRequest';
+import { updateCardRequest } from '../../database/requests/updateCardRequest';
+import { syncCardTagsRequest } from '../../database/requests/syncCardTagsRequest';
+import { findTagByDeckIdAndNameRequest } from '../../../tag/database/requests/findTagByDeckIdAndNameRequest';
+import { cardContentFactory } from '../content/cardContentFactory';
+import { findDeckByIdRequest } from '../../../deck/database/requests/findDeckByIdRequest';
+import { Tag } from '../../../tag/model/tag';
+import { createTag } from '../../../tag/model/actions/createTag';
 
 export type ImportRaw = {
   question: string;
@@ -18,7 +23,7 @@ export type ImportRaw = {
 };
 
 const uniqueTags = async (
-  deckId: number,
+  deckId: string,
   raws: ImportRaw[],
 ): Promise<Map<string, Tag>> => {
   const tagNames: Set<string> = new Set();
@@ -39,9 +44,7 @@ const uniqueTags = async (
           return Promise.resolve(tag);
         }
 
-        const newTag = await Tag.create(deckId, tagName);
-
-        return createTagRequest(newTag).then(() => newTag);
+        return createTag(deckId, tagName);
       },
     );
 
@@ -52,14 +55,14 @@ const uniqueTags = async (
   const tagsMap: Map<string, Tag> = new Map();
 
   tags.forEach((tag) => {
-    tagsMap.set(tag.getName(), tag);
+    tagsMap.set(tag.name, tag);
   });
 
   return tagsMap;
 };
 
 export const importCards = async (
-  deckId: number,
+  deckId: string,
   raws: ImportRaw[],
   cb?: (card: Card) => void,
 ): Promise<Card[]> => {
@@ -69,7 +72,7 @@ export const importCards = async (
     throw new Error('Deck not found.');
   }
 
-  const tagsMap = await uniqueTags(deck.getId(), raws);
+  const tagsMap = await uniqueTags(deck.id, raws);
 
   const promises = raws.map((raw) => {
     const { question } = raw;
@@ -84,18 +87,23 @@ export const importCards = async (
     return findCardByQuestionRequest(question)
       .then((card) => {
         if (undefined === card) {
-          const newCard = Card.create(
+          // TODO createCard
+          const newCard = createCardModel(
             deckId,
             question,
             content,
             CardTemplateType.VOCABULARY,
-            raw.is_active,
+            raw.is_active ?? true,
           );
 
           return createCardRequest(newCard).then(() => newCard);
         }
 
-        card.update(question, content, raw.is_active ?? card.getIsActive());
+        updateCardModel(card, {
+          question,
+          content,
+          isActive: raw.is_active ?? card.isActive,
+        });
 
         return updateCardRequest(card).then(() => card);
       })

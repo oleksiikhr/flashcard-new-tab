@@ -1,21 +1,21 @@
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
-import Card from '../../../card/model/Card';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
+import { Card } from '../../../card/model/card';
 
 export const deleteFeedOnDeleteCardTransactionListener: TransactionListener<Card> =
   {
-    isNeedHandle(): boolean {
+    invokable(): boolean {
       return true;
     },
 
-    getStoreName(): StoreName {
+    storeName(): StoreName {
       return StoreName.FEED;
     },
 
     invoke(transaction: IDBTransaction, card: Card): Promise<unknown> {
       const store = transaction.objectStore(StoreName.FEED);
-      const request = store.delete(card.getId());
+      const request = store.delete(card.id);
 
       return requestPromise(request);
     },

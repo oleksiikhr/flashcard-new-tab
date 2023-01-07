@@ -1,11 +1,10 @@
-import Deck from '../../model/Deck';
-import { DeckRaw, unserializeDeck } from '../../model/memento';
+import { Deck, DeckSerialized, unserializeDeck } from '../../model/deck';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
 
 export const findDeckByIdRequest = async (
-  id: number,
+  id: string,
 ): Promise<Deck | undefined> => {
   const conn = await useConnection();
 
@@ -14,7 +13,7 @@ export const findDeckByIdRequest = async (
     .objectStore(StoreName.DECKS)
     .get(id);
 
-  return requestPromise<DeckRaw>(request).then((raw) =>
+  return requestPromise<DeckSerialized>(request).then((raw) =>
     undefined !== raw ? unserializeDeck(raw) : undefined,
   );
 };

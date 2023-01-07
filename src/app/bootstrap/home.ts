@@ -1,7 +1,7 @@
 import themeToggler from '../../features/theme-toggler/toggler';
 import { renderHomePage } from '../../pages/home/render';
 import '../styles/index.scss';
-import { generateFeed } from '../../entities/feed/useCases/generateFeed';
+import { generateFeed } from '../../entities/feed/service/actions/generateFeed';
 
 themeToggler.register();
 

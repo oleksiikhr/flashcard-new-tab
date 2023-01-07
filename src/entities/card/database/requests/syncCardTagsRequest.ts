@@ -1,8 +1,8 @@
-import Card from '../../model/Card';
-import Tag from '../../../tag/model/Tag';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
 import { transactionPipeline } from '../../../../shared/database/indexedDB/transactionPipeline';
 import { syncCardToTagsTransactionListener } from '../listeners/syncCardToTagsTransactionListener';
+import { Card } from '../../model/card';
+import { Tag } from '../../../tag/model/tag';
 
 export const syncCardTagsRequest = async (
   card: Card,

@@ -1,15 +1,14 @@
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
-import Card from '../../model/Card';
-import { serializeCard } from '../../model/memento';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
+import { Card, serializeCard } from '../../model/card';
 
 export const updateCardTransactionListener: TransactionListener<Card> = {
-  isNeedHandle(): boolean {
+  invokable(): boolean {
     return true;
   },
 
-  getStoreName(): StoreName {
+  storeName(): StoreName {
     return StoreName.CARDS;
   },
 

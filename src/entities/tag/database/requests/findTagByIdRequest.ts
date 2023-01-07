@@ -1,8 +1,7 @@
-import Tag from '../../model/Tag';
-import { TagRaw, unserializeTag } from '../../model/memento';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
+import { Tag, TagSerialized, unserializeTag } from '../../model/tag';
 
 export const findTagByIdRequest = async (
   id: number,
@@ -14,7 +13,7 @@ export const findTagByIdRequest = async (
     .objectStore(StoreName.TAGS)
     .get(id);
 
-  return requestPromise<TagRaw>(request).then((raw) =>
+  return requestPromise<TagSerialized>(request).then((raw) =>
     undefined !== raw ? unserializeTag(raw) : undefined,
   );
 };

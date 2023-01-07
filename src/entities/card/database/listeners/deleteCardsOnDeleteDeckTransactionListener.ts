@@ -1,15 +1,15 @@
 import { requestKeyCursor } from '../../../../shared/database/indexedDB/idb';
-import Deck from '../../../deck/model/Deck';
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
 import { StoreName } from '../../../../shared/database/indexedDB/constants';
+import { Deck } from '../../../deck/model/deck';
 
 export const deleteCardsOnDeleteDeckTransactionListener: TransactionListener<Deck> =
   {
-    isNeedHandle(): boolean {
+    invokable(): boolean {
       return true;
     },
 
-    getStoreName(): StoreName {
+    storeName(): StoreName {
       return StoreName.CARDS;
     },
 
@@ -19,13 +19,13 @@ export const deleteCardsOnDeleteDeckTransactionListener: TransactionListener<Dec
 
       return Promise.all([
         requestKeyCursor(
-          index.openKeyCursor(IDBKeyRange.only([deck.getId(), 0])),
+          index.openKeyCursor(IDBKeyRange.only([deck.id, 0])),
           (primaryKey) => {
             store.delete(primaryKey);
           },
         ),
         requestKeyCursor(
-          index.openKeyCursor(IDBKeyRange.only([deck.getId(), 1])),
+          index.openKeyCursor(IDBKeyRange.only([deck.id, 1])),
           (primaryKey) => {
             store.delete(primaryKey);
           },

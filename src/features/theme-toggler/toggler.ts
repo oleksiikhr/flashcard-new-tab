@@ -1,15 +1,17 @@
 import './toggler.scss';
-import { identifyTheme } from '../../entities/theme/useCases/identifyTheme';
-import { updateTheme } from '../../entities/theme/useCases/updateTheme';
-import { ThemeType } from '../../entities/theme/model/Theme';
+import { identifyTheme } from '../../entities/theme/model/actions/identifyTheme';
+import { updateTheme } from '../../entities/theme/model/actions/updateTheme';
+import { getThemeColor, ThemeType } from '../../entities/theme/model/theme';
 
 let element: HTMLButtonElement | null = null;
 let theme = identifyTheme();
 
 const applyPreference = () => {
-  document.documentElement?.setAttribute('data-theme', theme.getColor());
+  const color = getThemeColor(theme.type);
 
-  element?.setAttribute('aria-label', theme.getColor());
+  document.documentElement?.setAttribute('data-theme', color);
+
+  element?.setAttribute('aria-label', color);
 };
 
 const onDOMContentLoaded = () => {
@@ -17,7 +19,7 @@ const onDOMContentLoaded = () => {
 
   element?.addEventListener('click', () => {
     theme = updateTheme(
-      ThemeType.DARK === theme.getType() ? ThemeType.LIGHT : ThemeType.DARK,
+      ThemeType.DARK === theme.type ? ThemeType.LIGHT : ThemeType.DARK,
     );
 
     applyPreference();

@@ -4,9 +4,9 @@ import { StoreName } from './constants';
 export interface TransactionEvent {}
 
 export interface TransactionListener<T> {
-  isNeedHandle(event: T): boolean;
+  invokable(event: T): boolean;
 
-  getStoreName(event: T): StoreName;
+  storeName(event: T): StoreName;
 
   invoke(transaction: IDBTransaction, event: T): Promise<unknown>;
 }

@@ -25,6 +25,7 @@
     "import/no-cycle": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "yoda": ["error", "never"],
+    "no-param-reassign": "off",
     "no-unused-vars": [
       "error", {
         "varsIgnorePattern": "^h$"

@@ -1,7 +1,7 @@
-import Deck from '../../deck/model/Deck';
-import Card from '../../card/model/Card';
-import { findDecksGeneratedUpperByNowRequest } from '../../deck/database/requests/findDecksGeneratedUpperByNowRequest';
-import { feedGenerator } from '../service/feedGenerator';
+import { findDecksGeneratedUpperByNowRequest } from '../../../deck/database/requests/findDecksGeneratedUpperByNowRequest';
+import { feedGenerator } from '../feedGenerator';
+import { Deck } from '../../../deck/model/deck';
+import { Card } from '../../../card/model/card';
 
 export const generateFeed = async (
   limit: number,
