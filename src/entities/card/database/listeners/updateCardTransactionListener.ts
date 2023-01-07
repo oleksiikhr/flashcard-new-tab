@@ -1,7 +1,7 @@
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
 import Card from '../../model/Card';
 import { serializeCard } from '../../model/memento';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
 
 export const updateCardTransactionListener: TransactionListener<Card> = {

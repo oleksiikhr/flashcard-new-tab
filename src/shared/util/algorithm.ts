@@ -6,7 +6,7 @@ export function sort(
   numbers: number[],
   order: 'asc' | 'desc' = 'asc',
 ): number[] {
-  if ('asc' === order) {
+  if (order === 'asc') {
     return numbers.sort((a, b) => a - b);
   }
 

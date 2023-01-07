@@ -1,6 +1,6 @@
 import Card from '../../model/Card';
 import { CardRaw, unserializeCard } from '../../model/memento';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
 

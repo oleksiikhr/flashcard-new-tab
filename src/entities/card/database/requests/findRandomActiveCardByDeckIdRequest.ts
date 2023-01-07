@@ -2,7 +2,7 @@ import Card from '../../model/Card';
 import { randomUniqueRange } from '../../../../shared/util/algorithm';
 import { CardRaw, unserializeCard } from '../../model/memento';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import {
   requestCursor,
   requestPromise,
@@ -29,7 +29,7 @@ export const findRandomActiveCardByDeckIdRequest = async (
   await requestCursor(request.openCursor(query), (cursor) => {
     const card = unserializeCard(cursor.value as CardRaw);
 
-    if (init && 1 !== numbers[0]) {
+    if (init && numbers[0] !== 1) {
       init = false;
 
       // @ts-ignore

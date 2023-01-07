@@ -3,14 +3,14 @@ import { isObject } from '../../util/type';
 export const getObject = <T>(key: string): T | null => {
   const item = localStorage.getItem(key);
 
-  if (null === item) {
+  if (item === null) {
     return null;
   }
 
-  let data;
+  let data: unknown;
 
   try {
-    data = JSON.parse(item) as T;
+    data = JSON.parse(item);
   } catch (err) {
     console.warn(err);
     return null;
@@ -21,7 +21,7 @@ export const getObject = <T>(key: string): T | null => {
     return null;
   }
 
-  return data;
+  return data as T;
 };
 
 export const setObject = <T>(key: string, obj: T): void => {

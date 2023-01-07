@@ -2,7 +2,7 @@ import Tag from '../../model/Tag';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
 import { TagRaw, unserializeTag } from '../../model/memento';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 
 export const findTagsByIdRequest = async (ids: number[]): Promise<Tag[]> => {
   const conn = await useConnection();

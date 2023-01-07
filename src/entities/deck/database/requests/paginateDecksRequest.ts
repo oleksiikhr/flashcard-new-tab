@@ -1,6 +1,6 @@
 import Deck from '../../model/Deck';
 import { DeckRaw, unserializeDeck } from '../../model/memento';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { requestPaginate } from '../../../../shared/database/indexedDB/idb';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
 

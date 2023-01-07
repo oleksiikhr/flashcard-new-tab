@@ -79,7 +79,7 @@ export const requestRandom = <T>(
     request.onsuccess = (event) => {
       const cursor = (event.target as IDBRequest).result as IDBCursorWithValue;
 
-      if (searching && 0 !== offset) {
+      if (searching && offset !== 0) {
         searching = false;
         cursor.advance(offset);
       } else {
@@ -106,7 +106,7 @@ export const requestKeyCursor = (
       }
 
       try {
-        if (false === callback(cursor.primaryKey as number)) {
+        if (callback(cursor.primaryKey as number) === false) {
           resolve();
           return;
         }
@@ -136,7 +136,7 @@ export const requestCursor = (
       }
 
       try {
-        if (false === callback(cursor)) {
+        if (callback(cursor) === false) {
           resolve();
         }
       } catch (err) {

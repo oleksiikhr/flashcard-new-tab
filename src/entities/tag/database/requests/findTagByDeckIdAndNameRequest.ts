@@ -1,7 +1,7 @@
 import Tag from '../../model/Tag';
 import { TagRaw, unserializeTag } from '../../model/memento';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
 
 export const findTagByDeckIdAndNameRequest = async (

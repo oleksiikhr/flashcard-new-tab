@@ -2,7 +2,7 @@ import { CardTagRaw } from '../../model/memento';
 import Card from '../../model/Card';
 import Tag from '../../../tag/model/Tag';
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { requestKeyCursor } from '../../../../shared/database/indexedDB/idb';
 
 export const syncCardToTagsTransactionListener: TransactionListener<{

@@ -8,7 +8,7 @@ import { updateCardRequest } from '../../entities/card/database/requests/updateC
 const renderHomePage = () => {
   (
     document.body.querySelector('.package-version') as HTMLDivElement
-  ).innerText = `Version ${version}`;
+  ).innerText = `v${version}`;
 
   findRandomFeedRequest()
     .then((feed) => {

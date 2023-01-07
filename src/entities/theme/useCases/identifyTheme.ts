@@ -5,7 +5,7 @@ import { findThemeRequest } from '../database/requests/findThemeRequest';
 export const identifyTheme = (): Theme => {
   const theme = findThemeRequest();
 
-  if (null !== theme) {
+  if (theme !== null) {
     return theme;
   }
 

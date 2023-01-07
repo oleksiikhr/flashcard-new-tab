@@ -9,7 +9,7 @@ import {
 import { DeckRaw, unserializeDeck } from '../../../deck/model/memento';
 import { TagRaw, unserializeTag } from '../../../tag/model/memento';
 import Tag from '../../../tag/model/Tag';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
 import {
   requestPromise,
@@ -40,7 +40,7 @@ export const findRandomFeedRequest = async (): Promise<Feed | undefined> => {
 
   const feedTotal = (await requestPromise<number>(feedStore.count())) as number;
 
-  if (0 === feedTotal) {
+  if (feedTotal === 0) {
     return undefined;
   }
 

@@ -1,6 +1,6 @@
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { serializeDeck } from '../../model/memento';
 import Deck from '../../model/Deck';
 

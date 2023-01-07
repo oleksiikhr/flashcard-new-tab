@@ -1,4 +1,4 @@
-import { StoreName } from './storeName';
+import { StoreName } from './constants';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TransactionEvent {}

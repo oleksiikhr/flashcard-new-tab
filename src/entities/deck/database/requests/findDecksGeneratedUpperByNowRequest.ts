@@ -1,6 +1,6 @@
 import { DeckRaw, unserializeDeck } from '../../model/memento';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import Deck from '../../model/Deck';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
 

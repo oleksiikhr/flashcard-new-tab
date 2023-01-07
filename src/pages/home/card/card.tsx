@@ -1,7 +1,6 @@
 import Card, { CardTemplateType } from '../../../entities/card/model/Card';
 import Tag from '../../../entities/tag/model/Tag';
 import Deck from '../../../entities/deck/model/Deck';
-import { numberCounter } from '../../../shared/util/animation';
 import { h } from '../../../shared/util/dom';
 import { renderVocabulary } from './cardVocabulary';
 import './card.scss';
@@ -12,28 +11,21 @@ export default (card: Card, deck: Deck, tags: Tag[]) => {
   (element.querySelector('.card-deck-name') as HTMLElement).innerText =
     deck.getName();
 
-  numberCounter(
-    element.querySelector('.card-clicks-value') as HTMLElement,
-    card.getStatistics().clicks,
-  );
-  numberCounter(
-    element.querySelector('.card-views-value') as HTMLElement,
-    card.getStatistics().views,
-  );
+  const clicksElement = element.querySelector(
+    '.card-views-value',
+  ) as HTMLElement;
+  clicksElement.innerText = card.getStatistics().clicks.toString();
+
+  const viewsElement = element.querySelector(
+    '.card-views-value',
+  ) as HTMLElement;
+  viewsElement.innerText = card.getStatistics().views.toString();
 
   const tagsElement = document.querySelector('.card-tag-values') as HTMLElement;
   tagsElement.innerText = '';
 
   tags.forEach((tag) => {
-    tagsElement.append(
-      h(
-        'span',
-        {
-          class: 'card-tag-value',
-        },
-        tag.getName(),
-      ),
-    );
+    tagsElement.append(<span class="card-tag-value">{tag.getName()}</span>);
   });
 
   const contentElement = element.querySelector('.card__content') as HTMLElement;

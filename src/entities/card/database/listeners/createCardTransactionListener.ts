@@ -1,6 +1,6 @@
 import Card from '../../model/Card';
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { serializeCard } from '../../model/memento';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
 

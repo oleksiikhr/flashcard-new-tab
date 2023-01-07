@@ -6,7 +6,10 @@
   "parserOptions": {
     "project": [
       "./tsconfig.json"
-    ]
+    ],
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "extends": [
     "airbnb-base",
@@ -21,6 +24,21 @@
     "no-console": "off",
     "import/no-cycle": "off",
     "@typescript-eslint/ban-ts-comment": "off",
-    "yoda": ["error", "always"]
+    "yoda": ["error", "never"],
+    "no-unused-vars": [
+      "error", {
+        "varsIgnorePattern": "^h$"
+      }
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "": "never",
+        "js": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
   }
 }

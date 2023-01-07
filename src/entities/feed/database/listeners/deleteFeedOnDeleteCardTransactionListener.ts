@@ -1,5 +1,5 @@
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import Card from '../../../card/model/Card';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
 

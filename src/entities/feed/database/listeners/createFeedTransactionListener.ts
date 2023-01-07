@@ -1,7 +1,7 @@
 import Card from '../../../card/model/Card';
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 
 export const createFeedTransactionListener: TransactionListener<Card> = {
   isNeedHandle(): boolean {

@@ -1,1 +1,1 @@
-export const databaseName = 'flashcard-new-tab';
+export const name = 'flashcard-new-tab';

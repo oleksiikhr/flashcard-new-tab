@@ -1,7 +1,7 @@
 import { requestKeyCursor } from '../../../../shared/database/indexedDB/idb';
 import Deck from '../../../deck/model/Deck';
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 
 export const deleteCardsOnDeleteDeckTransactionListener: TransactionListener<Deck> =
   {

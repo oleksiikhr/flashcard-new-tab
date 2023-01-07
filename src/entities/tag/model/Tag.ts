@@ -12,7 +12,7 @@ export default class Tag {
   public static async create(deckId: number, name: string): Promise<Tag> {
     const tag = new Tag(undefined, deckId, name, new Date(), new Date());
 
-    if (null !== (await findTagByDeckIdAndNameRequest(deckId, name))) {
+    if ((await findTagByDeckIdAndNameRequest(deckId, name)) !== null) {
       throw new Error('Tag name with this deck must be unique.');
     }
 
@@ -22,7 +22,7 @@ export default class Tag {
   public async update(name: string): Promise<void> {
     if (
       name !== this.name &&
-      null !== (await findTagByDeckIdAndNameRequest(this.deckId, name))
+      (await findTagByDeckIdAndNameRequest(this.deckId, name)) !== null
     ) {
       throw new Error('Tag name with this deck must be unique.');
     }

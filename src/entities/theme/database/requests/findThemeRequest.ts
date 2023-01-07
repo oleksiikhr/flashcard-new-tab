@@ -5,7 +5,7 @@ import { ThemeRaw, unserializeTheme } from '../../model/memento';
 export const findThemeRequest = (): Theme | null => {
   const theme = getObject<ThemeRaw>('theme');
 
-  if (null === theme) {
+  if (theme === null) {
     return null;
   }
 

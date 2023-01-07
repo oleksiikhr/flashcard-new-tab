@@ -2,7 +2,7 @@ import Tag from '../../model/Tag';
 import { TagRaw, unserializeTag } from '../../model/memento';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 
 export const findTagByIdRequest = async (
   id: number,

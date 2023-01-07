@@ -1,7 +1,7 @@
 import Card from '../../model/Card';
 import { CardRaw, unserializeCard } from '../../model/memento';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
 
 export const findCardByQuestionRequest = async (

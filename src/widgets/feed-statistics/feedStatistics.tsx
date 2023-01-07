@@ -9,19 +9,7 @@ export default (position: number, count: number) => {
   element.innerText = '';
 
   element.append(
-    h(
-      'div',
-      {
-        class: 'feed-statistics__position',
-      },
-      position.toString(),
-    ),
-    h(
-      'div',
-      {
-        class: 'feed-statistics__count',
-      },
-      `/${count.toString()}`,
-    ),
+    <div class="feed-statistics__position">{position}</div>,
+    <div class="feed-statistics__count">/{count}</div>,
   );
 };

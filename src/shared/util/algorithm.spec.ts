@@ -15,7 +15,7 @@ describe('randomUniqueRange', () => {
     const numbers = randomUniqueRange(10, 5);
 
     expect(numbers.length).toBe(5);
-    expect(numbers.some((a) => 10 <= a)).toBeFalsy();
+    expect(numbers.some((a) => a >= 10)).toBeFalsy();
   });
 
   it('if size is less than count - get all elements', () => {

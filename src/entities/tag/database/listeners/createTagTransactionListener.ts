@@ -1,6 +1,6 @@
 import Tag from '../../model/Tag';
 import { TransactionListener } from '../../../../shared/database/indexedDB/transaction';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 import { serializeTag } from '../../model/memento';
 import { requestPromise } from '../../../../shared/database/indexedDB/idb';
 

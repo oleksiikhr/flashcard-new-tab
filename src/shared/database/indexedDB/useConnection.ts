@@ -1,8 +1,8 @@
 import { openDB } from './idb';
-import { databaseName } from '../../config/database';
+import { database } from '../../config';
 import migrations from './migrations';
 
 let db: Promise<IDBDatabase> | null = null;
 
 // eslint-disable-next-line no-return-assign
-export const useConnection = () => (db ??= openDB(databaseName, migrations));
+export const useConnection = () => (db ??= openDB(database.name, migrations));

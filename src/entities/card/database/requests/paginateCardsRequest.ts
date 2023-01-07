@@ -2,7 +2,7 @@ import Card from '../../model/Card';
 import { CardRaw, unserializeCard } from '../../model/memento';
 import { useConnection } from '../../../../shared/database/indexedDB/useConnection';
 import { requestPaginate } from '../../../../shared/database/indexedDB/idb';
-import { StoreName } from '../../../../shared/database/indexedDB/storeName';
+import { StoreName } from '../../../../shared/database/indexedDB/constants';
 
 export const paginateCardsRequest = async (
   fromId: number | undefined,
