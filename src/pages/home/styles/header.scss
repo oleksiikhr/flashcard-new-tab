@@ -2,6 +2,7 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
+  height: 100px;
 }
 
 .home-page-header__left {
@@ -11,15 +12,10 @@
 .page-button_settings {
   cursor: pointer;
   display: block;
-  height: 70px;
-  padding: 15px;
-  transition: transform 0.25s ease;
-  width: 70px;
-  will-change: transform;
-
-  &:hover {
-    transform: rotate(60deg);
-  }
+  height: 55px;
+  padding: 10px;
+  width: 55px;
+  color: var(--text);
 }
 
 .home-page-header__right {

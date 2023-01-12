@@ -1,7 +1,7 @@
 import { Card, updateCardModel } from '../card';
-import { findCardByIdRequest } from '../../database/requests/findCardByIdRequest';
 import { cardVocabularyContent } from '../content/cardVocabularyContent';
-import { updateCardRequest } from '../../database/requests/updateCardRequest';
+import {findCardByIdQuery} from "../../database/repository/query";
+import {updateCardQuery} from "../../database/repository/command";
 
 export const updateCard = async (
   id: string,
@@ -9,7 +9,7 @@ export const updateCard = async (
   answer: string,
   isActive: boolean,
 ): Promise<Card> => {
-  const card = await findCardByIdRequest(id);
+  const card = await findCardByIdQuery(id);
 
   if (undefined === card) {
     throw new Error('Card not found.');
@@ -21,7 +21,7 @@ export const updateCard = async (
     isActive,
   });
 
-  await updateCardRequest(card);
+  await updateCardQuery(card);
 
   return card;
 };

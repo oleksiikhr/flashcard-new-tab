@@ -1,25 +1,26 @@
 .card {
   align-items: center;
   background: var(--background-second);
-  border-radius: 50px;
-  box-shadow: var(--background) 0 0 0 3px inset, var(--background-second) 10px -10px 0 -3px, var(--background) 10px -10px, var(--background-second) 20px -20px 0 -3px, var(--background) 20px -20px, var(--background-second) 30px -30px 0 -3px;
+  box-shadow: 0 7px 14px 0 rgb(60 66 87 / 6%), 0 3px 6px 0 rgb(0 0 0 / 6%);
+  border-radius: 10px;
+  border: 1px solid rgb(222, 226, 228);
   display: flex;
   flex-direction: column;
-  height: 650px;
+  max-height: 650px;
+  height: 100%;
   justify-content: center;
-  margin: 40px 40px 20px 10px;
+  margin: 0 10px;
   padding: 20px;
   position: relative;
 }
 
 .card__header {
-  align-items: center;
   display: flex;
-  justify-content: space-between;
-  left: 30px;
+  align-items: center;
+  justify-content: center;
   position: absolute;
-  right: 40px;
-  top: 30px;
+  top: 20px;
+  color: #848484;
 }
 
 .card-deck-name {
@@ -28,10 +29,6 @@
   font-size: 1.1em;
   font-weight: bold;
   padding: 10px 30px;
-}
-
-.card__top__right {
-  margin-left: 20px;
 }
 
 .card-icons {
@@ -47,18 +44,18 @@
   }
 
   svg {
-    height: 18px;
+    height: 16px;
   }
 
   span {
-    font-size: 1.2em;
+    font-size: 1.1em;
     font-weight: bold;
     margin-left: 5px;
   }
 }
 
 .card-icons__edit {
-  cursor: not-allowed;
+  cursor: pointer;
   margin-right: 12px;
   padding: 8px;
   transition: opacity 0.2s;
@@ -68,7 +65,9 @@
   }
 }
 
-.card-icons__clicks,
+.card-icons__forgot,
+.card-icons__remembered,
+.card-icons__views,
 .card-icons__separator {
   margin-right: 20px;
 }
@@ -78,21 +77,10 @@
   bottom: 25px;
   color: #848484;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   left: 30px;
   position: absolute;
   width: calc(100% - 60px);
-}
-
-.card-tags {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-
-  svg {
-    height: 16px;
-    min-width: 16px;
-  }
 }
 
 .card-tag-values {

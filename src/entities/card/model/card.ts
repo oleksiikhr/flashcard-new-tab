@@ -3,14 +3,14 @@ import { createIdentifier } from '../../../shared/util/identifier';
 
 export type Card = {
   id: string;
-  deckId: string;
   question: string;
   content: CardContent;
   templateType: CardTemplateType;
   statistics: CardStatistics;
   isActive: boolean;
-  originalIsActive: boolean;
-  seenAt: Date;
+  isFeed: boolean;
+  seenAt: Date | null;
+  nextAt: Date | null;
   updatedAt: Date;
   createdAt: Date;
 };
@@ -26,78 +26,81 @@ export enum CardTemplateType {
 
 export type CardSerialized = {
   id: string;
-  deck_id: string;
   question: string;
   content: object;
   template_type: number;
   statistics: CardStatistics;
   is_active: number;
-  seen_at: Date;
+  is_feed: number;
+  seen_at: Date | null;
+  next_at: Date | null;
   updated_at: Date;
   created_at: Date;
 };
 
-export type CardTag = {
-  card_id: string;
-  tag_id: string;
-  deck_id: string;
-};
-
 export const serializeCard = (card: Card): CardSerialized => ({
   id: card.id,
-  deck_id: card.deckId,
   question: card.question,
   content: card.content.serialize(),
   template_type: card.templateType,
   statistics: card.statistics,
   is_active: +card.isActive,
+  is_feed: +card.isFeed,
   seen_at: card.seenAt,
+  next_at: card.nextAt,
   updated_at: card.updatedAt,
   created_at: card.createdAt,
 });
 
 export const unserializeCard = (raw: CardSerialized): Card => ({
   id: raw.id,
-  deckId: raw.deck_id,
   question: raw.question,
   content: cardContentFactory(raw.content, raw.template_type),
   templateType: raw.template_type,
   statistics: raw.statistics,
   isActive: !!raw.is_active,
-  originalIsActive: !!raw.is_active,
+  isFeed: !!raw.is_feed,
   seenAt: raw.seen_at,
+  nextAt: raw.next_at,
   updatedAt: raw.updated_at,
   createdAt: raw.created_at,
 });
 
 export const createCardModel = (
-  deckId: string,
   question: string,
   content: CardContent,
   templateType: CardTemplateType,
   isActive: boolean,
 ): Card => ({
   id: createIdentifier(),
-  deckId,
   question,
   content,
   templateType,
   statistics: { views: 0, clicks: 0 },
   isActive,
-  originalIsActive: isActive,
-  seenAt: new Date(),
+  isFeed: false,
+  seenAt: null,
+  nextAt: null,
   updatedAt: new Date(),
   createdAt: new Date(),
 });
 
-export const updateCardModel = (card: Card, fields: Partial<Card>): void => {
-  card.question = fields.question ?? card.question;
-  card.content = fields.content ?? card.content;
-  card.isActive = fields.isActive ?? card.isActive;
-  card.updatedAt = new Date();
+export const updateCardModel = (card: Card, fields: {
+  question?: string,
+  content?: CardContent,
+  isActive?: boolean,
+}): void => {
+  card.question = fields.question ?? card.question
+  card.content = fields.content ?? card.content
+  card.isActive = fields.isActive ?? card.isActive
+  card.updatedAt = new Date()
 };
 
 export const updateLastSeenCard = (card: Card): void => {
   card.statistics.views += 1;
   card.seenAt = new Date();
 };
+
+export const updateCardClicks = (card: Card, value: number): void => {
+  card.statistics.clicks = value;
+}

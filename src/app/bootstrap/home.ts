@@ -1,17 +1,15 @@
 import themeToggler from '../../features/theme-toggler/toggler';
 import { renderHomePage } from '../../pages/home/render';
 import '../styles/index.scss';
-import { generateFeed } from '../../entities/feed/service/actions/generateFeed';
 
 themeToggler.register();
 
-window.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   renderHomePage();
 });
 
-// TODO Refactor, delay regenerate feed
+// TODO Delete on next release
 setTimeout(() => {
-  // TODO Delete on next release
   navigator.serviceWorker
     ?.getRegistrations()
     .then((registrations) => {
@@ -21,9 +19,5 @@ setTimeout(() => {
 
       Promise.all(workers).catch((err) => console.error(err));
     })
-    .catch((err) => console.error(err));
-
-  generateFeed(3)
-    .then((res) => console.log(res))
     .catch((err) => console.error(err));
 }, 1500);

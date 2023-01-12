@@ -1,21 +1,24 @@
-import { findCardByIdRequest } from '../../database/requests/findCardByIdRequest';
-import { updateCardRequest } from '../../database/requests/updateCardRequest';
-import { Card } from '../card';
+import {Card, updateCardClicks} from '../card';
+import {findCardByIdQuery} from "../../database/repository/query";
+import {updateCardQuery} from "../../database/repository/command";
 
 export const increaseCardClicks = async (
-  id: string,
+  card: Card | string,
   value = 1,
 ): Promise<Card> => {
-  const card = await findCardByIdRequest(id);
+  if (typeof card === 'string') {
+    const c = await findCardByIdQuery(card);
 
-  if (undefined === card) {
-    throw new Error('Card not found.');
+    if (undefined === c) {
+      throw new Error('Card not found.');
+    }
+
+    card = c
   }
 
-  // TODO card.ts
-  card.statistics.clicks += value;
+  updateCardClicks(card, card.statistics.clicks + value)
 
-  await updateCardRequest(card);
+  await updateCardQuery(card);
 
   return card;
 };

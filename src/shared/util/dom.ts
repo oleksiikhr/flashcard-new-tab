@@ -23,21 +23,3 @@ export function h(
 
   return element;
 }
-
-export function styles(data: {
-  [key: string]: { [key: string]: string };
-}): string {
-  let css = '';
-
-  Object.entries(data).forEach(([selector, properties]) => {
-    css += `${selector}{`;
-
-    Object.entries(properties).forEach(([k, v]) => {
-      css += `${k}:${v};`;
-    });
-
-    css += '}';
-  });
-
-  return css;
-}
