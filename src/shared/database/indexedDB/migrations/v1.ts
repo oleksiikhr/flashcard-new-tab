@@ -8,8 +8,9 @@ export default (event: IDBVersionChangeEvent): Promise<void> =>
       keyPath: 'id',
     });
 
-    cards.createIndex('is_feed_is_active_idx', ['is_feed', 'is_active']);
-    cards.createIndex('is_active_idx', 'is_active');
+    cards.createIndex('status_idx', 'status');
+    cards.createIndex('is_feed_idx', 'is_feed');
+    cards.createIndex('next_at_idx', 'next_at');
     cards.createIndex('question_idx', 'question');
 
     resolve();

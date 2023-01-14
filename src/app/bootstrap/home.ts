@@ -8,7 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
   renderHomePage();
 });
 
-// TODO Delete on next release
+// TODO Register service worker on env
+// TODO Delete below on next release
+// TODO Delete all database on prev version
+
 setTimeout(() => {
   navigator.serviceWorker
     ?.getRegistrations()

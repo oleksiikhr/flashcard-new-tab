@@ -2,24 +2,23 @@
   position: relative;
 }
 
-.feed-statistics__position {
+.feed-statistics__now {
   font-size: 4em;
   position: relative;
 
   &::before {
     background: var(--accent);
-    border: 3px solid var(--background);
     border-radius: 50%;
     content: "";
-    height: 16px;
-    left: -23px;
+    height: 10px;
+    left: -20px;
     position: absolute;
-    top: calc(50% - 8px);
-    width: 16px;
+    top: calc(50% - 5px);
+    width: 10px;
   }
 }
 
-.feed-statistics__count {
+.feed-statistics__all {
   color: var(--text-second);
   font-size: 2em;
   text-align: right;

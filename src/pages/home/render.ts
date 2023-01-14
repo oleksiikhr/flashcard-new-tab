@@ -1,34 +1,22 @@
 import { version } from '../../../package.json';
-// import feedStatistics from '../../widgets/feed-statistics/feedStatistics';
-import card from './card/card';
+import { renderCardBlock } from '../../widgets/card/cardBlock';
 import './styles/index.scss';
-import feedStatistics from "../../widgets/feed-statistics/feedStatistics";
-// import { findRandomFeedRequest } from '../../entities/feed/database/repository/findRandomFeedRequest';
-// import { updateCardQuery } from '../../entities/card/database/repository/updateCardQuery';
-// import { updateLastSeenCard } from '../../entities/card/model/card';
+import feedStatistics from '../../widgets/feedStatistics/feedStatistics';
+import { innerText, renderComponent } from '../../shared/util/dom';
+import { nextFeedCard } from '../../entities/card/model/actions/nextFeedCard';
 
-console.log(card)
+export const renderHomePage = () => {
+  innerText('.package-version-button', version);
 
-const renderHomePage = () => {
-  (
-    document.body.querySelector('.package-version') as HTMLDivElement
-  ).innerText = `v${version}`;
-
-  feedStatistics(73, 100);
-
-  // findRandomFeedRequest()
-  //   .then((feed) => {
-  //     if (undefined !== feed) {
-  //       updateLastSeenCard(feed.card);
-  //       updateCardQuery(feed.card).catch(console.error);
-  //       feedStatistics(feed.position, feed.count);
-  //       card(feed.card);
-  //     }
-  //   })
-  //   .catch((err) => console.error(err))
-  //   .finally(() => {
-      document.body.style.display = '';
-    // });
+  nextFeedCard()
+    .then((card) => {
+      if (card !== null) {
+        renderCardBlock(card);
+        renderComponent('feed-statistics', feedStatistics(89, 100));
+      }
+    })
+    .catch(console.error)
+    .finally(() => {
+      document.body.removeAttribute('style');
+    });
 };
-
-export { renderHomePage };

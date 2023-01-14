@@ -6,8 +6,9 @@ export const transactionPipeline = async <T extends TransactionEvent>(
   event: T,
   listeners: TransactionListener<T>[],
 ): Promise<void> => {
-  const storeNames: Set<string> = new Set();
-
+  const storeNames = new Set(
+    listeners.map((listener) => listener.storeName(event)),
+  );
   const transaction = db.transaction(storeNames, 'readwrite');
   const promises: Promise<unknown>[] = [];
 

@@ -23,3 +23,17 @@ export function h(
 
   return element;
 }
+
+export const renderComponent = (name: string, content: HTMLElement): void => {
+  const element = document.body.querySelector(
+    `[component="${name}"]`,
+  ) as HTMLElement;
+
+  element.replaceChildren(content);
+};
+
+export const innerText = (selector: string, text: string | number) => {
+  const element = document.querySelector(selector) as HTMLElement;
+
+  element.innerText = typeof text === 'number' ? text.toString() : text;
+};

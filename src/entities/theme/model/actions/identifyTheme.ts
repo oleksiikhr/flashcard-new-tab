@@ -1,6 +1,6 @@
-import {Theme, ThemeType} from '../theme';
-import {isDarkMedia} from '../util';
-import {findThemeRequest} from '../../database/repository/query';
+import { Theme, ThemeType } from '../theme';
+import { isDarkMedia } from '../util';
+import { findThemeRequest } from '../../database/repository/themeQueryRepository';
 
 export const identifyTheme = (): Theme => {
   const theme = findThemeRequest();

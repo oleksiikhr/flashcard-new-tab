@@ -1,54 +1,71 @@
 import {
   Card,
+  CardStatistics,
+  CardStatus,
   CardTemplateType,
   createCardModel,
   updateCardModel,
 } from '../card';
 import { cardContentFactory } from '../content/cardContentFactory';
-import {findCardByQuestionQuery} from "../../database/repository/query";
-import {createCardQuery, updateCardQuery} from "../../database/repository/command";
+import { findCardByQuestionRequest } from '../../database/repository/cardQueryRepository';
+import {
+  createCardRequest,
+  updateCardRequest,
+} from '../../database/repository/cardCommandRepository';
+import { random } from '../../../../shared/util/algorithm';
 
-// TODO like CardSerialized
-export type ImportRaw = {
+export type CardImportRaw = {
+  id?: string;
   question: string;
   content: object;
-  template_type: number;
-  is_active?: boolean;
+  // templateType: number;
+  statistics?: Partial<CardStatistics>;
+  status?: CardStatus;
+  seenAt?: Date | null;
+  nextAt?: Date | null;
+  updatedAt?: Date;
+  createdAt?: Date;
 };
 
-export const importCards = async (
-  raws: ImportRaw[],
-): Promise<Card[]> => {
-  const promises = raws.map((raw) => {
-    const { question } = raw;
-    const content = cardContentFactory(
-      raw.content,
-      CardTemplateType.VOCABULARY,
-    );
+export const importCards = async (raws: CardImportRaw[]): Promise<Card[]> => {
+  const promises = raws.map(
+    (
+      raw, // TODO or findById
+    ) =>
+      findCardByQuestionRequest(raw.question).then((card) => {
+        raw.status = random(0, 2);
 
-    return findCardByQuestionQuery(question)
-      .then((card) => {
         if (undefined === card) {
-          // TODO createCard
           const newCard = createCardModel(
-            question,
-            content,
+            raw.question,
+            cardContentFactory(raw.content, CardTemplateType.VOCABULARY),
             CardTemplateType.VOCABULARY,
-            raw.is_active ?? true,
+            raw.statistics,
+            raw.status,
+            false,
+            raw.seenAt,
+            raw.status === 2 ? new Date() : null,
+            raw.updatedAt,
+            raw.createdAt,
           );
 
-          return createCardQuery(newCard).then(() => newCard);
+          return createCardRequest(newCard).then(() => newCard);
         }
 
         updateCardModel(card, {
-          question,
-          content,
-          isActive: raw.is_active ?? card.isActive,
+          question: raw.question,
+          content: cardContentFactory(raw.content, card.templateType),
+          statistics: raw.statistics,
+          status: raw.status,
+          seenAt: raw.seenAt,
+          nextAt: raw.nextAt,
+          updatedAt: raw.updatedAt,
+          createdAt: raw.createdAt,
         });
 
-        return updateCardQuery(card).then(() => card);
-      })
-  });
+        return updateCardRequest(card).then(() => card);
+      }),
+  );
 
   return Promise.all(promises);
 };

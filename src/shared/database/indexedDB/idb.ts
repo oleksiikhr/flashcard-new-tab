@@ -1,3 +1,5 @@
+import { randomUniqueRange } from '../../util/algorithm';
+
 export const openDB = (
   databaseName: string,
   migrations: ((event: IDBVersionChangeEvent) => Promise<void>)[],
@@ -24,9 +26,7 @@ export const openDB = (
     req.onerror = reject;
   });
 
-export const requestPromise = <T>(
-  request: IDBRequest,
-): Promise<T | undefined> =>
+export const requestPromise = <T>(request: IDBRequest): Promise<T> =>
   new Promise((resolve, reject) => {
     request.onsuccess = (event) => {
       const result = (event.target as IDBRequest).result as T;
@@ -146,3 +146,35 @@ export const requestCursor = (
 
     request.onerror = reject;
   });
+
+export const requestRandomValues = async <T>(
+  request: IDBIndex,
+  query: IDBKeyRange,
+  limit: number,
+  callback: (value: unknown) => T,
+) => {
+  const total = await requestPromise<number>(request.count(query));
+  const numbers = randomUniqueRange(total, limit, 1);
+  const values: T[] = [];
+  let init = true;
+
+  await requestCursor(request.openCursor(query), (cursor) => {
+    if (init && numbers[0] !== 1) {
+      init = false;
+
+      // @ts-ignore
+      return cursor.advance(numbers[0] - 1);
+    }
+
+    const value = callback(cursor.value);
+
+    if (values.push(value) === numbers.length) {
+      return false;
+    }
+
+    // @ts-ignore
+    return cursor.advance(numbers[values.length] - numbers[values.length - 1]);
+  });
+
+  return values;
+};

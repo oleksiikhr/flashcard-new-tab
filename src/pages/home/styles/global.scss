@@ -1,0 +1,46 @@
+.header {
+  align-items: center;
+  display: flex;
+  height: 100px;
+  justify-content: space-between;
+
+  > *:first-child {
+    margin-left: 10px;
+  }
+
+  > *:last-child {
+    font-weight: bold;
+    margin: 0 15px;
+  }
+
+  .button {
+    color: var(--text);
+    display: block;
+    height: 65px;
+    padding: 15px;
+    width: 65px;
+  }
+}
+
+.footer {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 15px;
+
+  > *:first-child {
+    align-self: flex-end;
+  }
+
+  > *:last-child {
+    align-items: center;
+    display: flex;
+  }
+}
+
+.package-version-button {
+  font-size: 0.8em;
+  font-weight: bold;
+  letter-spacing: 1px;
+  user-select: none;
+}

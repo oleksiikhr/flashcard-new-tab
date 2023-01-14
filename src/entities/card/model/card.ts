@@ -7,7 +7,7 @@ export type Card = {
   content: CardContent;
   templateType: CardTemplateType;
   statistics: CardStatistics;
-  isActive: boolean;
+  status: CardStatus;
   isFeed: boolean;
   seenAt: Date | null;
   nextAt: Date | null;
@@ -15,9 +15,16 @@ export type Card = {
   createdAt: Date;
 };
 
+export enum CardStatus {
+  DELETED = 0,
+  NEW = 1,
+  REPEAT = 2,
+}
+
 export type CardStatistics = {
+  forgot: number;
+  remembered: number;
   views: number;
-  clicks: number;
 };
 
 export enum CardTemplateType {
@@ -30,7 +37,7 @@ export type CardSerialized = {
   content: object;
   template_type: number;
   statistics: CardStatistics;
-  is_active: number;
+  status: CardStatus;
   is_feed: number;
   seen_at: Date | null;
   next_at: Date | null;
@@ -44,7 +51,7 @@ export const serializeCard = (card: Card): CardSerialized => ({
   content: card.content.serialize(),
   template_type: card.templateType,
   statistics: card.statistics,
-  is_active: +card.isActive,
+  status: card.status,
   is_feed: +card.isFeed,
   seen_at: card.seenAt,
   next_at: card.nextAt,
@@ -58,7 +65,7 @@ export const unserializeCard = (raw: CardSerialized): Card => ({
   content: cardContentFactory(raw.content, raw.template_type),
   templateType: raw.template_type,
   statistics: raw.statistics,
-  isActive: !!raw.is_active,
+  status: raw.status,
   isFeed: !!raw.is_feed,
   seenAt: raw.seen_at,
   nextAt: raw.next_at,
@@ -70,37 +77,66 @@ export const createCardModel = (
   question: string,
   content: CardContent,
   templateType: CardTemplateType,
-  isActive: boolean,
-): Card => ({
-  id: createIdentifier(),
-  question,
-  content,
-  templateType,
-  statistics: { views: 0, clicks: 0 },
-  isActive,
-  isFeed: false,
-  seenAt: null,
-  nextAt: null,
-  updatedAt: new Date(),
-  createdAt: new Date(),
-});
+  statistics: Partial<CardStatistics> = {},
+  status: CardStatus = CardStatus.NEW,
+  isFeed = false,
+  seenAt: Date | null = null,
+  nextAt: Date | null = null,
+  updatedAt: Date | null = null,
+  createdAt: Date | null = null,
+): Card => {
+  nextAt = status === CardStatus.REPEAT ? nextAt ?? new Date() : nextAt;
 
-export const updateCardModel = (card: Card, fields: {
-  question?: string,
-  content?: CardContent,
-  isActive?: boolean,
-}): void => {
-  card.question = fields.question ?? card.question
-  card.content = fields.content ?? card.content
-  card.isActive = fields.isActive ?? card.isActive
-  card.updatedAt = new Date()
+  return {
+    id: createIdentifier(),
+    question,
+    content,
+    templateType,
+    statistics: {
+      views: 0,
+      remembered: 0,
+      forgot: 0,
+      ...statistics,
+    },
+    status,
+    isFeed: status === CardStatus.DELETED ? false : isFeed,
+    seenAt,
+    nextAt: status === CardStatus.DELETED ? null : nextAt,
+    updatedAt: updatedAt ?? new Date(),
+    createdAt: createdAt ?? new Date(),
+  };
 };
 
-export const updateLastSeenCard = (card: Card): void => {
-  card.statistics.views += 1;
-  card.seenAt = new Date();
-};
+export const updateCardModel = (
+  card: Card,
+  fields: {
+    question?: string | undefined;
+    content?: CardContent | undefined;
+    statistics?: Partial<CardStatistics> | undefined;
+    status?: CardStatus | undefined;
+    isFeed?: boolean | undefined;
+    seenAt?: Date | null | undefined;
+    nextAt?: Date | null | undefined;
+    updatedAt?: Date | undefined;
+    createdAt?: Date | undefined;
+  },
+): void => {
+  const status = fields.status ?? card.status;
+  const nextAt =
+    status === CardStatus.REPEAT
+      ? fields.nextAt ?? card.nextAt ?? new Date()
+      : fields.nextAt ?? card.nextAt;
 
-export const updateCardClicks = (card: Card, value: number): void => {
-  card.statistics.clicks = value;
-}
+  card.question = fields.question ?? card.question;
+  card.content = fields.content ?? card.content;
+  card.statistics = fields.statistics
+    ? { ...card.statistics, ...fields.statistics }
+    : card.statistics;
+  card.status = status;
+  card.isFeed =
+    status === CardStatus.DELETED ? false : fields.isFeed ?? card.isFeed;
+  card.seenAt = fields.seenAt ?? card.seenAt;
+  card.nextAt = status === CardStatus.DELETED ? null : nextAt;
+  card.updatedAt = fields.updatedAt ?? card.updatedAt ?? new Date();
+  card.createdAt = fields.createdAt ?? card.createdAt ?? new Date();
+};

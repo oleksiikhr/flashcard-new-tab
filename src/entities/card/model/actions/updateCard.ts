@@ -1,15 +1,15 @@
-import { Card, updateCardModel } from '../card';
+import { Card, CardStatus, updateCardModel } from '../card';
+import { findCardByIdRequest } from '../../database/repository/cardQueryRepository';
+import { updateCardRequest } from '../../database/repository/cardCommandRepository';
 import { cardVocabularyContent } from '../content/cardVocabularyContent';
-import {findCardByIdQuery} from "../../database/repository/query";
-import {updateCardQuery} from "../../database/repository/command";
 
-export const updateCard = async (
+export const updateVocabularyCard = async (
   id: string,
   question: string,
   answer: string,
-  isActive: boolean,
+  status: CardStatus,
 ): Promise<Card> => {
-  const card = await findCardByIdQuery(id);
+  const card = await findCardByIdRequest(id);
 
   if (undefined === card) {
     throw new Error('Card not found.');
@@ -18,10 +18,11 @@ export const updateCard = async (
   updateCardModel(card, {
     question,
     content: cardVocabularyContent({ answer }),
-    isActive,
+    status,
+    updatedAt: new Date(),
   });
 
-  await updateCardQuery(card);
+  await updateCardRequest(card);
 
   return card;
 };

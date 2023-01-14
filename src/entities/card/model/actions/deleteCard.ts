@@ -1,12 +1,12 @@
-import {findCardByIdQuery} from "../../database/repository/query";
-import {deleteCardQuery} from "../../database/repository/command";
+import { findCardByIdRequest } from '../../database/repository/cardQueryRepository';
+import { deleteCardRequest } from '../../database/repository/cardCommandRepository';
 
 export const deleteCard = async (id: string): Promise<void> => {
-  const card = await findCardByIdQuery(id);
+  const card = await findCardByIdRequest(id);
 
   if (undefined === card) {
     return;
   }
 
-  await deleteCardQuery(card);
+  await deleteCardRequest(card);
 };

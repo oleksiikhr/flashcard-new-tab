@@ -11,9 +11,6 @@ Extension replaces a new tab in the browser. Each time you open the browser/new 
 - No permissions
 - No analytics
 - No frameworks (pure js)
-- Multiple decks
-- Support different types of cards
-- Assign tags
 - Local data storage (IndexedDB)
 - Open-Source
 

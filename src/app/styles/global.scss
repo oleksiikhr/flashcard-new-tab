@@ -55,20 +55,15 @@ section {
 }
 
 body {
-  display: flex;
-  flex-direction: column;
   background: var(--background);
   color: var(--text);
+  display: flex;
+  flex-direction: column;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 0.75em;
   line-height: 1.15;
   margin: 0;
   overflow-y: scroll;
-}
-
-main {
-  flex: 1 0 auto;
-  margin-bottom: 60px;
 }
 
 section {

@@ -1,20 +1,21 @@
 import { cardVocabularyContent } from '../content/cardVocabularyContent';
-import { Card, CardTemplateType, createCardModel } from '../card';
-import {createCardQuery} from "../../database/repository/command";
+import { Card, CardStatus, CardTemplateType, createCardModel } from '../card';
+import { createCardRequest } from '../../database/repository/cardCommandRepository';
 
 export const createVocabularyCard = async (
   question: string,
   answer: string,
-  isActive: boolean,
+  status: CardStatus,
 ): Promise<Card> => {
   const card = createCardModel(
     question,
     cardVocabularyContent({ answer }),
     CardTemplateType.VOCABULARY,
-    isActive,
+    {},
+    status,
   );
 
-  await createCardQuery(card);
+  await createCardRequest(card);
 
   return card;
 };

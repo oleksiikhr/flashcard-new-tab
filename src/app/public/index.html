@@ -11,35 +11,49 @@
     <script src="dist/home.js"></script>
   </head>
   <body style="display: none">
-    <header class="home-page-header">
-      <div class="home-page-header__left">
-        <a class="page-button page-button_settings" href="settings.html">
-          <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M20 22H6.5A3.5 3.5 0 0 1 3 18.5V5a3 3 0 0 1 3-3h14a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1zm-1-2v-3H6.5a1.5 1.5 0 0 0 0 3H19z"/></svg>
+    <header class="header">
+      <div>
+        <a class="button" href="settings.html">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M6 1h6v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8V1z"
+            />
+            <path
+              d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"
+            />
+            <path
+              d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"
+            />
+          </svg>
         </a>
       </div>
-      <div class="home-page-header__right">
-        <div class="feed-statistics" component="feed-statistics"></div>
-      </div>
+      <div component="feed-statistics"></div>
     </header>
-    <main>
-      <div class="home-page-wrapper">
-        <article class="card" component="card">
+    <main class="main">
+      <div component="card">
+        <article class="card">
           <div class="card__header">
-            <div class="card-icons">
-              <div class="card-icons__edit">
-                <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="m19.3 8.925l-4.25-4.2l1.4-1.4q.575-.575 1.413-.575q.837 0 1.412.575l1.4 1.4q.575.575.6 1.388q.025.812-.55 1.387ZM17.85 10.4L7.25 21H3v-4.25l10.6-10.6Z"/></svg>
-                <div class="helper">E</div>
+            <div class="card__icons">
+              <div class="card-icon card-icon_edit">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="m19.3 8.925l-4.25-4.2l1.4-1.4q.575-.575 1.413-.575q.837 0 1.412.575l1.4 1.4q.575.575.6 1.388q.025.812-.55 1.387ZM17.85 10.4L7.25 21H3v-4.25l10.6-10.6Z"
+                  />
+                </svg>
+                <div class="keycode">E</div>
               </div>
-              <div class="card-icons__separator">|</div>
-              <div class="card-icons__remembered">
-                <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4Z"/></svg>
-                <span class="card-forgot-value">0</span>
-              </div>
-              <div class="card-icons__forgot">
-                <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z"/></svg>
-                <span class="card-forgot-value">0</span>
-              </div>
-              <div class="card-icons__views">
+              <div class="card-icon card-icon_separator">|</div>
+              <div class="card-icon card-icon_views">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -58,39 +72,49 @@
                     d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                   />
                 </svg>
-                <span class="card-views-value">0</span>
+                <span class="card-icon__value">0</span>
               </div>
-              <div class="card-icons__clicks">
+              <div class="card-icon card-icon_remembered">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
+                  preserveAspectRatio="xMidYMid meet"
                   viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+                    fill="currentColor"
+                    d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4Z"
                   />
                 </svg>
-                <span class="card-clicks-value">0</span>
+                <span class="card-icon__value">0</span>
+              </div>
+              <div class="card-icon card-icon_forgot">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z"
+                  />
+                </svg>
+                <span class="card-icon__value">0</span>
               </div>
             </div>
           </div>
-          <div class="card__content"><!--Dynamic--></div>
-          <div class="card__footer">
-
-            <div class="card-dot"></div>
-          </div>
+          <div class="card__content"></div>
+          <div class="card__dot"></div>
         </article>
       </div>
     </main>
-    <footer class="home-page-footer">
-      <div class="home-page-footer__left">
-        <div class="package-version"></div>
+    <footer class="footer">
+      <div>
+        <a
+          href="https://github.com/oleksiikhr/flashcard-new-tab/releases"
+          class="button package-version-button"
+        ></a>
       </div>
-      <div class="home-page-footer__right">
+      <div>
         <button class="theme-toggle" component="theme-toggle">
           <svg
             class="theme-toggle__svg"
